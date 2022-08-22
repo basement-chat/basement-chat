@@ -2,9 +2,9 @@
 
 namespace Haemanthus\Basement\Tests;
 
+use Haemanthus\Basement\BasementServiceProvider;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Orchestra\Testbench\TestCase as Orchestra;
-use Haemanthus\Basement\BasementServiceProvider;
 
 class TestCase extends Orchestra
 {

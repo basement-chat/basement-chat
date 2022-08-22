@@ -2,9 +2,9 @@
 
 namespace Haemanthus\Basement;
 
+use Haemanthus\Basement\Commands\BasementCommand;
 use Spatie\LaravelPackageTools\Package;
 use Spatie\LaravelPackageTools\PackageServiceProvider;
-use Haemanthus\Basement\Commands\BasementCommand;
 
 class BasementServiceProvider extends PackageServiceProvider
 {
