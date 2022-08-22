@@ -8,7 +8,7 @@ return new class extends Migration
 {
     public function up()
     {
-        Schema::create('basement_table', function (Blueprint $table) {
+        Schema::create('basement_table', function (Blueprint $table): void {
             $table->id();
 
             // add fields

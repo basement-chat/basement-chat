@@ -6,9 +6,9 @@ use Illuminate\Console\Command;
 
 class BasementCommand extends Command
 {
-    public $signature = 'basement';
+    public string $signature = 'basement';
 
-    public $description = 'My command';
+    public string $description = 'My command';
 
     public function handle(): int
     {

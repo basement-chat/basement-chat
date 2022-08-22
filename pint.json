@@ -1,5 +1,6 @@
 {
     "exclude": [
         "build"
-    ]
+    ],
+    "preset": "psr12"
 }

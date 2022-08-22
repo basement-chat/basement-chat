@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Facade;
  */
 class Basement extends Facade
 {
-    protected static function getFacadeAccessor()
+    protected static function getFacadeAccessor(): string
     {
         return \Haemanthus\Basement\Basement::class;
     }
