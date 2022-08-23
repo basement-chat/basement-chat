@@ -19,10 +19,17 @@
     verbose="true"
 >
     <testsuites>
-        <testsuite name="Haemanthus Test Suite">
-            <directory>tests</directory>
+        <testsuite name="Unit">
+            <directory suffix="Test.php">./tests/Unit</directory>
+        </testsuite>
+        <testsuite name="Feature">
+            <directory suffix="Test.php">./tests/Feature</directory>
         </testsuite>
     </testsuites>
+    <php>
+        <env name="DB_CONNECTION" value="sqlite"/>
+        <env name="DB_DATABASE" value=":memory:"/>
+    </php>
     <coverage>
         <include>
             <directory suffix=".php">./src</directory>

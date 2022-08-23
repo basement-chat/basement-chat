@@ -4,6 +4,7 @@ build
 composer.lock
 coverage
 docs
+package-lock.json
 phpunit.xml
 phpstan.neon
 testbench.yaml

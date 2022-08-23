@@ -1,70 +1,76 @@
 {
-    "name": "yusuftaufiq/basement",
-    "description": "This is my package basement",
-    "keywords": [
-        "laravel",
-        "basement"
-    ],
-    "homepage": "https://github.com/yusuftaufiq/basement",
-    "license": "MIT",
-    "authors": [
-        {
-            "name": "Yusuf T.",
-            "email": "dev.yusuftaufiq@gmail.com",
-            "role": "Developer"
-        }
-    ],
-    "require": {
-        "php": "^8.1",
-        "spatie/laravel-package-tools": "^1.9.2",
-        "illuminate/contracts": "^9.0"
-    },
-    "require-dev": {
-        "laravel/pint": "^1.0",
-        "nunomaduro/collision": "^6.0",
-        "nunomaduro/larastan": "^2.0.1",
-        "orchestra/testbench": "^7.0",
-        "pestphp/pest": "^1.21",
-        "pestphp/pest-plugin-laravel": "^1.1",
-        "phpstan/extension-installer": "^1.1",
-        "phpstan/phpstan-deprecation-rules": "^1.0",
-        "phpstan/phpstan-phpunit": "^1.0",
-        "phpunit/phpunit": "^9.5"
-    },
-    "autoload": {
-        "psr-4": {
-            "Haemanthus\\Basement\\": "src",
-            "Haemanthus\\Basement\\Database\\Factories\\": "database/factories"
-        }
-    },
-    "autoload-dev": {
-        "psr-4": {
-            "Haemanthus\\Basement\\Tests\\": "tests"
-        }
-    },
-    "scripts": {
-        "analyse": "vendor/bin/phpstan analyse",
-        "test": "vendor/bin/pest",
-        "test-coverage": "vendor/bin/pest --coverage",
-        "format": "vendor/bin/pint"
-    },
-    "config": {
-        "sort-packages": true,
-        "allow-plugins": {
-            "pestphp/pest-plugin": true,
-            "phpstan/extension-installer": true
-        }
-    },
-    "extra": {
-        "laravel": {
-            "providers": [
-                "Haemanthus\\Basement\\BasementServiceProvider"
-            ],
-            "aliases": {
-                "Basement": "Haemanthus\\Basement\\Facades\\Basement"
-            }
-        }
-    },
-    "minimum-stability": "dev",
-    "prefer-stable": true
+  "name": "haemanthus/basement",
+  "description": "Realtime Chat Widget for Laravel Application",
+  "keywords": [
+    "laravel",
+    "php",
+    "websocket",
+    "chat",
+    "basement"
+  ],
+  "homepage": "https://github.com/yusuftaufiq/basement",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Yusuf T.",
+      "email": "dev.yusuftaufiq@gmail.com",
+      "role": "Developer"
+    }
+  ],
+  "require": {
+    "php": "^8.0",
+    "spatie/laravel-package-tools": "^1.9.2",
+    "illuminate/contracts": "^9.0"
+  },
+  "require-dev": {
+    "laravel/pint": "^1.0",
+    "nunomaduro/collision": "^6.0",
+    "nunomaduro/larastan": "^2.0.1",
+    "orchestra/canvas": "^7.2",
+    "orchestra/testbench": "^7.0",
+    "pestphp/pest": "^1.21",
+    "pestphp/pest-plugin-laravel": "^1.1",
+    "phpstan/extension-installer": "^1.1",
+    "phpstan/phpstan-deprecation-rules": "^1.0",
+    "phpstan/phpstan-phpunit": "^1.0",
+    "phpunit/phpunit": "^9.5",
+    "squizlabs/php_codesniffer": "^3.7"
+  },
+  "autoload": {
+    "psr-4": {
+      "Haemanthus\\Basement\\": "src",
+      "Haemanthus\\Basement\\Database\\Factories\\": "database/factories"
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "Haemanthus\\Basement\\Tests\\": "tests"
+    }
+  },
+  "scripts": {
+    "analyse": "vendor/bin/phpstan analyse",
+    "test": "vendor/bin/pest",
+    "test-coverage": "vendor/bin/pest --coverage",
+    "format": "vendor/bin/pint",
+    "canvas": "vendor/bin/canvas"
+  },
+  "config": {
+    "sort-packages": true,
+    "allow-plugins": {
+      "pestphp/pest-plugin": true,
+      "phpstan/extension-installer": true
+    }
+  },
+  "extra": {
+    "laravel": {
+      "providers": [
+        "Haemanthus\\Basement\\BasementServiceProvider"
+      ],
+      "aliases": {
+        "Basement": "Haemanthus\\Basement\\Facades\\Basement"
+      }
+    }
+  },
+  "minimum-stability": "dev",
+  "prefer-stable": true
 }

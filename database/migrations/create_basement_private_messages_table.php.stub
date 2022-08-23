@@ -1,0 +1,40 @@
+<?php
+
+use Haemanthus\Basement\Enums\MessageType;
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+
+return new class extends Migration
+{
+    /**
+     * Run the migrations.
+     *
+     * @return void
+     */
+    public function up(): void
+    {
+        Schema::create('basement_private_messages', function (Blueprint $table): void {
+            $table->id();
+            $table->unsignedBigInteger('sent_by');
+            $table->unsignedBigInteger('sent_to');
+            $table->foreign('sent_by')->references('id')->on('users')->restrictOnDelete();
+            $table->foreign('sent_to')->references('id')->on('users')->restrictOnDelete();
+            $table->string('value');
+            $table->enum('type', [MessageType::DOCUMENT, MessageType::TEXT]);
+            $table->timestamp('seen_at')->nullable();
+            $table->timestamps();
+            $table->softDeletes();
+        });
+    }
+
+    /**
+     * Reverse the migrations.
+     *
+     * @return void
+     */
+    public function down(): void
+    {
+        Schema::dropIfExists('basement_private_messages');
+    }
+};

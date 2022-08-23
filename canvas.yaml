@@ -1,0 +1,27 @@
+preset: package
+
+namespace: Haemanthus\Basement
+user-auth-provider: App\Models\User
+
+paths:
+  src: src
+  resource: resources
+
+factory:
+  path: database/factories
+
+migration:
+  path: database/migrations
+  prefix: ''
+
+console:
+  namespace: Haemanthus\Basement\Console
+
+model:
+  namespace: Haemanthus\Basement\Models
+
+provider:
+  namespace: Haemanthus\Basement\Providers
+
+testing:
+  namespace: Haemanthus\Basement\Tests
