@@ -1,6 +1,6 @@
 {
   "name": "haemanthus/basement",
-  "description": "Realtime Chat Widget for Laravel Application",
+  "description": "Add real-time chat widget to your existing Laravel App",
   "keywords": [
     "laravel",
     "php",

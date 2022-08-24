@@ -46,7 +46,7 @@ class TestCase extends Orchestra
         config()->set('database.default', 'testing');
 
         /** @var \Illuminate\Database\Migrations\Migration & Object $migration */
-        $migration = include __DIR__ . '/../database/migrations/create_basement_private_messages_table.php.stub';
+        $migration = include __DIR__ . '/../database/migrations/create_private_messages_table.php.stub';
         $migration->up();
     }
 }

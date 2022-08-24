@@ -2,6 +2,7 @@
 
 namespace Haemanthus\Basement\Facades;
 
+use Haemanthus\Basement\Contracts\Basement as BasementContract;
 use Illuminate\Support\Facades\Facade;
 
 /**
@@ -11,6 +12,6 @@ class Basement extends Facade
 {
     protected static function getFacadeAccessor(): string
     {
-        return \Haemanthus\Basement\Basement::class;
+        return BasementContract::class;
     }
 }
