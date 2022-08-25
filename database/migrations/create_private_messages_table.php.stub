@@ -14,14 +14,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('basement_private_messages', function (Blueprint $table): void {
+        Schema::create('private_messages', function (Blueprint $table): void {
             $table->id();
-            $table->unsignedBigInteger('sent_by');
-            $table->unsignedBigInteger('sent_to');
-            $table->foreign('sent_by')->references('id')->on('users')->restrictOnDelete();
-            $table->foreign('sent_to')->references('id')->on('users')->restrictOnDelete();
+            $table->morphs('receiver');
+            $table->morphs('sender');
+            $table->enum('type', [MessageType::document()->value, MessageType::text()->value]);
             $table->string('value');
-            $table->enum('type', [MessageType::DOCUMENT, MessageType::TEXT]);
             $table->timestamp('seen_at')->nullable();
             $table->timestamps();
             $table->softDeletes();
@@ -35,6 +33,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('basement_private_messages');
+        Schema::dropIfExists('private_messages');
     }
 };

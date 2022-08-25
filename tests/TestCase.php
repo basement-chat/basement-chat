@@ -4,7 +4,9 @@ namespace Haemanthus\Basement\Tests;
 
 use Haemanthus\Basement\BasementServiceProvider;
 use Illuminate\Database\Eloquent\Factories\Factory;
+use Illuminate\Database\Migrations\Migration;
 use Orchestra\Testbench\TestCase as Orchestra;
+use Spatie\LaravelData\LaravelDataServiceProvider;
 
 class TestCase extends Orchestra
 {
@@ -32,6 +34,7 @@ class TestCase extends Orchestra
     {
         return [
             BasementServiceProvider::class,
+            LaravelDataServiceProvider::class,
         ];
     }
 
@@ -45,8 +48,11 @@ class TestCase extends Orchestra
     {
         config()->set('database.default', 'testing');
 
-        /** @var \Illuminate\Database\Migrations\Migration & Object $migration */
-        $migration = include __DIR__ . '/../database/migrations/create_private_messages_table.php.stub';
-        $migration->up();
+        $migrations = collect([
+            include __DIR__ . '/../database/migrations/create_users_table.php.stub',
+            include __DIR__ . '/../database/migrations/create_private_messages_table.php.stub',
+        ])->each(function (Migration $migration): void {
+            $migration->up();
+        });
     }
 }

@@ -3,8 +3,14 @@
 namespace Haemanthus\Basement;
 
 use App\Models\User;
+use Haemanthus\Basement\Contracts\AllContact;
 use Haemanthus\Basement\Contracts\Basement as BasementContract;
+use Illuminate\Database\Eloquent\Model;
 
+/**
+ * @template TModel of \Illuminate\Database\Eloquent\Model
+ * @template TAllContact of \Haemanthus\Basement\Contracts\AllContact
+ */
 class Basement implements BasementContract
 {
     /**
@@ -17,7 +23,7 @@ class Basement implements BasementContract
     /**
      * Specify the user model used by the application.
      *
-     * @param string $class
+     * @param class-string<TModel> $class
      * @return void
      */
     public static function useUserModel(string $class): void
@@ -28,10 +34,21 @@ class Basement implements BasementContract
     /**
      * Get the name of the user model used by the application.
      *
-     * @return string
+     * @return \Illuminate\Database\Eloquent\Model & \Haemanthus\Basement\Contracts\User
      */
-    public static function userModel(): string
+    public static function userModel(): Model
     {
-        return config(key: 'basement.user_model', default: User::class);
+        return app(static::$userModel);
+    }
+
+    /**
+     * Register a class / callback that should be used to get all contacts.
+     *
+     * @param  class-string<TAllContact>   $class
+     * @return void
+     */
+    public static function allContactUsing(string $class): void
+    {
+        app()->bind(abstract: AllContact::class, concrete: $class);
     }
 }

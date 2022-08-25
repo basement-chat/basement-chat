@@ -2,9 +2,9 @@
 
 namespace Haemanthus\Basement;
 
+use Haemanthus\Basement\Actions\AllContact;
 use Haemanthus\Basement\Commands\BasementCommand;
 use Haemanthus\Basement\Contracts\Basement as BasementContract;
-use Haemanthus\Basement\Facades\Basement;
 use Spatie\LaravelPackageTools\Package;
 use Spatie\LaravelPackageTools\PackageServiceProvider;
 
@@ -47,5 +47,6 @@ class BasementServiceProvider extends PackageServiceProvider
         parent::boot();
 
         Basement::useUserModel(config(key: 'basement.user_model', default: User::class));
+        Basement::allContactUsing(AllContact::class);
     }
 }
