@@ -5,17 +5,12 @@ namespace Haemanthus\Basement\Contracts;
 interface Basement
 {
     /**
-     * The default host address for getting the avatar image.
-     */
-    public const AVATAR_BASE_URI = 'https://avatars.dicebear.com/';
-
-    /**
-     * Get the user avatar.
+     * Specify the user model used by the application.
      *
-     * @param string $key
-     * @return string
+     * @param string $class
+     * @return void
      */
-    public static function avatar(string $key): string;
+    public static function useUserModel(string $class): void;
 
     /**
      * Get the name of the user model used by the application.

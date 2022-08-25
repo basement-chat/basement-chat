@@ -4,29 +4,25 @@ namespace Haemanthus\Basement;
 
 use App\Models\User;
 use Haemanthus\Basement\Contracts\Basement as BasementContract;
-use Haemanthus\Basement\Enums\AvatarStyle;
 
 class Basement implements BasementContract
 {
     /**
-     * Get the user avatar.
+     * The user model used by the application.
      *
-     * @param string $key
-     * @return string
+     * @var string
      */
-    public static function avatar(string $key): string
+    protected static string $userModel = User::class;
+
+    /**
+     * Specify the user model used by the application.
+     *
+     * @param string $class
+     * @return void
+     */
+    public static function useUserModel(string $class): void
     {
-        /** @var string $style */
-        $style = config(key: 'basement.avatar.style', default: AvatarStyle::ADVENTURER);
-
-        /** @var array $options */
-        $options = config(key: 'basement.avatar.options', default: []);
-
-        $queryString = collect($options)
-            ->map(fn (string $option, string $key): string => ("{$key}={$option}"))
-            ->join('&');
-
-        return self::AVATAR_BASE_URI . "api/{$style}/" . md5($key) . ".svg?{$queryString}";
+        static::$userModel = $class;
     }
 
     /**

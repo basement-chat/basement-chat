@@ -4,6 +4,7 @@ namespace Haemanthus\Basement;
 
 use Haemanthus\Basement\Commands\BasementCommand;
 use Haemanthus\Basement\Contracts\Basement as BasementContract;
+use Haemanthus\Basement\Facades\Basement;
 use Spatie\LaravelPackageTools\Package;
 use Spatie\LaravelPackageTools\PackageServiceProvider;
 
@@ -34,5 +35,17 @@ class BasementServiceProvider extends PackageServiceProvider
         parent::register();
 
         $this->app->singleton(abstract: BasementContract::class, concrete: fn (): Basement => new Basement());
+    }
+
+    /**
+     * Bootstrap any application services.
+     *
+     * @return void
+     */
+    public function boot()
+    {
+        parent::boot();
+
+        Basement::useUserModel(config(key: 'basement.user_model', default: User::class));
     }
 }
