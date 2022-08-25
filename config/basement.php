@@ -17,7 +17,7 @@ return [
     |
     */
 
-    'chat_box_widget_position' => ChatBoxPosition::BOTTOM_RIGHT,
+    'chat_box_widget_position' => ChatBoxPosition::bottomRight(),
 
     /*
     |--------------------------------------------------------------------------
@@ -25,7 +25,7 @@ return [
     |--------------------------------------------------------------------------
     |
     | Specify the namespace and class used to get the user model instance. The
-    | given class must implement the "HasPrivateMessages" contract.
+    | given class must implement the "Haemanthus\Basement\Contracts\User".
     |
     */
 
@@ -45,7 +45,7 @@ return [
     */
 
     'avatar' => [
-        'style' => AvatarStyle::MICAH,
+        'style' => AvatarStyle::micah(),
         'options' => [
             'b' => '%233584e4',
             'size' => 64,

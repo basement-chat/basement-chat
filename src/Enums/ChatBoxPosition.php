@@ -2,9 +2,12 @@
 
 namespace Haemanthus\Basement\Enums;
 
-class ChatBoxPosition
-{
-    public const BOTTOM_RIGHT = 'BOTTOM RIGHT';
+use Spatie\Enum\Enum;
 
-    public const BOTTOM_LEFT = 'BOTTOM LEFT';
+/**
+ * @method static self bottomLeft()
+ * @method static self bottomRight()
+ */
+class ChatBoxPosition extends Enum
+{
 }
