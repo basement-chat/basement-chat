@@ -17,7 +17,7 @@ class AllContact implements AllContactContract
      */
     public function all(): DataCollection
     {
-        $contacts = Basement::userModel()->all()->map(fn (User $user): array => [
+        $contacts = Basement::newUserModel()->all()->map(fn (User $user): array => [
             'id' => $user->id,
             'name' => $user->name,
             'avatar' => $user->avatar,

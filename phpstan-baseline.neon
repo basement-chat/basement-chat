@@ -1,0 +1,3 @@
+parameters:
+    bootstrapFiles:
+        - phpstan-class-aliases.php

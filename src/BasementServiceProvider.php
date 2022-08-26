@@ -2,6 +2,7 @@
 
 namespace Haemanthus\Basement;
 
+use App\Models\User;
 use Haemanthus\Basement\Actions\AllContact;
 use Haemanthus\Basement\Commands\BasementCommand;
 use Haemanthus\Basement\Contracts\Basement as BasementContract;

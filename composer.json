@@ -32,7 +32,6 @@
     "orchestra/testbench": "^7.0",
     "pestphp/pest": "^1.21",
     "pestphp/pest-plugin-laravel": "^1.1",
-    "phpstan/extension-installer": "^1.1",
     "phpstan/phpstan-deprecation-rules": "^1.0",
     "phpstan/phpstan-phpunit": "^1.0",
     "phpunit/phpunit": "^9.5",
@@ -59,8 +58,7 @@
   "config": {
     "sort-packages": true,
     "allow-plugins": {
-      "pestphp/pest-plugin": true,
-      "phpstan/extension-installer": true
+      "pestphp/pest-plugin": true
     }
   },
   "extra": {

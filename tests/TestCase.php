@@ -3,8 +3,9 @@
 namespace Haemanthus\Basement\Tests;
 
 use Haemanthus\Basement\BasementServiceProvider;
+use Haemanthus\Basement\Contracts\Migration;
+use Haemanthus\Basement\Tests\Fixtures\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
-use Illuminate\Database\Migrations\Migration;
 use Orchestra\Testbench\TestCase as Orchestra;
 use Spatie\LaravelData\LaravelDataServiceProvider;
 
@@ -46,9 +47,10 @@ class TestCase extends Orchestra
      */
     public function getEnvironmentSetUp($app): void
     {
+        config()->set('basement.user_model', User::class);
         config()->set('database.default', 'testing');
 
-        $migrations = collect([
+        collect([
             include __DIR__ . '/../database/migrations/create_users_table.php.stub',
             include __DIR__ . '/../database/migrations/create_private_messages_table.php.stub',
         ])->each(function (Migration $migration): void {

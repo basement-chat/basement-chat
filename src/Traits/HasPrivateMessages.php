@@ -42,7 +42,7 @@ trait HasPrivateMessages
     /**
      * Get all private messages that the user receives.
      *
-     * @return \Illuminate\Database\Eloquent\Relations\MorphMany
+     * @return \Illuminate\Database\Eloquent\Relations\MorphMany<\Haemanthus\Basement\Models\PrivateMessage>
      */
     public function privateMessagesReceived(): MorphMany
     {
@@ -54,7 +54,7 @@ trait HasPrivateMessages
     /**
      * Get all private messages sent by the user.
      *
-     * @return \Illuminate\Database\Eloquent\Relations\MorphMany
+     * @return \Illuminate\Database\Eloquent\Relations\MorphMany<\Haemanthus\Basement\Models\PrivateMessage>
      */
     public function privateMessagesSent(): MorphMany
     {

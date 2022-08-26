@@ -14,8 +14,11 @@ class PrivateMessageData extends Data
      * Create a new private message data instance.
      *
      * @param integer $id
-     * @param string $name
-     * @param string $avatar
+     * @param integer $receiver_id
+     * @param integer $sender_id
+     * @param \Haemanthus\Basement\Enums\MessageType $type
+     * @param string $value
+     * @param \Illuminate\Support\Carbon|null $seen_at
      */
     public function __construct(
         public int $id,
