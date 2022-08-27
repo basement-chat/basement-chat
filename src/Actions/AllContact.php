@@ -28,6 +28,6 @@ class AllContact implements AllContactContract
         $contacts->append('avatar');
         $contacts->load('lastPrivateMessage');
 
-        return ContactData::collection($contacts);
+        return ContactData::collection($contacts->sortByDesc('lastPrivateMessage.id')->values());
     }
 }

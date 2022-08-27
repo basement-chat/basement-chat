@@ -96,3 +96,27 @@ it(description: 'should have the number of unread messages', closure: function (
 
     expect($contact->unread_messages)->toBe(5);
 });
+
+it(description: 'should be sorted in desc order at the time the last message is received', closure: function (): void {
+    /** @var \Haemanthus\Basement\Tests\Fixtures\User $receiver */
+    /** @var \Haemanthus\Basement\Tests\Fixtures\User $sender1 */
+    /** @var \Haemanthus\Basement\Tests\Fixtures\User $sender2 */
+
+    [$receiver, $sender1, $sender2] = User::factory()->count(3)->create();
+
+    actingAs($receiver);
+
+    PrivateMessage::factory()->betweenTwoUsers(receiver: $receiver, sender: $sender1)->create();
+    PrivateMessage::factory()->betweenTwoUsers(receiver: $receiver, sender: $sender2)->create();
+
+    /** @var \Haemanthus\Basement\Contracts\AllContact $allContactAction */
+    $allContactAction = app(AllContact::class);
+
+    $contacts = $allContactAction->all();
+
+    /** @var \Haemanthus\Basement\Data\ContactData $contact */
+    $contact = $contacts[0];
+
+    expect($contact->id)->toBe($sender2->id);
+    expect($contact->name)->toBe($sender2->name);
+});
