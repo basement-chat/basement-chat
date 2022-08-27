@@ -3,7 +3,7 @@
 namespace Haemanthus\Basement;
 
 use App\Models\User;
-use Haemanthus\Basement\Actions\AllContact;
+use Haemanthus\Basement\Actions\AllContacts;
 use Haemanthus\Basement\Commands\BasementCommand;
 use Haemanthus\Basement\Contracts\Basement as BasementContract;
 use Haemanthus\Basement\Models\PrivateMessage;
@@ -52,7 +52,7 @@ class BasementServiceProvider extends PackageServiceProvider
         Basement::useUserModel(config(key: 'basement.user_model', default: User::class));
         Basement::usePrivateMessageModel(PrivateMessage::class);
 
-        Basement::allContactUsing(AllContact::class);
+        Basement::allContactsUsing(AllContacts::class);
 
         PrivateMessage::observe(PrivateMessageObserver::class);
     }

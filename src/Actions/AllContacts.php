@@ -2,13 +2,13 @@
 
 namespace Haemanthus\Basement\Actions;
 
-use Haemanthus\Basement\Contracts\AllContact as AllContactContract;
+use Haemanthus\Basement\Contracts\AllContacts as AllContactsContract;
 use Haemanthus\Basement\Data\ContactData;
 use Haemanthus\Basement\Facades\Basement;
 use Illuminate\Support\Facades\Auth;
 use Spatie\LaravelData\DataCollection;
 
-class AllContact implements AllContactContract
+class AllContacts implements AllContactsContract
 {
     /**
      * Get all contact list.

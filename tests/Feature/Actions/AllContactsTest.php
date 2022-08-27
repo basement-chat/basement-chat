@@ -2,7 +2,7 @@
 
 namespace Haemanthus\Basement\Tests\Feature\Actions;
 
-use Haemanthus\Basement\Contracts\AllContact;
+use Haemanthus\Basement\Contracts\AllContacts;
 use Haemanthus\Basement\Data\ContactData;
 use Haemanthus\Basement\Data\PrivateMessageData;
 use Haemanthus\Basement\Models\PrivateMessage;
@@ -20,10 +20,10 @@ it(description: 'should be able to get all contacts', closure: function (): void
 
     actingAs($users[0]);
 
-    /** @var \Haemanthus\Basement\Contracts\AllContact $allContactAction */
-    $allContactAction = app(AllContact::class);
+    /** @var \Haemanthus\Basement\Contracts\AllContacts $allContactsAction */
+    $allContactsAction = app(AllContacts::class);
 
-    $contacts = $allContactAction->all();
+    $contacts = $allContactsAction->all();
 
     expect($contacts)->toBeInstanceOf(DataCollection::class);
     expect($contacts->count())->toBe($users->count());
@@ -55,11 +55,11 @@ it(description: 'should have the last private message added', closure: function 
         ->create()
         ->last();
 
-    /** @var \Haemanthus\Basement\Contracts\AllContact $allContactAction */
-    $allContactAction = app(AllContact::class);
+    /** @var \Haemanthus\Basement\Contracts\AllContacts $allContactsAction */
+    $allContactsAction = app(AllContacts::class);
 
     /** @var \Haemanthus\Basement\Data\ContactData $contact */
-    $contact = $allContactAction->all()->toCollection()->first(fn (ContactData $data): bool => (
+    $contact = $allContactsAction->all()->toCollection()->first(fn (ContactData $data): bool => (
         $data->id === $receiver->id
     ));
 
@@ -86,11 +86,11 @@ it(description: 'should have the number of unread messages', closure: function (
         ->betweenTwoUsers(receiver: $receiver, sender: $sender)
         ->create();
 
-    /** @var \Haemanthus\Basement\Contracts\AllContact $allContactAction */
-    $allContactAction = app(AllContact::class);
+    /** @var \Haemanthus\Basement\Contracts\AllContacts $allContactsAction */
+    $allContactsAction = app(AllContacts::class);
 
     /** @var \Haemanthus\Basement\Data\ContactData $contact */
-    $contact = $allContactAction->all()->toCollection()->first(fn (ContactData $data): bool => (
+    $contact = $allContactsAction->all()->toCollection()->first(fn (ContactData $data): bool => (
         $data->id === $sender->id
     ));
 
@@ -109,10 +109,10 @@ it(description: 'should be sorted in desc order at the time the last message is 
     PrivateMessage::factory()->betweenTwoUsers(receiver: $receiver, sender: $sender1)->create();
     PrivateMessage::factory()->betweenTwoUsers(receiver: $receiver, sender: $sender2)->create();
 
-    /** @var \Haemanthus\Basement\Contracts\AllContact $allContactAction */
-    $allContactAction = app(AllContact::class);
+    /** @var \Haemanthus\Basement\Contracts\AllContacts $allContactsAction */
+    $allContactsAction = app(AllContacts::class);
 
-    $contacts = $allContactAction->all();
+    $contacts = $allContactsAction->all();
 
     /** @var \Haemanthus\Basement\Data\ContactData $contact */
     $contact = $contacts[0];

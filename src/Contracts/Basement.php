@@ -59,8 +59,8 @@ interface Basement
     /**
      * Register a class / callback that should be used to get all contacts.
      *
-     * @param  class-string<\Haemanthus\Basement\Contracts\AllContact>   $class
+     * @param  class-string<\Haemanthus\Basement\Contracts\AllContacts>   $class
      * @return void
      */
-    public static function allContactUsing(string $class): void;
+    public static function allContactsUsing(string $class): void;
 }

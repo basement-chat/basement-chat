@@ -4,7 +4,7 @@ namespace Haemanthus\Basement\Contracts;
 
 use Spatie\LaravelData\DataCollection;
 
-interface AllContact
+interface AllContacts
 {
     /**
      * Get all contact list.
