@@ -5,7 +5,7 @@ namespace Haemanthus\Basement\Contracts;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\MorphMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Query\Builder as QueryBuilder;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
@@ -36,16 +36,16 @@ interface User
     /**
      * Get all private messages that the user receives.
      *
-     * @return \Illuminate\Database\Eloquent\Relations\MorphMany<\Haemanthus\Basement\Models\PrivateMessage>
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany<\Haemanthus\Basement\Models\PrivateMessage>
      */
-    public function privateMessagesReceived(): MorphMany;
+    public function privateMessagesReceived(): HasMany;
 
     /**
      * Get all private messages sent by the user.
      *
-     * @return \Illuminate\Database\Eloquent\Relations\MorphMany<\Haemanthus\Basement\Models\PrivateMessage>
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany<\Haemanthus\Basement\Models\PrivateMessage>
      */
-    public function privateMessagesSent(): MorphMany;
+    public function privateMessagesSent(): HasMany;
 
     /**
      * Get the private message that owns the last private message id.

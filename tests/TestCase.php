@@ -2,6 +2,7 @@
 
 namespace Haemanthus\Basement\Tests;
 
+use BeyondCode\DumpServer\DumpServerServiceProvider;
 use Haemanthus\Basement\BasementServiceProvider;
 use Haemanthus\Basement\Contracts\Migration;
 use Haemanthus\Basement\Tests\Fixtures\User;
@@ -36,6 +37,7 @@ class TestCase extends Orchestra
         return [
             BasementServiceProvider::class,
             LaravelDataServiceProvider::class,
+            DumpServerServiceProvider::class,
         ];
     }
 

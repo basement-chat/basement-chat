@@ -40,11 +40,10 @@ it(description: 'should be able to get all contacts', closure: function (): void
 });
 
 it(description: 'should have the last private message added', closure: function (): void {
-    /** @var \Haemanthus\Basement\Tests\Fixtures\User $receiver */
-    $receiver = User::factory()->create();
+    [$receiver, $sender] = User::factory()->count(2)->create();
 
+    /** @var \Haemanthus\Basement\Tests\Fixtures\User $receiver */
     /** @var \Haemanthus\Basement\Tests\Fixtures\User $sender */
-    $sender = User::factory()->create();
 
     actingAs($sender);
 
@@ -73,11 +72,10 @@ it(description: 'should have the last private message added', closure: function 
 });
 
 it(description: 'should have the number of unread messages', closure: function (): void {
-    /** @var \Haemanthus\Basement\Tests\Fixtures\User $receiver */
-    $receiver = User::factory()->create();
+    [$receiver, $sender] = User::factory()->count(2)->create();
 
+    /** @var \Haemanthus\Basement\Tests\Fixtures\User $receiver */
     /** @var \Haemanthus\Basement\Tests\Fixtures\User $sender */
-    $sender = User::factory()->create();
 
     actingAs($receiver);
 
@@ -98,11 +96,11 @@ it(description: 'should have the number of unread messages', closure: function (
 });
 
 it(description: 'should be sorted in desc order at the time the last message is received', closure: function (): void {
+    [$receiver, $sender1, $sender2] = User::factory()->count(3)->create();
+
     /** @var \Haemanthus\Basement\Tests\Fixtures\User $receiver */
     /** @var \Haemanthus\Basement\Tests\Fixtures\User $sender1 */
     /** @var \Haemanthus\Basement\Tests\Fixtures\User $sender2 */
-
-    [$receiver, $sender1, $sender2] = User::factory()->count(3)->create();
 
     actingAs($receiver);
 

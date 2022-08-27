@@ -7,7 +7,7 @@ use Haemanthus\Basement\Facades\Basement;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\MorphMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Query\Builder as QueryBuilder;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Support\Facades\DB;
@@ -49,25 +49,25 @@ trait HasPrivateMessages
     /**
      * Get all private messages that the user receives.
      *
-     * @return \Illuminate\Database\Eloquent\Relations\MorphMany<\Haemanthus\Basement\Models\PrivateMessage>
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany<\Haemanthus\Basement\Models\PrivateMessage>
      */
-    public function privateMessagesReceived(): MorphMany
+    public function privateMessagesReceived(): HasMany
     {
         /** @var \Illuminate\Database\Eloquent\Model $this */
 
-        return $this->morphMany(related: self::class, name: 'receiver');
+        return $this->hasMany(related: Basement::privateMessageModel(), foreignKey: 'receiver_id');
     }
 
     /**
      * Get all private messages sent by the user.
      *
-     * @return \Illuminate\Database\Eloquent\Relations\MorphMany<\Haemanthus\Basement\Models\PrivateMessage>
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany<\Haemanthus\Basement\Models\PrivateMessage>
      */
-    public function privateMessagesSent(): MorphMany
+    public function privateMessagesSent(): HasMany
     {
         /** @var \Illuminate\Database\Eloquent\Model $this */
 
-        return $this->morphMany(related: self::class, name: 'sender');
+        return $this->hasMany(related: Basement::privateMessageModel(), foreignKey: 'sender_id');
     }
 
     /**
@@ -106,18 +106,16 @@ trait HasPrivateMessages
     {
         /** @var \Illuminate\Database\Eloquent\Model $this */
 
-        $privateMessageModel = Basement::newPrivateMessageModel();
-
         $query->addSelect([
-            'last_private_message_id' => $privateMessageModel
+            'last_private_message_id' => Basement::newPrivateMessageModel()
+                ->orderByDescId()
                 ->select('id')
-                ->where(fn (Builder|QueryBuilder $clause) => $clause
+                ->where(fn (Builder|QueryBuilder $clause): Builder => $clause
                     ->where('receiver_id', $user->id)
                     ->whereColumn('sender_id', "{$this->getTable()}.{$this->primaryKey}"))
-                ->orWhere(fn (Builder|QueryBuilder $clause) => $clause
+                ->orWhere(fn (Builder|QueryBuilder $clause): Builder => $clause
                     ->where('sender_id', $user->id)
                     ->whereColumn('receiver_id', "{$this->getTable()}.{$this->primaryKey}"))
-                ->orderByDesc("{$privateMessageModel->getTable()}.id")
                 ->limit(1),
         ]);
     }
@@ -134,16 +132,14 @@ trait HasPrivateMessages
     {
         /** @var \Illuminate\Database\Eloquent\Model $this */
 
-        $privateMessageModel = Basement::newPrivateMessageModel();
-
         $query->addSelect([
-            'unread_messages' => $privateMessageModel
+            'unread_messages' => Basement::newPrivateMessageModel()
                 ->select([
                     DB::raw(<<<'SQL'
                         COUNT(*)
                     SQL)
                 ])
-                ->where(fn (Builder|QueryBuilder $clause) => $clause
+                ->where(fn (Builder|QueryBuilder $clause): Builder => $clause
                     ->where('receiver_id', $user->id)
                     ->whereColumn('sender_id', "{$this->getTable()}.{$this->primaryKey}"))
                 ->whereNull('seen_at'),

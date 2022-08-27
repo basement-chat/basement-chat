@@ -3,6 +3,7 @@
 namespace Haemanthus\Basement;
 
 use Haemanthus\Basement\Contracts\AllContacts;
+use Haemanthus\Basement\Contracts\AllPrivateMessages;
 use Haemanthus\Basement\Contracts\Basement as BasementContract;
 use Haemanthus\Basement\Contracts\User as UserContract;
 use Haemanthus\Basement\Models\PrivateMessage;
@@ -122,5 +123,16 @@ class Basement implements BasementContract
     public static function allContactsUsing(string $class): void
     {
         app()->bind(abstract: AllContacts::class, concrete: $class);
+    }
+
+    /**
+     * Register a class / callback that should be used to get all private messages.
+     *
+     * @param  class-string<\Haemanthus\Basement\Contracts\AllPrivateMessages>   $class
+     * @return void
+     */
+    public static function allPrivateMessagesUsing(string $class): void
+    {
+        app()->bind(abstract: AllPrivateMessages::class, concrete: $class);
     }
 }

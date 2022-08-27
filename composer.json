@@ -60,8 +60,8 @@
       "./vendor/bin/var-dump-server --format=html > dump.html"
     ],
     "dumper:serve": [
-        "Composer\\Config::disableProcessTimeout",
-        "@php -S localhost:8000 dump.html"
+      "Composer\\Config::disableProcessTimeout",
+      "@php -S localhost:8000 dump.html"
     ]
   },
   "config": {
