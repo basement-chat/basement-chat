@@ -102,7 +102,7 @@ trait HasPrivateMessages
      *
      * @return void
      */
-    public function scopeAppendLastPrivateMessageId(Builder|QueryBuilder $query, Authenticatable $user): void
+    public function scopeAddSelectLastPrivateMessageId(Builder|QueryBuilder $query, Authenticatable $user): void
     {
         /** @var \Illuminate\Database\Eloquent\Model $this */
 
@@ -130,7 +130,7 @@ trait HasPrivateMessages
      *
      * @return void
      */
-    public function scopeAppendUnreadMessages(Builder|QueryBuilder $query, Authenticatable $user): void
+    public function scopeAddSelectUnreadMessages(Builder|QueryBuilder $query, Authenticatable $user): void
     {
         /** @var \Illuminate\Database\Eloquent\Model $this */
 
