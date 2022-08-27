@@ -10,7 +10,6 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Illuminate\Database\Query\Builder as QueryBuilder;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
 /**
@@ -65,11 +64,11 @@ class PrivateMessage extends Model
     /**
      * Scope a query to sort by id in descending order
      *
-     * @param  \Illuminate\Database\Eloquent\Builder<PrivateMessage>|\Illuminate\Database\Query\Builder  $query
+     * @param  \Illuminate\Database\Eloquent\Builder<PrivateMessage>  $query
      *
      * @return void
      */
-    public function scopeOrderByDescId(Builder|QueryBuilder $query): void
+    public function scopeOrderByDescId(Builder $query): void
     {
         $query->orderByDesc($this->primaryKey);
     }
@@ -77,13 +76,13 @@ class PrivateMessage extends Model
     /**
      * Scope a query to include only messages between two specific users.
      *
-     * @param  \Illuminate\Database\Eloquent\Builder|\Illuminate\Database\Query\Builder  $query
+     * @param  \Illuminate\Database\Eloquent\Builder<PrivateMessage>  $query
      * @param  \Illuminate\Foundation\Auth\User & \Haemanthus\Basement\Contracts\User $a
      * @param  \Illuminate\Foundation\Auth\User & \Haemanthus\Basement\Contracts\User $b
      *
      * @return void
      */
-    public function scopeWhereBetweenTwoUsers(Builder|QueryBuilder $query, Authenticatable $a, Authenticatable $b): void
+    public function scopeWhereBetweenTwoUsers(Builder $query, Authenticatable $a, Authenticatable $b): void
     {
         $query->where(fn (Builder $clause): Builder => $clause
             ->where(fn (Builder $subclause): Builder => $subclause
@@ -97,14 +96,15 @@ class PrivateMessage extends Model
     /**
      * Scope a query to include only messages containing the given keyword.
      *
-     * @param  \Illuminate\Database\Eloquent\Builder|\Illuminate\Database\Query\Builder  $query
+     * @param  \Illuminate\Database\Eloquent\Builder<PrivateMessage>  $query
      * @param  string $keyword
      *
      * @return void
      */
-    public function scopeWhereValueLike(Builder|QueryBuilder $query, string $keyword): void
+    public function scopeWhereValueLike(Builder $query, string $keyword): void
     {
-        $query->when(value: $keyword !== '', callback: fn (Builder $clause) => $clause
-            ->where('value', 'like', $keyword));
+        if ($keyword !== '') {
+            $query->where('value', 'like', $keyword);
+        }
     }
 }

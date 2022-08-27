@@ -16,6 +16,7 @@ class PrivateMessageData extends Data
      * @param integer $sender_id
      * @param \Haemanthus\Basement\Enums\MessageType $type
      * @param string $value
+     * @param \Illuminate\Support\Carbon|null $created_at
      * @param \Illuminate\Support\Carbon|null $seen_at
      */
     public function __construct(

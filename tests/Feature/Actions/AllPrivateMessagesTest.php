@@ -5,6 +5,7 @@ namespace Haemanthus\Basement\Tests\Feature\Actions;
 use Haemanthus\Basement\Contracts\AllPrivateMessages;
 use Haemanthus\Basement\Models\PrivateMessage;
 use Haemanthus\Basement\Tests\Fixtures\User;
+use Illuminate\Contracts\Pagination\CursorPaginator;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Pest\Expectation;
 use Spatie\LaravelData\DataCollection;
@@ -62,4 +63,6 @@ it(description: 'should be cursor paginated every 50 messages', closure: functio
     $messages = $allPrivateMessagesAction->allBetweenTwoUsers(receiver: $receiver, sender: $sender);
 
     expect($messages->count())->toBe(50);
+    expect($messages->items())->toBeInstanceOf(CursorPaginator::class);
+    expect($messages->items()->nextPageUrl())->toBeString();
 });
