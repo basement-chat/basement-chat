@@ -36,8 +36,6 @@ class PrivateMessageFactory extends Factory
         return [
             'receiver_id' => $receiver->id,
             'sender_id' => $sender->id,
-            'receiver_type' => User::class,
-            'sender_type' => User::class,
             'type' => MessageType::text(),
             'value' => fake()->text(),
             'seen_at' => null,
