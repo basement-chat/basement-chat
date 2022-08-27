@@ -25,6 +25,7 @@
     "spatie/laravel-package-tools": "^1.9.2"
   },
   "require-dev": {
+    "beyondcode/laravel-dump-server": "^1.8",
     "laravel/pint": "^1.0",
     "nunomaduro/collision": "^6.0",
     "nunomaduro/larastan": "^2.0.1",
@@ -53,7 +54,15 @@
     "test": "vendor/bin/pest",
     "test-coverage": "vendor/bin/pest --coverage",
     "format": "vendor/bin/pint",
-    "canvas": "vendor/bin/canvas"
+    "canvas": "vendor/bin/canvas",
+    "dumper:start": [
+      "Composer\\Config::disableProcessTimeout",
+      "./vendor/bin/var-dump-server --format=html > dump.html"
+    ],
+    "dumper:serve": [
+        "Composer\\Config::disableProcessTimeout",
+        "@php -S localhost:8000 dump.html"
+    ]
   },
   "config": {
     "sort-packages": true,
