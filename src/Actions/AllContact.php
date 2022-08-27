@@ -3,9 +3,9 @@
 namespace Haemanthus\Basement\Actions;
 
 use Haemanthus\Basement\Contracts\AllContact as AllContactContract;
-use Haemanthus\Basement\Contracts\User;
 use Haemanthus\Basement\Data\ContactData;
 use Haemanthus\Basement\Facades\Basement;
+use Illuminate\Support\Facades\Auth;
 use Spatie\LaravelData\DataCollection;
 
 class AllContact implements AllContactContract
@@ -17,11 +17,15 @@ class AllContact implements AllContactContract
      */
     public function all(): DataCollection
     {
-        $contacts = Basement::newUserModel()->all()->map(fn (User $user): array => [
-            'id' => $user->id,
-            'name' => $user->name,
-            'avatar' => $user->avatar,
-        ]);
+        /** @var \Haemanthus\Basement\Contracts\User & \Illuminate\Foundation\Auth\User */
+        $user = Auth::user();
+
+        $contacts = Basement::newUserModel()
+            ->appendLastPrivateMessageIdFor($user)
+            ->get();
+
+        $contacts->append('avatar');
+        $contacts->load('lastPrivateMessage');
 
         return ContactData::collection($contacts);
     }

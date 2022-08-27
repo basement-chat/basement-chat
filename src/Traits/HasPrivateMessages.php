@@ -3,7 +3,13 @@
 namespace Haemanthus\Basement\Traits;
 
 use Haemanthus\Basement\Enums\AvatarStyle;
+use Haemanthus\Basement\Facades\Basement;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
+use Illuminate\Database\Query\Builder as QueryBuilder;
+use Illuminate\Foundation\Auth\User as Authenticatable;
 
 trait HasPrivateMessages
 {
@@ -64,6 +70,18 @@ trait HasPrivateMessages
     }
 
     /**
+     * Get the private message that owns the last private message id.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo<Model, \Haemanthus\Basement\Models\PrivateMessage>
+     */
+    public function lastPrivateMessage(): BelongsTo
+    {
+        /** @var \Illuminate\Database\Eloquent\Model $this */
+
+        return $this->belongsTo(related: Basement::privateMessageModel(), foreignKey: 'last_private_message_id');
+    }
+
+    /**
      * The channels the user receives notification broadcasts on.
      *
      * @return string
@@ -73,5 +91,33 @@ trait HasPrivateMessages
         /** @var \Illuminate\Database\Eloquent\Model $this */
 
         return 'basement.users.' . $this->{$this->primaryKey};
+    }
+
+    /**
+     * Scope a query to append the latest private message id.
+     *
+     * @param  \Illuminate\Database\Eloquent\Builder<\Illuminate\Foundation\Auth\User>|\Illuminate\Database\Query\Builder  $query
+     * @param  \Illuminate\Foundation\Auth\User & \Haemanthus\Basement\Contracts\User $user
+     *
+     * @return void
+     */
+    public function scopeAppendLastPrivateMessageIdFor(Builder|QueryBuilder $query, Authenticatable $user): void
+    {
+        /** @var \Illuminate\Database\Eloquent\Model $this */
+
+        $privateMessageModel = Basement::newPrivateMessageModel();
+
+        $query->addSelect([
+            'last_private_message_id' => $privateMessageModel
+                ->select('id')
+                ->where(fn (Builder|QueryBuilder $clause) => $clause
+                    ->where('receiver_id', $user->id)
+                    ->whereColumn('sender_id', "{$this->getTable()}.{$this->primaryKey}"))
+                ->orWhere(fn (Builder|QueryBuilder $clause) => $clause
+                    ->where('sender_id', $user->id)
+                    ->whereColumn('receiver_id', "{$this->getTable()}.{$this->primaryKey}"))
+                ->orderByDesc("{$privateMessageModel->getTable()}.id")
+                ->limit(1),
+        ]);
     }
 }

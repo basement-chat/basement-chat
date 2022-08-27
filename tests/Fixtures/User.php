@@ -11,6 +11,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
  * @property int $id
  * @property string $name
  * @property-read string $avatar
+ * @method static \Haemanthus\Basement\Database\Factories\UserFactory factory(...$parameters)
  */
 class User extends Authenticatable implements UserContract
 {

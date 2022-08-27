@@ -5,6 +5,7 @@ namespace Haemanthus\Basement;
 use Haemanthus\Basement\Contracts\AllContact;
 use Haemanthus\Basement\Contracts\Basement as BasementContract;
 use Haemanthus\Basement\Contracts\User as UserContract;
+use Haemanthus\Basement\Models\PrivateMessage;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
 class Basement implements BasementContract
@@ -15,6 +16,13 @@ class Basement implements BasementContract
      * @var class-string<\Illuminate\Foundation\Auth\User> & class-string<\Haemanthus\Basement\Contracts\User>
      */
     protected static string $userModel;
+
+    /**
+     * The private message model used by the application.
+     *
+     * @var class-string<\Haemanthus\Basement\Models\PrivateMessage>
+     */
+    protected static string $privateMessageModel;
 
     /**
      * Specify the user model used by the application.
@@ -28,18 +36,18 @@ class Basement implements BasementContract
     public static function useUserModel(mixed $class): void
     {
         if (
-            is_string($class)
-            && class_exists($class)
-            && is_subclass_of($class, Authenticatable::class)
-            && is_subclass_of($class, UserContract::class)
+            is_string($class) === false
+            || class_exists($class) === false
+            || is_subclass_of($class, Authenticatable::class) === false
+            || is_subclass_of($class, UserContract::class) === false
         ) {
-            static::$userModel = $class;
-        } else {
             throw new \TypeError(
                 'The given user model should be a subclass of ' . Authenticatable::class .
                 ' class and implement the ' . UserContract::class . ' contract.'
             );
         }
+
+        static::$userModel = $class;
     }
 
     /**
@@ -60,6 +68,49 @@ class Basement implements BasementContract
     public static function newUserModel(): Authenticatable
     {
         return app(static::$userModel);
+    }
+
+    /**
+     * Specify the private message model used by the application.
+     *
+     * @param mixed $class
+     * @return void
+     *
+     * @throws \TypeError if the given user model is not a subclass of \Haemanthus\Basement\Models\PrivateMessage.
+     */
+    public static function usePrivateMessageModel(mixed $class): void
+    {
+        if (
+            is_string($class) === false
+            || class_exists($class) === false
+            || (is_subclass_of($class, PrivateMessage::class) === false && $class !== PrivateMessage::class)
+        ) {
+            throw new \TypeError(
+                'The given private message model should be a subclass of ' . PrivateMessage::class . ' class.'
+            );
+        }
+
+        static::$privateMessageModel = $class;
+    }
+
+    /**
+     * Get the name of the private message model used by the application.
+     *
+     * @return class-string<\Haemanthus\Basement\Models\PrivateMessage>
+     */
+    public static function privateMessageModel(): string
+    {
+        return static::$privateMessageModel;
+    }
+
+    /**
+     * Get a new instance of the private message model.
+     *
+     * @return \Haemanthus\Basement\Models\PrivateMessage
+     */
+    public static function newPrivateMessageModel(): PrivateMessage
+    {
+        return app(static::$privateMessageModel);
     }
 
     /**

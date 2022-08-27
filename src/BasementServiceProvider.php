@@ -6,6 +6,8 @@ use App\Models\User;
 use Haemanthus\Basement\Actions\AllContact;
 use Haemanthus\Basement\Commands\BasementCommand;
 use Haemanthus\Basement\Contracts\Basement as BasementContract;
+use Haemanthus\Basement\Models\PrivateMessage;
+use Haemanthus\Basement\Observers\PrivateMessageObserver;
 use Spatie\LaravelPackageTools\Package;
 use Spatie\LaravelPackageTools\PackageServiceProvider;
 
@@ -48,6 +50,10 @@ class BasementServiceProvider extends PackageServiceProvider
         parent::boot();
 
         Basement::useUserModel(config(key: 'basement.user_model', default: User::class));
+        Basement::usePrivateMessageModel(PrivateMessage::class);
+
         Basement::allContactUsing(AllContact::class);
+
+        PrivateMessage::observe(PrivateMessageObserver::class);
     }
 }

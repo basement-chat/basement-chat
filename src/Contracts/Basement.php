@@ -2,6 +2,7 @@
 
 namespace Haemanthus\Basement\Contracts;
 
+use Haemanthus\Basement\Models\PrivateMessage;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
 interface Basement
@@ -30,6 +31,30 @@ interface Basement
      * @return \Illuminate\Foundation\Auth\User & \Haemanthus\Basement\Contracts\User
      */
     public static function newUserModel(): Authenticatable;
+
+    /**
+     * Specify the private message model used by the application.
+     *
+     * @param mixed $class
+     * @return void
+     *
+     * @throws \TypeError if the given user model is not a subclass of \Haemanthus\Basement\Models\PrivateMessage.
+     */
+    public static function usePrivateMessageModel(mixed $class): void;
+
+    /**
+     * Get the name of the private message model used by the application.
+     *
+     * @return class-string<\Haemanthus\Basement\Models\PrivateMessage>
+     */
+    public static function privateMessageModel(): string;
+
+    /**
+     * Get a new instance of the private message model.
+     *
+     * @return \Haemanthus\Basement\Models\PrivateMessage
+     */
+    public static function newPrivateMessageModel(): PrivateMessage;
 
     /**
      * Register a class / callback that should be used to get all contacts.

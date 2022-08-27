@@ -2,12 +2,19 @@
 
 namespace Haemanthus\Basement\Contracts;
 
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
+use Illuminate\Database\Query\Builder as QueryBuilder;
+use Illuminate\Foundation\Auth\User as Authenticatable;
 
 /**
  * @property int $id
  * @property string|null $name
  * @property string $avatar
+ *
+ * @method static Authenticatable appendLastPrivateMessageIdFor(Authenticatable & User $value)
  */
 interface User
 {
@@ -38,6 +45,23 @@ interface User
      * @return \Illuminate\Database\Eloquent\Relations\MorphMany<\Haemanthus\Basement\Models\PrivateMessage>
      */
     public function privateMessagesSent(): MorphMany;
+
+    /**
+     * Get the private message that owns the last private message id.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo<Model, \Haemanthus\Basement\Models\PrivateMessage>
+     */
+    public function lastPrivateMessage(): BelongsTo;
+
+    /**
+     * Scope a query to append the latest private message id.
+     *
+     * @param  \Illuminate\Database\Eloquent\Builder<Authenticatable>|\Illuminate\Database\Query\Builder  $query
+     * @param  \Illuminate\Foundation\Auth\User & \Haemanthus\Basement\Contracts\User $user
+     *
+     * @return void
+     */
+    public function scopeAppendLastPrivateMessageIdFor(Builder|QueryBuilder $query, Authenticatable $user): void;
 
     /**
      * The channels the user receives notification broadcasts on.
