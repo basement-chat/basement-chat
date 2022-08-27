@@ -14,7 +14,8 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
  * @property string|null $name
  * @property string $avatar
  *
- * @method static Authenticatable appendLastPrivateMessageIdFor(Authenticatable & User $value)
+ * @method static Authenticatable & User appendLastPrivateMessageId(Authenticatable & User $value)
+ * @method static Authenticatable & User appendUnreadMessages(Authenticatable & User $value)
  */
 interface User
 {
@@ -61,7 +62,17 @@ interface User
      *
      * @return void
      */
-    public function scopeAppendLastPrivateMessageIdFor(Builder|QueryBuilder $query, Authenticatable $user): void;
+    public function scopeAppendLastPrivateMessageId(Builder|QueryBuilder $query, Authenticatable $user): void;
+
+    /**
+     * Scope a query to append the number of unread messages.
+     *
+     * @param  \Illuminate\Database\Eloquent\Builder<Authenticatable>|\Illuminate\Database\Query\Builder  $query
+     * @param  \Illuminate\Foundation\Auth\User & \Haemanthus\Basement\Contracts\User $user
+     *
+     * @return void
+     */
+    public function scopeAppendUnreadMessages(Builder|QueryBuilder $query, Authenticatable $user): void;
 
     /**
      * The channels the user receives notification broadcasts on.

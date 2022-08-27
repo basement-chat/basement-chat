@@ -58,7 +58,10 @@ it(description: 'should have the last private message added', closure: function 
     /** @var \Haemanthus\Basement\Contracts\AllContact $allContactAction */
     $allContactAction = app(AllContact::class);
 
-    $contact = $allContactAction->all()[0];
+    /** @var \Haemanthus\Basement\Data\ContactData $contact */
+    $contact = $allContactAction->all()->toCollection()->first(fn (ContactData $data): bool => (
+        $data->id === $receiver->id
+    ));
 
     expect($contact->last_private_message)->toBeInstanceOf(PrivateMessageData::class);
     expect($contact->last_private_message->id)->toBe($lastMessage->id);
@@ -67,4 +70,29 @@ it(description: 'should have the last private message added', closure: function 
     expect($contact->last_private_message->type)->toBe($lastMessage->type);
     expect($contact->last_private_message->created_at->toString())->toBe($lastMessage->created_at->toString());
     expect($contact->last_private_message->seen_at)->toBe($lastMessage->seen_at);
+});
+
+it(description: 'should have the number of unread messages', closure: function (): void {
+    /** @var \Haemanthus\Basement\Tests\Fixtures\User $receiver */
+    $receiver = User::factory()->create();
+
+    /** @var \Haemanthus\Basement\Tests\Fixtures\User $sender */
+    $sender = User::factory()->create();
+
+    actingAs($receiver);
+
+    PrivateMessage::factory()
+        ->count(5)
+        ->betweenTwoUsers(receiver: $receiver, sender: $sender)
+        ->create();
+
+    /** @var \Haemanthus\Basement\Contracts\AllContact $allContactAction */
+    $allContactAction = app(AllContact::class);
+
+    /** @var \Haemanthus\Basement\Data\ContactData $contact */
+    $contact = $allContactAction->all()->toCollection()->first(fn (ContactData $data): bool => (
+        $data->id === $sender->id
+    ));
+
+    expect($contact->unread_messages)->toBe(5);
 });

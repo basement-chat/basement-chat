@@ -19,6 +19,7 @@ class ContactData extends Data
         public string $name,
         public string $avatar,
         public ?PrivateMessageData $last_private_message,
+        public int $unread_messages = 0,
     ) {
     }
 }

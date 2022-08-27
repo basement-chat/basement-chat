@@ -10,6 +10,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Database\Query\Builder as QueryBuilder;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Support\Facades\DB;
 
 trait HasPrivateMessages
 {
@@ -96,12 +97,12 @@ trait HasPrivateMessages
     /**
      * Scope a query to append the latest private message id.
      *
-     * @param  \Illuminate\Database\Eloquent\Builder<\Illuminate\Foundation\Auth\User>|\Illuminate\Database\Query\Builder  $query
+     * @param  \Illuminate\Database\Eloquent\Builder<Authenticatable>|\Illuminate\Database\Query\Builder  $query
      * @param  \Illuminate\Foundation\Auth\User & \Haemanthus\Basement\Contracts\User $user
      *
      * @return void
      */
-    public function scopeAppendLastPrivateMessageIdFor(Builder|QueryBuilder $query, Authenticatable $user): void
+    public function scopeAppendLastPrivateMessageId(Builder|QueryBuilder $query, Authenticatable $user): void
     {
         /** @var \Illuminate\Database\Eloquent\Model $this */
 
@@ -118,6 +119,34 @@ trait HasPrivateMessages
                     ->whereColumn('receiver_id', "{$this->getTable()}.{$this->primaryKey}"))
                 ->orderByDesc("{$privateMessageModel->getTable()}.id")
                 ->limit(1),
+        ]);
+    }
+
+    /**
+     * Scope a query to append the number of unread messages.
+     *
+     * @param  \Illuminate\Database\Eloquent\Builder<Authenticatable>|\Illuminate\Database\Query\Builder  $query
+     * @param  \Illuminate\Foundation\Auth\User & \Haemanthus\Basement\Contracts\User $user
+     *
+     * @return void
+     */
+    public function scopeAppendUnreadMessages(Builder|QueryBuilder $query, Authenticatable $user): void
+    {
+        /** @var \Illuminate\Database\Eloquent\Model $this */
+
+        $privateMessageModel = Basement::newPrivateMessageModel();
+
+        $query->addSelect([
+            'unread_messages' => $privateMessageModel
+                ->select([
+                    DB::raw(<<<'SQL'
+                        COUNT(*)
+                    SQL)
+                ])
+                ->where(fn (Builder|QueryBuilder $clause) => $clause
+                    ->where('receiver_id', $user->id)
+                    ->whereColumn('sender_id', "{$this->getTable()}.{$this->primaryKey}"))
+                ->whereNull('seen_at'),
         ]);
     }
 }

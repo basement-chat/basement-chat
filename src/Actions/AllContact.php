@@ -21,7 +21,8 @@ class AllContact implements AllContactContract
         $user = Auth::user();
 
         $contacts = Basement::newUserModel()
-            ->appendLastPrivateMessageIdFor($user)
+            ->appendLastPrivateMessageId($user)
+            ->appendUnreadMessages($user)
             ->get();
 
         $contacts->append('avatar');
