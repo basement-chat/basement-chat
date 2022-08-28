@@ -4,7 +4,6 @@ namespace Haemanthus\Basement\Actions;
 
 use Haemanthus\Basement\Contracts\MarkPrivatesMessagesAsRead as MarkPrivatesMessagesAsReadContract;
 use Haemanthus\Basement\Facades\Basement;
-use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Support\Facades\Gate;
 use Spatie\LaravelData\DataCollection;
 
