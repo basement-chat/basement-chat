@@ -10,8 +10,6 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 use Pest\Expectation;
 use Spatie\LaravelData\DataCollection;
 
-use function Pest\Laravel\actingAs;
-
 uses(RefreshDatabase::class);
 
 it(description: 'should be able to get all private messages between two users', closure: function (): void {
@@ -19,8 +17,6 @@ it(description: 'should be able to get all private messages between two users', 
 
     /** @var \Haemanthus\Basement\Tests\Fixtures\User $user1 */
     /** @var \Haemanthus\Basement\Tests\Fixtures\User $user2 */
-
-    actingAs($user1);
 
     $createdMessages = PrivateMessage::factory()
         ->count(2)

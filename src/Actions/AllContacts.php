@@ -5,7 +5,7 @@ namespace Haemanthus\Basement\Actions;
 use Haemanthus\Basement\Contracts\AllContacts as AllContactsContract;
 use Haemanthus\Basement\Data\ContactData;
 use Haemanthus\Basement\Facades\Basement;
-use Illuminate\Support\Facades\Auth;
+use Illuminate\Foundation\Auth\User as Authenticatable;
 use Spatie\LaravelData\DataCollection;
 
 class AllContacts implements AllContactsContract
@@ -13,13 +13,12 @@ class AllContacts implements AllContactsContract
     /**
      * Get all contact list.
      *
+     * @param \Haemanthus\Basement\Contracts\User & \Illuminate\Foundation\Auth\User $user
+     *
      * @return \Spatie\LaravelData\DataCollection
      */
-    public function all(): DataCollection
+    public function all(Authenticatable $user): DataCollection
     {
-        /** @var \Haemanthus\Basement\Contracts\User & \Illuminate\Foundation\Auth\User */
-        $user = Auth::user();
-
         $contacts = Basement::newUserModel()
             ->addSelectLastPrivateMessageId($user)
             ->addSelectUnreadMessages($user)
