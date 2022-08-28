@@ -35,7 +35,7 @@ it(description: 'should be able to get all contacts', closure: function (): void
     expect($contact->avatar)->toBe($users[0]->avatar);
 });
 
-it(description: 'should have the last private message added', closure: function (): void {
+it(description: 'should have the last private message', closure: function (): void {
     [$receiver, $sender] = User::factory()->count(2)->create();
 
     /** @var \Haemanthus\Basement\Tests\Fixtures\User $receiver */
@@ -102,11 +102,15 @@ it(description: 'should be sorted in desc order at the time the last message is 
     /** @var \Haemanthus\Basement\Contracts\AllContacts $allContactsAction */
     $allContactsAction = app(AllContacts::class);
 
+    /** @var \Spatie\LaravelData\DataCollection & array<\Haemanthus\Basement\Data\ContactData> $contacts */
     $contacts = $allContactsAction->all($receiver);
 
-    /** @var \Haemanthus\Basement\Data\ContactData $contact */
-    $contact = $contacts[0];
+    expect($contacts[0]->id)->toBe($sender2->id);
+    expect($contacts[0]->name)->toBe($sender2->name);
 
-    expect($contact->id)->toBe($sender2->id);
-    expect($contact->name)->toBe($sender2->name);
+    expect($contacts[1]->id)->toBe($sender1->id);
+    expect($contacts[1]->name)->toBe($sender1->name);
+
+    expect($contacts[2]->id)->toBe($receiver->id);
+    expect($contacts[2]->name)->toBe($receiver->name);
 });

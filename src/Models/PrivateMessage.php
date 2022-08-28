@@ -104,7 +104,7 @@ class PrivateMessage extends Model
     public function scopeWhereValueLike(Builder $query, string $keyword): void
     {
         if ($keyword !== '') {
-            $query->where('value', 'like', $keyword);
+            $query->where('value', 'like', "%{$keyword}%");
         }
     }
 }

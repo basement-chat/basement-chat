@@ -24,7 +24,7 @@ trait HasPrivateMessages
         /** @var \Haemanthus\Basement\Enums\AvatarStyle $style */
         $style = config(key: 'basement.avatar.style', default: AvatarStyle::adventurer());
 
-        $key = md5($this->getNameAttribute());
+        $hash = md5($this->getNameAttribute());
 
         /** @var array $options */
         $options = config(key: 'basement.avatar.options', default: []);
@@ -33,7 +33,7 @@ trait HasPrivateMessages
             ->map(fn (string $option, string $key): string => ("{$key}={$option}"))
             ->join('&');
 
-        return "https://avatars.dicebear.com/api/{$style->value}/{$key}.svg?{$queryString}";
+        return "https://avatars.dicebear.com/api/{$style->value}/{$hash}.svg?{$queryString}";
     }
 
     /**

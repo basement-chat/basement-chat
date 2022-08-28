@@ -7,7 +7,7 @@ use Haemanthus\Basement\Models\PrivateMessage;
 class PrivateMessageObserver
 {
     /**
-     * Handle the PrivateMessage "creating" event.
+     * When creating a private message, mark it as read if sent to self.
      *
      * @param  \Haemanthus\Basement\Models\PrivateMessage  $message
      * @return void
