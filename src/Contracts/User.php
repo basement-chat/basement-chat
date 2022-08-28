@@ -14,8 +14,8 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
  * @property string|null $name
  * @property string $avatar
  *
- * @method static Authenticatable & User addSelectLastPrivateMessageId(Authenticatable & User $value)
- * @method static Authenticatable & User addSelectUnreadMessages(Authenticatable & User $value)
+ * @method static Authenticatable&User addSelectLastPrivateMessageId(Authenticatable&User $value)
+ * @method static Authenticatable&User addSelectUnreadMessages(Authenticatable&User $value)
  */
 interface User
 {
@@ -58,7 +58,7 @@ interface User
      * Scope a query to append the latest private message id.
      *
      * @param  \Illuminate\Database\Eloquent\Builder<Authenticatable>|\Illuminate\Database\Query\Builder  $query
-     * @param  \Illuminate\Foundation\Auth\User & \Haemanthus\Basement\Contracts\User $user
+     * @param  \Illuminate\Foundation\Auth\User&\Haemanthus\Basement\Contracts\User $user
      *
      * @return void
      */
@@ -68,7 +68,7 @@ interface User
      * Scope a query to append the number of unread messages.
      *
      * @param  \Illuminate\Database\Eloquent\Builder<Authenticatable>|\Illuminate\Database\Query\Builder  $query
-     * @param  \Illuminate\Foundation\Auth\User & \Haemanthus\Basement\Contracts\User $user
+     * @param  \Illuminate\Foundation\Auth\User&\Haemanthus\Basement\Contracts\User $user
      *
      * @return void
      */

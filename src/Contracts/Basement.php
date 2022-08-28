@@ -21,14 +21,14 @@ interface Basement
     /**
      * Get the name of the user model used by the application.
      *
-     * @return class-string<\Illuminate\Foundation\Auth\User> & class-string<\Haemanthus\Basement\Contracts\User>
+     * @return class-string<\Illuminate\Foundation\Auth\User>&class-string<\Haemanthus\Basement\Contracts\User>
      */
     public static function userModel(): string;
 
     /**
      * Get a new instance of the user model.
      *
-     * @return \Illuminate\Foundation\Auth\User & \Haemanthus\Basement\Contracts\User
+     * @return \Illuminate\Foundation\Auth\User&\Haemanthus\Basement\Contracts\User
      */
     public static function newUserModel(): Authenticatable;
 

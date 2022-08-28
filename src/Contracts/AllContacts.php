@@ -10,7 +10,7 @@ interface AllContacts
     /**
      * Get all contact list.
      *
-     * @param \Haemanthus\Basement\Contracts\User & \Illuminate\Foundation\Auth\User $user
+     * @param \Illuminate\Foundation\Auth\User&\Haemanthus\Basement\Contracts\User $user
      *
      * @return \Spatie\LaravelData\DataCollection
      */

@@ -15,7 +15,7 @@ class PrivateMessagePolicy
     /**
      * Determine if the given private messages can be marked as read by the user.
      *
-     * @param  \Illuminate\Foundation\Auth\User & \Haemanthus\Basement\Contracts\User $user
+     * @param  \Illuminate\Foundation\Auth\User&\Haemanthus\Basement\Contracts\User $user
      * @param  \Spatie\LaravelData\DataCollection  $privateMessages
      * @return \Illuminate\Auth\Access\Response
      */

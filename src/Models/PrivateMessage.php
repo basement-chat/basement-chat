@@ -44,7 +44,7 @@ class PrivateMessage extends Model
     /**
      * Get the model belonging to the message received.
      *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo<Model, Authenticatable & UserContract>
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo<Model, Authenticatable&UserContract>
      */
     public function receiver(): BelongsTo
     {
@@ -54,7 +54,7 @@ class PrivateMessage extends Model
     /**
      * Get the model belonging to the message sent.
      *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo<Model, Authenticatable & UserContract>
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo<Model, Authenticatable&UserContract>
      */
     public function sender(): BelongsTo
     {
@@ -77,8 +77,8 @@ class PrivateMessage extends Model
      * Scope a query to include only messages between two specific users.
      *
      * @param  \Illuminate\Database\Eloquent\Builder<PrivateMessage>  $query
-     * @param  \Illuminate\Foundation\Auth\User & \Haemanthus\Basement\Contracts\User $a
-     * @param  \Illuminate\Foundation\Auth\User & \Haemanthus\Basement\Contracts\User $b
+     * @param  \Illuminate\Foundation\Auth\User&\Haemanthus\Basement\Contracts\User $a
+     * @param  \Illuminate\Foundation\Auth\User&\Haemanthus\Basement\Contracts\User $b
      *
      * @return void
      */

@@ -10,8 +10,8 @@ interface AllPrivateMessages
     /**
      * Get all private messages between to a given user list.
      *
-     * @param \Illuminate\Foundation\Auth\User & \Haemanthus\Basement\Contracts\User $receiver
-     * @param \Illuminate\Foundation\Auth\User & \Haemanthus\Basement\Contracts\User $sender
+     * @param \Illuminate\Foundation\Auth\User&\Haemanthus\Basement\Contracts\User $receiver
+     * @param \Illuminate\Foundation\Auth\User&\Haemanthus\Basement\Contracts\User $sender
      *
      * @return \Spatie\LaravelData\DataCollection
      */
