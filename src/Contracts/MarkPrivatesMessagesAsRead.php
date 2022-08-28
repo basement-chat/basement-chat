@@ -10,14 +10,8 @@ interface MarkPrivatesMessagesAsRead
     /**
      * Mark given private messages as has been read.
      *
-     * @param \Illuminate\Foundation\Auth\User & \Haemanthus\Basement\Contracts\User $receiver
-     * @param \Illuminate\Foundation\Auth\User & \Haemanthus\Basement\Contracts\User $sender
      * @param \Spatie\LaravelData\DataCollection $privateMessages
      * @return \Spatie\LaravelData\DataCollection
      */
-    public function markAsRead(
-        Authenticatable $receiver,
-        Authenticatable $sender,
-        DataCollection $privateMessages,
-    ): DataCollection;
+    public function markAsRead(DataCollection $privateMessages): DataCollection;
 }

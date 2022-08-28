@@ -13,18 +13,21 @@ class PrivateMessagePolicy
     use HandlesAuthorization;
 
     /**
-     * Determine if the given private messages can be updated by the user.
+     * Determine if the given private messages can be marked as read by the user.
      *
      * @param  \Illuminate\Foundation\Auth\User & \Haemanthus\Basement\Contracts\User $user
      * @param  \Spatie\LaravelData\DataCollection  $privateMessages
      * @return \Illuminate\Auth\Access\Response
      */
-    public function updateAny(Authenticatable $user, DataCollection $privateMessages): Response
+    public function markAsRead(Authenticatable $user, DataCollection $privateMessages): Response
     {
         $allowed = $privateMessages
             ->toCollection()
             ->every(fn (PrivateMessageData $data): bool => $data->receiver_id === $user->id);
 
-        return $allowed ? $this->allow() : $this->deny('You must be the sender of the message to update messages');
+        return match ($allowed) {
+            true => $this->allow(),
+            false => $this->deny('You must be the receiver of the message to mark messages as read'),
+        };
     }
 }

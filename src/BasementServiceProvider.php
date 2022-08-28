@@ -37,9 +37,9 @@ class BasementServiceProvider extends PackageServiceProvider
      *
      * @return void
      */
-    public function registerPolicies(): void
+    protected function registerPolicies(): void
     {
-        Gate::define('update-private-messages', [PrivateMessagePolicy::class, 'updateAny']);
+        Gate::define('mark-as-read', [PrivateMessagePolicy::class, 'markAsRead']);
     }
 
     /**
