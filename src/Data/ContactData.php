@@ -13,6 +13,7 @@ class ContactData extends Data
      * @param string $name
      * @param string $avatar
      * @param \Haemanthus\Basement\Data\PrivateMessageData|null $last_private_message
+     * @param int $unread_messages
      */
     public function __construct(
         public int $id,

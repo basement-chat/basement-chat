@@ -3,8 +3,10 @@
 namespace Haemanthus\Basement\Data;
 
 use Haemanthus\Basement\Enums\MessageType;
+use Haemanthus\Basement\Facades\Basement;
 use Illuminate\Support\Carbon;
 use Spatie\LaravelData\Data;
+use Spatie\LaravelData\DataCollection;
 
 class PrivateMessageData extends Data
 {
@@ -28,5 +30,16 @@ class PrivateMessageData extends Data
         public ?Carbon $created_at,
         public ?Carbon $seen_at,
     ) {
+    }
+
+    /**
+     * Create data collection from given messages id.
+     *
+     * @param int ...$id
+     * @return \Spatie\LaravelData\DataCollection
+     */
+    public static function collectionFromId(int ...$id): DataCollection
+    {
+        return self::collection(Basement::newPrivateMessageModel()->whereIn('id', $id)->get());
     }
 }

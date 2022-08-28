@@ -4,7 +4,7 @@ namespace Haemanthus\Basement\Actions;
 
 use Haemanthus\Basement\Contracts\AllPrivateMessages as AllPrivateMessagesContract;
 use Haemanthus\Basement\Data\PrivateMessageData;
-use Haemanthus\Basement\Models\PrivateMessage;
+use Haemanthus\Basement\Facades\Basement;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Spatie\LaravelData\DataCollection;
 
@@ -33,7 +33,8 @@ class AllPrivateMessages implements AllPrivateMessagesContract
         Authenticatable $sender,
         string $keyword = '',
     ): DataCollection {
-        $messages = PrivateMessage::whereBetweenTwoUsers($receiver, $sender)
+        $messages = Basement::newPrivateMessageModel()
+            ->whereBetweenTwoUsers($receiver, $sender)
             ->whereValueLike($keyword)
             ->orderByDescId()
             ->cursorPaginate(perPage: self::MESSAGES_PER_PAGE, cursorName: self::CURSOR_NAME);

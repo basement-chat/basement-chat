@@ -5,6 +5,7 @@ namespace Haemanthus\Basement;
 use Haemanthus\Basement\Contracts\AllContacts;
 use Haemanthus\Basement\Contracts\AllPrivateMessages;
 use Haemanthus\Basement\Contracts\Basement as BasementContract;
+use Haemanthus\Basement\Contracts\MarkPrivatesMessagesAsRead;
 use Haemanthus\Basement\Contracts\User as UserContract;
 use Haemanthus\Basement\Models\PrivateMessage;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -134,5 +135,16 @@ class Basement implements BasementContract
     public static function allPrivateMessagesUsing(string $class): void
     {
         app()->bind(abstract: AllPrivateMessages::class, concrete: $class);
+    }
+
+    /**
+     * Register a class / callback that should be used to get mark private messages as read.
+     *
+     * @param  class-string<\Haemanthus\Basement\Contracts\MarkPrivatesMessagesAsRead>   $class
+     * @return void
+     */
+    public static function markPrivateMessagesAsReadUsing(string $class): void
+    {
+        app()->bind(abstract: MarkPrivatesMessagesAsRead::class, concrete: $class);
     }
 }

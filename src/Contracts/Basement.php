@@ -63,4 +63,12 @@ interface Basement
      * @return void
      */
     public static function allContactsUsing(string $class): void;
+
+    /**
+     * Register a class / callback that should be used to get mark private messages as read.
+     *
+     * @param  class-string<\Haemanthus\Basement\Contracts\MarkPrivatesMessagesAsRead>   $class
+     * @return void
+     */
+    public static function markPrivateMessagesAsReadUsing(string $class): void;
 }

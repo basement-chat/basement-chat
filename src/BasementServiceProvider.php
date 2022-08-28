@@ -5,10 +5,13 @@ namespace Haemanthus\Basement;
 use App\Models\User;
 use Haemanthus\Basement\Actions\AllContacts;
 use Haemanthus\Basement\Actions\AllPrivateMessages;
+use Haemanthus\Basement\Actions\MarkPrivatesMessagesAsRead;
 use Haemanthus\Basement\Commands\BasementCommand;
 use Haemanthus\Basement\Contracts\Basement as BasementContract;
 use Haemanthus\Basement\Models\PrivateMessage;
 use Haemanthus\Basement\Observers\PrivateMessageObserver;
+use Haemanthus\Basement\Policies\PrivateMessagePolicy;
+use Illuminate\Support\Facades\Gate;
 use Spatie\LaravelPackageTools\Package;
 use Spatie\LaravelPackageTools\PackageServiceProvider;
 
@@ -27,6 +30,16 @@ class BasementServiceProvider extends PackageServiceProvider
             ->hasViews()
             ->hasMigration('create_private_messages_table')
             ->hasCommand(BasementCommand::class);
+    }
+
+    /**
+     * Register the application's policies.
+     *
+     * @return void
+     */
+    public function registerPolicies(): void
+    {
+        Gate::define('update-private-messages', [PrivateMessagePolicy::class, 'updateAny']);
     }
 
     /**
@@ -50,11 +63,14 @@ class BasementServiceProvider extends PackageServiceProvider
     {
         parent::boot();
 
+        $this->registerPolicies();
+
         Basement::useUserModel(config(key: 'basement.user_model', default: User::class));
         Basement::usePrivateMessageModel(PrivateMessage::class);
 
         Basement::allContactsUsing(AllContacts::class);
         Basement::allPrivateMessagesUsing(AllPrivateMessages::class);
+        Basement::markPrivateMessagesAsReadUsing(MarkPrivatesMessagesAsRead::class);
 
         PrivateMessage::observe(PrivateMessageObserver::class);
     }
