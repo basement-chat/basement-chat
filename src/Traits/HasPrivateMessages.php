@@ -142,7 +142,7 @@ trait HasPrivateMessages
                 ->where(fn (Builder|QueryBuilder $clause): Builder => $clause
                     ->where('receiver_id', $user->id)
                     ->whereColumn('sender_id', "{$this->getTable()}.{$this->primaryKey}"))
-                ->whereNull('seen_at'),
+                ->whereNull('read_at'),
         ]);
     }
 }

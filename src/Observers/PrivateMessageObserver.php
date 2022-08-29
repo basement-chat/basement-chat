@@ -15,7 +15,7 @@ class PrivateMessageObserver
     public function creating(PrivateMessage $message): void
     {
         if ($message->sender_id === $message->receiver_id) {
-            $message->seen_at = now();
+            $message->read_at = now();
         }
     }
 }

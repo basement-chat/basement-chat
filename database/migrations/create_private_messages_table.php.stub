@@ -29,7 +29,7 @@ return new class extends Migration implements MigrationContract
             $table->foreign('sender_id')->references('id')->on($user->getTable());
             $table->enum('type', [MessageType::document()->value, MessageType::text()->value]);
             $table->string('value');
-            $table->timestamp('seen_at')->nullable();
+            $table->timestamp('read_at')->nullable();
             $table->timestamps();
             $table->softDeletes();
         });

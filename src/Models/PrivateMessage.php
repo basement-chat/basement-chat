@@ -19,7 +19,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
  * @property string $type
  * @property string $value
  * @property \Illuminate\Support\Carbon $created_at
- * @property \Illuminate\Support\Carbon|null $seen_at
+ * @property \Illuminate\Support\Carbon|null $read_at
  *
  * @method static \Haemanthus\Basement\Database\Factories\PrivateMessageFactory factory(...$parameters)
  * @method static PrivateMessage orderByDescId()
@@ -38,7 +38,7 @@ class PrivateMessage extends Model
      */
     protected $casts = [
         'type' => AsMessageType::class,
-        'seen_at' => 'datetime',
+        'read_at' => 'datetime',
     ];
 
     /**

@@ -63,7 +63,7 @@ it(description: 'should have the last private message', closure: function (): vo
     expect($contact->last_private_message->sender_id)->toBe($lastMessage->sender_id);
     expect($contact->last_private_message->type)->toBe($lastMessage->type);
     expect($contact->last_private_message->created_at->toString())->toBe($lastMessage->created_at->toString());
-    expect($contact->last_private_message->seen_at)->toBe($lastMessage->seen_at);
+    expect($contact->last_private_message->read_at)->toBe($lastMessage->read_at);
 });
 
 it(description: 'should have the number of unread messages', closure: function (): void {

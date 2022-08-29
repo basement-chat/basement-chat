@@ -38,7 +38,7 @@ class PrivateMessageFactory extends Factory
             'sender_id' => $sender->id,
             'type' => MessageType::text(),
             'value' => fake()->text(),
-            'seen_at' => null,
+            'read_at' => null,
         ];
     }
 

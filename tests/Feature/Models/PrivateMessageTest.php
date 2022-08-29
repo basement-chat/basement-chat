@@ -15,5 +15,5 @@ it(description: 'should be marked as read if sending a message to self', closure
         ->betweenTwoUsers(receiver: $user, sender: $user)
         ->create();
 
-    expect($message->seen_at)->toBeInstanceOf(Carbon::class);
+    expect($message->read_at)->toBeInstanceOf(Carbon::class);
 });
