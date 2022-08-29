@@ -2,6 +2,7 @@
 
 namespace Haemanthus\Basement\Contracts;
 
+use Illuminate\Foundation\Auth\User as Authenticatable;
 use Spatie\LaravelData\DataCollection;
 
 interface MarkPrivatesMessagesAsRead
