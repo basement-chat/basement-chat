@@ -24,6 +24,7 @@ class MarkPrivatesMessagesAsRead implements MarkPrivatesMessagesAsReadContract
     {
         Gate::forUser($receiver)->authorize('mark-as-read', $privateMessages);
 
+        /** @var \Illuminate\Support\Collection<int,\Haemanthus\Basement\Data\PrivateMessageData> $collection */
         $collection = $privateMessages->toCollection();
 
         Basement::newPrivateMessageModel()
@@ -33,6 +34,7 @@ class MarkPrivatesMessagesAsRead implements MarkPrivatesMessagesAsReadContract
                 'read_at' => now(),
             ]);
 
+        /** @var \Illuminate\Support\Collection<int,\Illuminate\Foundation\Auth\User&\Haemanthus\Basement\Contracts\User> $senders */
         $senders = $collection->pluck('sender')->unique();
 
         $senders->each(fn (Authenticatable $sender) => Notification::sendNow(

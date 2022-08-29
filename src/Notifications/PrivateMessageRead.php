@@ -15,7 +15,7 @@ class PrivateMessageRead extends Notification implements ShouldBroadcast
      * Create a new notification instance.
      *
      * @param \Illuminate\Foundation\Auth\User&\Haemanthus\Basement\Contracts\User $sender
-     * @param \Illuminate\Support\Collection $privateMessages
+     * @param \Illuminate\Support\Collection<int,\Haemanthus\Basement\Data\PrivateMessageData> $privateMessages
      */
     public function __construct(
         protected Authenticatable $sender,
@@ -38,7 +38,7 @@ class PrivateMessageRead extends Notification implements ShouldBroadcast
      *
      * @return \Illuminate\Broadcasting\PresenceChannel|array
      */
-    public function broadcastOn(): PresenceChannel
+    public function broadcastOn(): PresenceChannel|array
     {
         return new PresenceChannel('basement.contact.' . $this->sender->id);
     }

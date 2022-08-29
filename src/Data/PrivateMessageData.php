@@ -16,9 +16,9 @@ class PrivateMessageData extends Data
      *
      * @param int $id
      * @param int $receiver_id
-     * @param \Illuminate\Foundation\Auth\User&\Haemanthus\Basement\Contracts\User|null $receiver
+     * @param \Illuminate\Foundation\Auth\User&\Haemanthus\Basement\Contracts\User $receiver
      * @param int $sender_id
-     * @param \Illuminate\Foundation\Auth\User&\Haemanthus\Basement\Contracts\User|null $sender
+     * @param \Illuminate\Foundation\Auth\User&\Haemanthus\Basement\Contracts\User $sender
      * @param \Haemanthus\Basement\Enums\MessageType $type
      * @param string $value
      * @param \Illuminate\Support\Carbon|null $created_at
