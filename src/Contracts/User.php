@@ -73,11 +73,4 @@ interface User
      * @return void
      */
     public function scopeAddSelectUnreadMessages(Builder|QueryBuilder $query, Authenticatable $user): void;
-
-    /**
-     * The channels the user receives notification broadcasts on.
-     *
-     * @return string
-     */
-    public function receivesBroadcastNotificationsOn(): string;
 }

@@ -83,18 +83,6 @@ trait HasPrivateMessages
     }
 
     /**
-     * The channels the user receives notification broadcasts on.
-     *
-     * @return string
-     */
-    public function receivesBroadcastNotificationsOn(): string
-    {
-        /** @var \Illuminate\Database\Eloquent\Model $this */
-
-        return 'basement.users.' . $this->{$this->primaryKey};
-    }
-
-    /**
      * Scope a query to append the latest private message id.
      *
      * @param  \Illuminate\Database\Eloquent\Builder<Authenticatable>|\Illuminate\Database\Query\Builder  $query
