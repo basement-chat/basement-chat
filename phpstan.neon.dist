@@ -14,3 +14,5 @@ parameters:
     checkOctaneCompatibility: true
     checkModelProperties: true
     checkMissingIterableValueType: false
+    ignoreErrors:
+        - '#Cannot call method resolve\(\) on (.*)Spatie\\LaravelData\\Lazy(.*)#'

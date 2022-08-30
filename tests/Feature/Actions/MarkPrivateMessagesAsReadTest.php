@@ -16,13 +16,13 @@ use Illuminate\Support\Facades\Notification;
 uses(RefreshDatabase::class);
 
 it(description: 'should be able to mark private messages as read', closure: function (): void {
+    Notification::fake();
+
     [$receiver, $sender] = User::factory()->count(2)->create();
 
     /** @var \Haemanthus\Basement\Tests\Fixtures\User $receiver */
     /** @var \Haemanthus\Basement\Tests\Fixtures\User $sender */
     /** @var \Haemanthus\Basement\Tests\TestCase $this */
-
-    Notification::fake();
 
     $this->freezeTime(function (Carbon $time) use ($receiver, $sender): void {
         $messagesId = PrivateMessage::factory()
@@ -37,7 +37,7 @@ it(description: 'should be able to mark private messages as read', closure: func
 
         $markAsReadAction->markAsRead(
             receiver: $receiver,
-            privateMessages: PrivateMessageData::collectionFromId(...$messagesId),
+            privateMessages: PrivateMessageData::collectionFromId(messagesId: $messagesId, with: ['sender']),
         );
 
         expect(DB::table('private_messages')->where('read_at', $time)->count())->toBe(10);
@@ -68,6 +68,6 @@ it(description: 'should throw an exception if the user is not authorized', closu
 
     $markAsReadAction->markAsRead(
         receiver: $sender,
-        privateMessages: PrivateMessageData::collectionFromId(...$messagesId),
+        privateMessages: PrivateMessageData::collectionFromId($messagesId),
     );
 });

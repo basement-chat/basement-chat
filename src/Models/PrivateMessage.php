@@ -34,7 +34,7 @@ class PrivateMessage extends Model
     /**
      * The attributes that should be cast.
      *
-     * @var array<model-property<self>, string|class-string<Illuminate\Contracts\Database\Eloquent\CastsAttributes>>
+     * @var array<model-property<self>,string|class-string<Illuminate\Contracts\Database\Eloquent\CastsAttributes>>
      */
     protected $casts = [
         'type' => AsMessageType::class,
@@ -42,9 +42,22 @@ class PrivateMessage extends Model
     ];
 
     /**
+     * The attributes that are mass assignable.
+     *
+     * @var array<int,string>
+     */
+    protected $fillable = [
+        'receiver_id',
+        'sender_id',
+        'type',
+        'value',
+        'read_at',
+    ];
+
+    /**
      * Get the model belonging to the message received.
      *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo<Model, Authenticatable&UserContract>
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo<Model,Authenticatable&UserContract>
      */
     public function receiver(): BelongsTo
     {
@@ -54,7 +67,7 @@ class PrivateMessage extends Model
     /**
      * Get the model belonging to the message sent.
      *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo<Model, Authenticatable&UserContract>
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo<Model,Authenticatable&UserContract>
      */
     public function sender(): BelongsTo
     {

@@ -4,9 +4,31 @@ namespace Haemanthus\Basement\Casts;
 
 use Haemanthus\Basement\Enums\MessageType;
 use Illuminate\Contracts\Database\Eloquent\CastsAttributes;
+use Spatie\LaravelData\Casts\Cast;
+use Spatie\LaravelData\Support\DataProperty;
 
-class AsMessageType implements CastsAttributes
+class AsMessageType implements Cast, CastsAttributes
 {
+    /**
+     * Cast the given value to message type enum.
+     *
+     * @param \Spatie\LaravelData\Support\DataProperty $property
+     * @param mixed $value
+     * @return \Haemanthus\Basement\Enums\MessageType
+     */
+    public function cast(DataProperty $property, mixed $value): MessageType
+    {
+        if ($value instanceof MessageType) {
+            return $value;
+        }
+
+        if (is_string($value) || is_int($value)) {
+            return MessageType::from($value);
+        }
+
+        return MessageType::text();
+    }
+
     /**
      * Transform the attribute from the underlying model values.
      *

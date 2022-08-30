@@ -2,39 +2,39 @@
 
 namespace Haemanthus\Basement\Notifications;
 
+use Haemanthus\Basement\Data\PrivateMessageData;
 use Illuminate\Broadcasting\PresenceChannel;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Messages\BroadcastMessage;
 use Illuminate\Notifications\Notification;
-use Illuminate\Support\Collection;
 
-class PrivateMessageRead extends Notification implements ShouldBroadcast
+class PrivateMessageSent extends Notification implements ShouldBroadcast
 {
     /**
-     * Message sender id.
+     * Message receiver id.
      *
      * @var int
      */
-    protected int $senderId;
+    protected int $receiverId;
 
     /**
-     * List of read messages id.
+     * The value of the private message sent.
      *
-     * @var array
+     * @var array<string,mixed>
      */
-    protected array $privateMessages;
+    protected array $privateMessage;
 
     /**
      * Create a new notification instance.
      *
-     * @param \Illuminate\Foundation\Auth\User&\Haemanthus\Basement\Contracts\User $sender
-     * @param \Illuminate\Support\Collection<int,\Haemanthus\Basement\Data\PrivateMessageData> $privateMessages
+     * @param \Illuminate\Foundation\Auth\User&\Haemanthus\Basement\Contracts\User $receiver
+     * @param \Haemanthus\Basement\Data\PrivateMessageData $privateMessage
      */
-    public function __construct(Authenticatable $sender, Collection $privateMessages)
+    public function __construct(Authenticatable $receiver, PrivateMessageData $privateMessage)
     {
-        $this->senderId = $sender->id;
-        $this->privateMessages = $privateMessages->pluck('id')->toArray();
+        $this->receiverId = $receiver->id;
+        $this->privateMessage = $privateMessage->toArray();
     }
 
     /**
@@ -44,7 +44,7 @@ class PrivateMessageRead extends Notification implements ShouldBroadcast
      */
     public function broadcastAs(): string
     {
-        return 'basement.message.read';
+        return 'basement.message.sent';
     }
 
     /**
@@ -54,7 +54,7 @@ class PrivateMessageRead extends Notification implements ShouldBroadcast
      */
     public function broadcastOn(): PresenceChannel|array
     {
-        return new PresenceChannel('basement.contact.' . $this->senderId);
+        return new PresenceChannel('basement.contact.' . $this->receiverId);
     }
 
     /**
@@ -77,7 +77,7 @@ class PrivateMessageRead extends Notification implements ShouldBroadcast
     public function toBroadcast($notifiable): BroadcastMessage
     {
         return new BroadcastMessage([
-            'messages' => $this->privateMessages,
+            'message' => $this->privateMessage,
         ]);
     }
 }

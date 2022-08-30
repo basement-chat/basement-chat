@@ -10,6 +10,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Notification;
 use Spatie\LaravelData\DataCollection;
+use Spatie\LaravelData\Lazy;
 
 class MarkPrivatesMessagesAsRead implements MarkPrivatesMessagesAsReadContract
 {
@@ -24,16 +25,19 @@ class MarkPrivatesMessagesAsRead implements MarkPrivatesMessagesAsReadContract
         /** @var \Illuminate\Support\Collection<int,\Haemanthus\Basement\Data\PrivateMessageData> $collection */
         $collection = $privateMessages->toCollection();
 
-        /** @var \Illuminate\Support\Collection<int,\Illuminate\Foundation\Auth\User&\Haemanthus\Basement\Contracts\User> $senders */
-        $senders = $collection->pluck('sender')->unique();
+        /** @var \Illuminate\Support\Collection<int,\Spatie\LaravelData\Lazy> $senders */
+        $senders = $collection->unique('sender_id')->pluck('sender');
 
-        $senders->each(fn (Authenticatable $sender) => Notification::sendNow(
-            notifiables: $sender,
-            notification: new PrivateMessageRead(
-                sender: $sender,
-                privateMessages: $collection->filter(fn (PrivateMessageData $data): bool => $data->id === $sender->id),
-            ),
-        ));
+        $senders->each(function (Lazy $sender) use ($collection): void {
+            /** @var \Illuminate\Foundation\Auth\User&\Haemanthus\Basement\Contracts\User $user */
+            $user = $sender->resolve();
+            $ownedMessages = $collection->filter(fn (PrivateMessageData $data): bool => $data->id === $user->id);
+
+            Notification::send(
+                notifiables: $user,
+                notification: new PrivateMessageRead(sender: $user, privateMessages: $ownedMessages)
+            );
+        });
     }
 
     /**

@@ -73,7 +73,7 @@ trait HasPrivateMessages
     /**
      * Get the private message that owns the last private message id.
      *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo<Model, \Haemanthus\Basement\Models\PrivateMessage>
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo<Model,\Haemanthus\Basement\Models\PrivateMessage>
      */
     public function lastPrivateMessage(): BelongsTo
     {

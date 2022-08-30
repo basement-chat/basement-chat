@@ -5,6 +5,7 @@ namespace Haemanthus\Basement\Tests\Feature\Actions;
 use Haemanthus\Basement\Contracts\AllContacts;
 use Haemanthus\Basement\Data\ContactData;
 use Haemanthus\Basement\Data\PrivateMessageData;
+use Haemanthus\Basement\Enums\AvatarStyle;
 use Haemanthus\Basement\Models\PrivateMessage;
 use Haemanthus\Basement\Tests\Fixtures\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -113,4 +114,15 @@ it(description: 'should be sorted in desc order at the time the last message is 
 
     expect($contacts[2]->id)->toBe($receiver->id);
     expect($contacts[2]->name)->toBe($receiver->name);
+});
+
+it(description: 'avatar property must represent the value from the config', closure: function (): void {
+    config(['basement.avatar.style' => AvatarStyle::bigEars()]);
+    config(['basement.avatar.options' => ['size' => 32]]);
+
+    /** @var \Haemanthus\Basement\Tests\Fixtures\User $user */
+    $user = User::factory()->create(['name' => 'John Doe']);
+
+    expect($user->avatar)
+        ->toBe('https://avatars.dicebear.com/api/big-ears/4c2a904bafba06591225113ad17b5cec.svg?size=32');
 });

@@ -6,6 +6,7 @@ use App\Models\User;
 use Haemanthus\Basement\Actions\AllContacts;
 use Haemanthus\Basement\Actions\AllPrivateMessages;
 use Haemanthus\Basement\Actions\MarkPrivatesMessagesAsRead;
+use Haemanthus\Basement\Actions\SendPrivateMessage;
 use Haemanthus\Basement\Commands\BasementCommand;
 use Haemanthus\Basement\Contracts\Basement as BasementContract;
 use Haemanthus\Basement\Models\PrivateMessage;
@@ -71,6 +72,7 @@ class BasementServiceProvider extends PackageServiceProvider
         Basement::allContactsUsing(AllContacts::class);
         Basement::allPrivateMessagesUsing(AllPrivateMessages::class);
         Basement::markPrivateMessagesAsReadUsing(MarkPrivatesMessagesAsRead::class);
+        Basement::sendPrivateMessagesUsing(SendPrivateMessage::class);
 
         PrivateMessage::observe(PrivateMessageObserver::class);
     }

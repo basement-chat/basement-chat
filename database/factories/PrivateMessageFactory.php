@@ -45,8 +45,8 @@ class PrivateMessageFactory extends Factory
     /**
      * Indicate that the receiver and sender model's should be two given users.
      *
-     * @param \Illuminate\Foundation\Auth\User $receiver
-     * @param \Illuminate\Foundation\Auth\User $sender
+     * @param \Illuminate\Foundation\Auth\User&\Haemanthus\Basement\Contracts\User $receiver
+     * @param \Illuminate\Foundation\Auth\User&\Haemanthus\Basement\Contracts\User $sender
      * @return self
      */
     public function betweenTwoUsers(Authenticatable $receiver, Authenticatable $sender): self
@@ -54,6 +54,20 @@ class PrivateMessageFactory extends Factory
         return $this->state([
             'receiver_id' => $receiver->id,
             'sender_id' => $sender->id,
+        ]);
+    }
+
+    /**
+     * Indicate that the receiver and sender model's should be same.
+     *
+     * @param \Illuminate\Foundation\Auth\User&\Haemanthus\Basement\Contracts\User $user
+     * @return self
+     */
+    public function sendToSelf(Authenticatable $user): self
+    {
+        return $this->state([
+            'receiver_id' => $user->id,
+            'sender_id' => $user->id,
         ]);
     }
 }
