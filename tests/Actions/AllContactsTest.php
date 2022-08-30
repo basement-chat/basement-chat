@@ -1,6 +1,6 @@
 <?php
 
-namespace Haemanthus\Basement\Tests\Feature\Actions;
+namespace Haemanthus\Basement\Tests\Feature;
 
 use Haemanthus\Basement\Contracts\AllContacts;
 use Haemanthus\Basement\Data\ContactData;

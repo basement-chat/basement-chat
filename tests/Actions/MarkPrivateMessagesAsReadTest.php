@@ -1,6 +1,6 @@
 <?php
 
-namespace Haemanthus\Basement\Tests\Feature\Actions;
+namespace Haemanthus\Basement\Tests\Feature;
 
 use Haemanthus\Basement\Contracts\MarkPrivatesMessagesAsRead;
 use Haemanthus\Basement\Data\PrivateMessageData;
