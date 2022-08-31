@@ -30,6 +30,7 @@ class BasementServiceProvider extends PackageServiceProvider
             ->hasConfigFile()
             ->hasViews()
             ->hasMigration('create_private_messages_table')
+            ->hasRoute('api')
             ->hasCommand(BasementCommand::class);
     }
 

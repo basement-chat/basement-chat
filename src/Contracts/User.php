@@ -10,12 +10,8 @@ use Illuminate\Database\Query\Builder as QueryBuilder;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
 /**
- * @property int $id
- * @property string|null $name
- * @property string $avatar
- *
- * @method static Authenticatable&User addSelectLastPrivateMessageId(Authenticatable&User $value)
- * @method static Authenticatable&User addSelectUnreadMessages(Authenticatable&User $value)
+ * @phpstan-method static Authenticatable&User addSelectLastPrivateMessageId(Authenticatable&User $value)
+ * @phpstan-method static Authenticatable&User addSelectUnreadMessages(Authenticatable&User $value)
  */
 interface User
 {

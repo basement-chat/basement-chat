@@ -6,7 +6,7 @@ use Haemanthus\Basement\Contracts\Basement as BasementContract;
 use Illuminate\Support\Facades\Facade;
 
 /**
- * @see \Haemanthus\Basement\Basement
+ * @mixin \Haemanthus\Basement\Basement
  */
 class Basement extends Facade
 {

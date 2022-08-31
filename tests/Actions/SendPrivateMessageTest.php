@@ -7,11 +7,14 @@ use Haemanthus\Basement\Data\PrivateMessageData;
 use Haemanthus\Basement\Models\PrivateMessage;
 use Haemanthus\Basement\Notifications\PrivateMessageSent;
 use Haemanthus\Basement\Tests\Fixtures\User;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Notification;
 
 use function Pest\Laravel\assertDatabaseCount;
 use function Pest\Laravel\assertDatabaseHas;
+
+uses(RefreshDatabase::class);
 
 it(description: 'should be able to send a private message', closure: function (): void {
     Notification::fake();

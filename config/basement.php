@@ -52,4 +52,22 @@ return [
         ],
     ],
 
+    /*
+    |--------------------------------------------------------------------------
+    | Middleware
+    |--------------------------------------------------------------------------
+    |
+    | Basement frontend uses API calls to get contacts and private messages data.
+    | Here you can configure what middleware should be passed when processing
+    | requests.
+    |
+    */
+
+    'middleware' => [
+        'auth:sanctum',
+        'throttle:api',
+        \Laravel\Sanctum\Http\Middleware\EnsureFrontendRequestsAreStateful::class,
+        \Illuminate\Routing\Middleware\SubstituteBindings::class,
+    ],
+
 ];

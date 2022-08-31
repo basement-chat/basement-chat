@@ -16,14 +16,16 @@ class Basement implements BasementContract
     /**
      * The user model used by the application.
      *
-     * @var class-string<\Illuminate\Foundation\Auth\User>&class-string<\Haemanthus\Basement\Contracts\User>
+     * @var string
+     * @phpstan-var class-string<\Illuminate\Foundation\Auth\User>&class-string<\Haemanthus\Basement\Contracts\User>
      */
     protected static string $userModel;
 
     /**
      * The private message model used by the application.
      *
-     * @var class-string<\Haemanthus\Basement\Models\PrivateMessage>
+     * @var string
+     * @phpstan-var class-string<\Haemanthus\Basement\Models\PrivateMessage>
      */
     protected static string $privateMessageModel;
 

@@ -22,6 +22,9 @@
         <testsuite name="Actions">
             <directory>tests/Actions</directory>
         </testsuite>
+        <testsuite name="Api">
+            <directory>tests/Api</directory>
+        </testsuite>
     </testsuites>
     <php>
         <env name="DB_CONNECTION" value="sqlite"/>
