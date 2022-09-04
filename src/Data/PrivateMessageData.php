@@ -32,16 +32,16 @@ class PrivateMessageData extends Data
      * @param \Spatie\LaravelData\Lazy|(Authenticatable&\Haemanthus\Basement\Contracts\User)|null $sender
      */
     public function __construct(
-        public ?int $id,
+        public ?int $id = null,
         public int $receiver_id,
         public int $sender_id,
         #[WithCast(AsMessageType::class)]
         public MessageType $type,
         public string $value,
-        public ?Carbon $created_at,
-        public ?Carbon $read_at,
-        public Lazy|Authenticatable|null $receiver,
-        public Lazy|Authenticatable|null $sender,
+        public ?Carbon $created_at = null,
+        public ?Carbon $read_at = null,
+        public Lazy|Authenticatable|null $receiver = null,
+        public Lazy|Authenticatable|null $sender = null,
     ) {
         $this->receiver = Lazy::create(fn (): Authenticatable => (
             $receiver instanceof Authenticatable ? $receiver : Basement::newUserModel()->findOrFail($this->receiver_id)

@@ -45,6 +45,7 @@ class SendPrivateMessage implements SendPrivateMessageContract
             'value' => $privateMessage->value,
         ]);
 
+        $privateMessage->id = $createdMessage->id;
         $privateMessage->created_at = $createdMessage->created_at;
         $privateMessage->read_at = $createdMessage->read_at;
 

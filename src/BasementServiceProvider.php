@@ -11,8 +11,7 @@ use Haemanthus\Basement\Commands\BasementCommand;
 use Haemanthus\Basement\Contracts\Basement as BasementContract;
 use Haemanthus\Basement\Models\PrivateMessage;
 use Haemanthus\Basement\Observers\PrivateMessageObserver;
-use Haemanthus\Basement\Policies\PrivateMessagePolicy;
-use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\Facades\Route;
 use Spatie\LaravelPackageTools\Package;
 use Spatie\LaravelPackageTools\PackageServiceProvider;
 
@@ -35,13 +34,13 @@ class BasementServiceProvider extends PackageServiceProvider
     }
 
     /**
-     * Register the application's policies.
+     * Register the application's route model bindings.
      *
      * @return void
      */
-    protected function registerPolicies(): void
+    protected function registerRouteModelBindings(): void
     {
-        Gate::define('mark-as-read', [PrivateMessagePolicy::class, 'markAsRead']);
+        Route::bind('contact', fn (string|int $value) => Basement::newUserModel()->findOrFail($value));
     }
 
     /**
@@ -65,8 +64,6 @@ class BasementServiceProvider extends PackageServiceProvider
     {
         parent::boot();
 
-        $this->registerPolicies();
-
         Basement::useUserModel(config(key: 'basement.user_model', default: User::class));
         Basement::usePrivateMessageModel(PrivateMessage::class);
 
@@ -76,5 +73,7 @@ class BasementServiceProvider extends PackageServiceProvider
         Basement::sendPrivateMessagesUsing(SendPrivateMessage::class);
 
         PrivateMessage::observe(PrivateMessageObserver::class);
+
+        $this->registerRouteModelBindings();
     }
 }

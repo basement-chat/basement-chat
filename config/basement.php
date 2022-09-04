@@ -25,7 +25,8 @@ return [
     |--------------------------------------------------------------------------
     |
     | Specify the namespace and class used to get the user model instance. The
-    | given class must implement the "Haemanthus\Basement\Contracts\User".
+    | given class must extend the "Illuminate\Foundation\Auth\User" and
+    | implement the "Haemanthus\Basement\Contracts\User".
     |
     */
 
@@ -57,9 +58,9 @@ return [
     | Middleware
     |--------------------------------------------------------------------------
     |
-    | Basement frontend uses API calls to get contacts and private messages data.
-    | Here you can configure what middleware should be passed when processing
-    | requests.
+    | Basement frontend uses API calls to get contacts and private messages
+    | data. Here you can configure what middleware should be passed when
+    | processing requests.
     |
     */
 
