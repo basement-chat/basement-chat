@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Haemanthus\Basement\Enums;
 
 use Spatie\Enum\Enum;

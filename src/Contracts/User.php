@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Haemanthus\Basement\Contracts;
 
 use Illuminate\Database\Eloquent\Builder;
@@ -17,15 +19,11 @@ interface User
 {
     /**
      * Get the user's avatar.
-     *
-     * @return string
      */
     public function getAvatarAttribute(): string;
 
     /**
      * Get the user's name.
-     *
-     * @return string
      */
     public function getNameAttribute(): string;
 
@@ -55,8 +53,6 @@ interface User
      *
      * @param  \Illuminate\Database\Eloquent\Builder<Authenticatable>|\Illuminate\Database\Query\Builder  $query
      * @param  \Illuminate\Foundation\Auth\User&\Haemanthus\Basement\Contracts\User $user
-     *
-     * @return void
      */
     public function scopeAddSelectLastPrivateMessageId(Builder|QueryBuilder $query, Authenticatable $user): void;
 
@@ -65,8 +61,6 @@ interface User
      *
      * @param  \Illuminate\Database\Eloquent\Builder<Authenticatable>|\Illuminate\Database\Query\Builder  $query
      * @param  \Illuminate\Foundation\Auth\User&\Haemanthus\Basement\Contracts\User $user
-     *
-     * @return void
      */
     public function scopeAddSelectUnreadMessages(Builder|QueryBuilder $query, Authenticatable $user): void;
 }

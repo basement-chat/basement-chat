@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Haemanthus\Basement\Contracts;
 
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -12,8 +14,6 @@ interface AllPrivateMessages
      *
      * @param \Illuminate\Foundation\Auth\User&\Haemanthus\Basement\Contracts\User $receiver
      * @param \Illuminate\Foundation\Auth\User&\Haemanthus\Basement\Contracts\User $sender
-     *
-     * @return \Spatie\LaravelData\DataCollection
      */
     public function allBetweenTwoUsers(
         Authenticatable $receiver,

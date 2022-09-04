@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 use App\Models\User;
 use Haemanthus\Basement\Enums\AvatarStyle;
 use Haemanthus\Basement\Enums\ChatBoxPosition;

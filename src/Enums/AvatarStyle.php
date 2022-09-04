@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Haemanthus\Basement\Enums;
 
 use Illuminate\Support\Str;
@@ -28,11 +30,9 @@ class AvatarStyle extends Enum
 {
     /**
      * Change enum value when accessed.
-     *
-     * @return \Closure
      */
     protected static function values(): \Closure
     {
-        return fn (string $avatar): string => Str::kebab($avatar);
+        return static fn (string $avatar): string => Str::kebab($avatar);
     }
 }

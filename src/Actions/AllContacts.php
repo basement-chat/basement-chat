@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Haemanthus\Basement\Actions;
 
 use Haemanthus\Basement\Contracts\AllContacts as AllContactsContract;
@@ -14,8 +16,6 @@ class AllContacts implements AllContactsContract
      * Get all contact list.
      *
      * @param \Illuminate\Foundation\Auth\User&\Haemanthus\Basement\Contracts\User $user
-     *
-     * @return \Spatie\LaravelData\DataCollection
      */
     public function all(Authenticatable $user): DataCollection
     {

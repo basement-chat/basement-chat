@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Haemanthus\Basement\Tests\Feature;
 
 use Haemanthus\Basement\Contracts\AllPrivateMessages;
@@ -39,7 +41,7 @@ it(description: 'should be able to get all private messages between two users', 
     expect($messages)->toBeInstanceOf(DataCollection::class);
     expect($messages->count())->toBe($createdMessages->count());
 
-    $createdMessages->each(fn (PrivateMessage $message, int $key): Expectation => expect($message->id)
+    $createdMessages->each(static fn (PrivateMessage $message, int $key): Expectation => expect($message->id)
         ->toBe($messages[$key]->id));
 });
 

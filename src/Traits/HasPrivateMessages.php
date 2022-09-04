@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Haemanthus\Basement\Traits;
 
 use Haemanthus\Basement\Enums\AvatarStyle;
@@ -16,8 +18,6 @@ trait HasPrivateMessages
 {
     /**
      * Get the user's avatar.
-     *
-     * @return string
      */
     public function getAvatarAttribute(): string
     {
@@ -30,7 +30,7 @@ trait HasPrivateMessages
         $options = config(key: 'basement.avatar.options', default: []);
 
         $queryString = collect($options)
-            ->map(fn (string $option, string $key): string => ("{$key}={$option}"))
+            ->map(static fn (string $option, string $key): string => ("{$key}={$option}"))
             ->join('&');
 
         return "https://avatars.dicebear.com/api/{$style->value}/{$hash}.svg?{$queryString}";
@@ -38,8 +38,6 @@ trait HasPrivateMessages
 
     /**
      * Get the user's name.
-     *
-     * @return string
      */
     public function getNameAttribute(): string
     {
@@ -87,8 +85,6 @@ trait HasPrivateMessages
      *
      * @param  \Illuminate\Database\Eloquent\Builder<Authenticatable>|\Illuminate\Database\Query\Builder  $query
      * @param  \Illuminate\Foundation\Auth\User&\Haemanthus\Basement\Contracts\User $user
-     *
-     * @return void
      */
     public function scopeAddSelectLastPrivateMessageId(Builder|QueryBuilder $query, Authenticatable $user): void
     {
@@ -113,8 +109,6 @@ trait HasPrivateMessages
      *
      * @param  \Illuminate\Database\Eloquent\Builder<Authenticatable>|\Illuminate\Database\Query\Builder  $query
      * @param  \Illuminate\Foundation\Auth\User&\Haemanthus\Basement\Contracts\User $user
-     *
-     * @return void
      */
     public function scopeAddSelectUnreadMessages(Builder|QueryBuilder $query, Authenticatable $user): void
     {
@@ -125,7 +119,7 @@ trait HasPrivateMessages
                 ->select([
                     DB::raw(<<<'SQL'
                         COUNT(*)
-                    SQL)
+                    SQL),
                 ])
                 ->where(fn (Builder|QueryBuilder $clause): Builder => $clause
                     ->where('receiver_id', $user->id)

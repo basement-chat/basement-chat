@@ -1,12 +1,13 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Haemanthus\Basement\Tests\Api;
 
 use Haemanthus\Basement\Models\PrivateMessage;
 use Haemanthus\Basement\Tests\ApiJsonStructure;
 use Haemanthus\Basement\Tests\Fixtures\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-
 use function Pest\Laravel\actingAs;
 use function Pest\Laravel\get;
 

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Haemanthus\Basement\Data;
 
 use Haemanthus\Basement\Casts\AsMessageType;
@@ -21,13 +23,6 @@ class PrivateMessageData extends Data
     /**
      * Create a new private message data instance.
      *
-     * @param int $receiver_id
-     * @param int $sender_id
-     * @param \Haemanthus\Basement\Enums\MessageType $type
-     * @param string $value
-     * @param int|null $id
-     * @param \Illuminate\Support\Carbon|null $created_at
-     * @param \Illuminate\Support\Carbon|null $read_at
      * @param \Spatie\LaravelData\Lazy|(Authenticatable&\Haemanthus\Basement\Contracts\User)|null $receiver
      * @param \Spatie\LaravelData\Lazy|(Authenticatable&\Haemanthus\Basement\Contracts\User)|null $sender
      */
@@ -43,21 +38,18 @@ class PrivateMessageData extends Data
         public Lazy|Authenticatable|null $receiver = null,
         public Lazy|Authenticatable|null $sender = null,
     ) {
-        $this->receiver = Lazy::create(fn (): Authenticatable => (
-            $receiver instanceof Authenticatable ? $receiver : Basement::newUserModel()->findOrFail($this->receiver_id)
-        ));
+        $this->receiver = Lazy::create(fn (): Authenticatable => $receiver instanceof Authenticatable ?
+            $receiver : Basement::newUserModel()->findOrFail($this->receiver_id));
 
-        $this->sender = Lazy::create(fn (): Authenticatable => (
-            $sender instanceof Authenticatable ? $sender : Basement::newUserModel()->findOrFail($this->sender_id)
-        ));
+        $this->sender = Lazy::create(fn (): Authenticatable => $sender instanceof Authenticatable ?
+            $sender : Basement::newUserModel()->findOrFail($this->sender_id));
     }
 
     /**
      * Create data collection from given messages id.
      *
      * @param array<int> $messagesId
-     * @param array $with
-     * @return \Spatie\LaravelData\DataCollection
+     * @param array<string> $with
      */
     public static function collectionFromId(array $messagesId, array $with = []): DataCollection
     {

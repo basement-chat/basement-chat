@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Haemanthus\Basement;
 
 use App\Models\User;
@@ -34,33 +36,19 @@ class BasementServiceProvider extends PackageServiceProvider
     }
 
     /**
-     * Register the application's route model bindings.
-     *
-     * @return void
-     */
-    protected function registerRouteModelBindings(): void
-    {
-        Route::bind('contact', fn (string|int $value) => Basement::newUserModel()->findOrFail($value));
-    }
-
-    /**
      * Register any application services.
-     *
-     * @return void
      */
-    public function register()
+    public function register(): void
     {
         parent::register();
 
-        $this->app->singleton(abstract: BasementContract::class, concrete: fn (): Basement => new Basement());
+        $this->app->singleton(abstract: BasementContract::class, concrete: static fn (): Basement => new Basement());
     }
 
     /**
      * Bootstrap any application services.
-     *
-     * @return void
      */
-    public function boot()
+    public function boot(): void
     {
         parent::boot();
 
@@ -75,5 +63,13 @@ class BasementServiceProvider extends PackageServiceProvider
         PrivateMessage::observe(PrivateMessageObserver::class);
 
         $this->registerRouteModelBindings();
+    }
+
+    /**
+     * Register the application's route model bindings.
+     */
+    protected function registerRouteModelBindings(): void
+    {
+        Route::bind('contact', static fn (string|int $value) => Basement::newUserModel()->findOrFail($value));
     }
 }

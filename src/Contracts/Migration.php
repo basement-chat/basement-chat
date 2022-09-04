@@ -1,20 +1,18 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Haemanthus\Basement\Contracts;
 
 interface Migration
 {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
     public function up(): void;
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
     public function down(): void;
 }

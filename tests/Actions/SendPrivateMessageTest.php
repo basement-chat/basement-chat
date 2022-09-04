@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Haemanthus\Basement\Tests\Feature;
 
 use Haemanthus\Basement\Contracts\SendPrivateMessage;
@@ -10,7 +12,6 @@ use Haemanthus\Basement\Tests\Fixtures\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Notification;
-
 use function Pest\Laravel\assertDatabaseCount;
 use function Pest\Laravel\assertDatabaseHas;
 
@@ -24,7 +25,7 @@ it(description: 'should be able to send a private message', closure: function ()
 
     /** @var \Haemanthus\Basement\Tests\TestCase $this */
 
-    $this->freezeTime(function (Carbon $time) use ($message): void {
+    $this->freezeTime(static function (Carbon $time) use ($message): void {
         /** @var \Haemanthus\Basement\Contracts\SendPrivateMessage $sendPrivateMessageAction */
         $sendPrivateMessageAction = app(SendPrivateMessage::class);
         $createdMessage = $sendPrivateMessageAction->send($message);
@@ -61,7 +62,7 @@ it(description: 'should be marked as read if sending a message to self', closure
 
     /** @var \Haemanthus\Basement\Tests\TestCase $this */
 
-    $this->freezeTime(function (Carbon $time) use ($message): void {
+    $this->freezeTime(static function (Carbon $time) use ($message): void {
         /** @var \Haemanthus\Basement\Contracts\SendPrivateMessage $sendPrivateMessageAction */
         $sendPrivateMessageAction = app(SendPrivateMessage::class);
         $createdMessage = $sendPrivateMessageAction->send($message);

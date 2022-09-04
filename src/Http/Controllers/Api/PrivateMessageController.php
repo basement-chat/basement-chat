@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Haemanthus\Basement\Http\Controllers\Api;
 
 use Haemanthus\Basement\Contracts\AllPrivateMessages;
@@ -22,8 +24,6 @@ class PrivateMessageController extends Controller
      * Display a listing of the resource.
      *
      * @param  \Illuminate\Foundation\Auth\User&\Haemanthus\Basement\Contracts\User  $contact
-     * @param  \Haemanthus\Basement\Contracts\AllPrivateMessages $allPrivateMessages
-     * @return \Illuminate\Http\JsonResponse
      *
      * @see \Haemanthus\Basement\BasementServiceProvider about how the $contact parameter is resolved
      */
@@ -41,9 +41,6 @@ class PrivateMessageController extends Controller
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Foundation\Auth\User&\Haemanthus\Basement\Contracts\User  $contact
-     * @param  \Haemanthus\Basement\Http\Requests\StorePrivateMessageRequest  $request
-     * @param  \Haemanthus\Basement\Contracts\SendPrivateMessage $sendPrivateMessage
-     * @return \Illuminate\Http\JsonResponse
      *
      * @see \Haemanthus\Basement\BasementServiceProvider about how the $contact parameter is resolved
      */
@@ -70,10 +67,6 @@ class PrivateMessageController extends Controller
 
     /**
      * Update the specified resource in storage.
-     *
-     * @param  \Haemanthus\Basement\Http\Requests\UpdatePrivateMessagesRequest  $request
-     * @param  \Haemanthus\Basement\Contracts\MarkPrivatesMessagesAsRead $markPrivatesMessagesAsRead
-     * @return \Illuminate\Http\JsonResponse
      */
     public function updates(
         UpdatePrivateMessagesRequest $request,

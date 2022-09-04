@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Haemanthus\Basement\Notifications;
 
 use Haemanthus\Basement\Data\PrivateMessageData;
@@ -13,8 +15,6 @@ class PrivateMessageSent extends Notification implements ShouldBroadcast
 {
     /**
      * Message receiver id.
-     *
-     * @var int
      */
     protected int $receiverId;
 
@@ -29,7 +29,6 @@ class PrivateMessageSent extends Notification implements ShouldBroadcast
      * Create a new notification instance.
      *
      * @param \Illuminate\Foundation\Auth\User&\Haemanthus\Basement\Contracts\User $receiver
-     * @param \Haemanthus\Basement\Data\PrivateMessageData $privateMessage
      */
     public function __construct(Authenticatable $receiver, PrivateMessageData $privateMessage)
     {
@@ -39,8 +38,6 @@ class PrivateMessageSent extends Notification implements ShouldBroadcast
 
     /**
      * The event's broadcast name.
-     *
-     * @return string
      */
     public function broadcastAs(): string
     {
@@ -49,8 +46,6 @@ class PrivateMessageSent extends Notification implements ShouldBroadcast
 
     /**
      * Get the channels the event should broadcast on.
-     *
-     * @return \Illuminate\Broadcasting\PresenceChannel|array
      */
     public function broadcastOn(): PresenceChannel|array
     {
@@ -60,21 +55,17 @@ class PrivateMessageSent extends Notification implements ShouldBroadcast
     /**
      * Get the notification's delivery channels.
      *
-     * @param  mixed  $notifiable
-     * @return array
+     * @return array<string>
      */
-    public function via($notifiable): array
+    public function via(mixed $notifiable): array
     {
         return ['broadcast'];
     }
 
     /**
      * Get the broadcastable representation of the notification.
-     *
-     * @param  mixed  $notifiable
-     * @return \Illuminate\Notifications\Messages\BroadcastMessage
      */
-    public function toBroadcast($notifiable): BroadcastMessage
+    public function toBroadcast(mixed $notifiable): BroadcastMessage
     {
         return new BroadcastMessage([
             'message' => $this->privateMessage,

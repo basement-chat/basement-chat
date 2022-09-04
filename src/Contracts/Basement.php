@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Haemanthus\Basement\Contracts;
 
 use Haemanthus\Basement\Models\PrivateMessage;
@@ -9,9 +11,6 @@ interface Basement
 {
     /**
      * Specify the user model used by the application.
-     *
-     * @param mixed $class
-     * @return void
      *
      * @throws \TypeError if the given user model is not a subclass of \Illuminate\Foundation\Auth\User
      *                    or does not implement the \Haemanthus\Basement\Contracts\User.
@@ -35,9 +34,6 @@ interface Basement
     /**
      * Specify the private message model used by the application.
      *
-     * @param mixed $class
-     * @return void
-     *
      * @throws \TypeError if the given user model is not a subclass of \Haemanthus\Basement\Models\PrivateMessage.
      */
     public static function usePrivateMessageModel(mixed $class): void;
@@ -51,8 +47,6 @@ interface Basement
 
     /**
      * Get a new instance of the private message model.
-     *
-     * @return \Haemanthus\Basement\Models\PrivateMessage
      */
     public static function newPrivateMessageModel(): PrivateMessage;
 
@@ -60,7 +54,6 @@ interface Basement
      * Register a class / callback that should be used to get all contacts.
      *
      * @param  class-string<\Haemanthus\Basement\Contracts\AllContacts>   $class
-     * @return void
      */
     public static function allContactsUsing(string $class): void;
 
@@ -68,7 +61,6 @@ interface Basement
      * Register a class / callback that should be used to get mark private messages as read.
      *
      * @param  class-string<\Haemanthus\Basement\Contracts\MarkPrivatesMessagesAsRead>   $class
-     * @return void
      */
     public static function markPrivateMessagesAsReadUsing(string $class): void;
 }

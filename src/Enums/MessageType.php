@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Haemanthus\Basement\Enums;
 
 use Illuminate\Support\Str;
@@ -13,11 +15,9 @@ class MessageType extends Enum
 {
     /**
      * Change enum value when accessed.
-     *
-     * @return \Closure
      */
     protected static function values(): \Closure
     {
-        return fn (string $type): string => Str::upper($type);
+        return static fn (string $type): string => Str::upper($type);
     }
 }

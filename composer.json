@@ -30,6 +30,7 @@
     "laravel/pint": "^1.0",
     "nunomaduro/collision": "^6.0",
     "nunomaduro/larastan": "^2.0.1",
+    "nunomaduro/phpinsights": "^2.5",
     "orchestra/canvas": "^7.2",
     "orchestra/testbench": "^7.0",
     "pestphp/pest": "^1.21",
@@ -52,6 +53,7 @@
   },
   "scripts": {
     "analyse": "vendor/bin/phpstan analyse --memory-limit=1G",
+    "insights": "vendor/bin/phpinsights analyse config database routes src",
     "test": "vendor/bin/pest",
     "test-coverage": "vendor/bin/pest --coverage",
     "format": "vendor/bin/pint",
@@ -68,7 +70,8 @@
   "config": {
     "sort-packages": true,
     "allow-plugins": {
-      "pestphp/pest-plugin": true
+      "pestphp/pest-plugin": true,
+      "dealerdirect/phpcodesniffer-composer-installer": true
     }
   },
   "extra": {

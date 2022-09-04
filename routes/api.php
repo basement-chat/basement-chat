@@ -1,10 +1,12 @@
 <?php
 
+declare(strict_types=1);
+
 use Haemanthus\Basement\Http\Controllers\Api\ContactController;
 use Haemanthus\Basement\Http\Controllers\Api\PrivateMessageController;
 use Illuminate\Support\Facades\Route;
 
-Route::middleware(config('basement.middleware'))->name('api.')->prefix('api')->group(function (): void {
+Route::middleware(config('basement.middleware'))->name('api.')->prefix('api')->group(static function (): void {
     Route::apiResource(name: 'contacts', controller: ContactController::class)
         ->only('index');
 

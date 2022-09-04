@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Haemanthus\Basement\Http\Requests;
 
 use Haemanthus\Basement\Data\PrivateMessageData;
@@ -18,47 +20,11 @@ class UpdatePrivateMessagesRequest extends FormRequest
 
     /**
      * Private messages list with mark as read operation.
-     *
-     * @var \Spatie\LaravelData\DataCollection
      */
     protected DataCollection $privateMessagesWithMarkAsReadOperation;
 
     /**
-     * Validate if the given private messages can be marked as read by the user.
-     *
-     * @param  \Illuminate\Validation\Validator  $validator
-     * @return void
-     */
-    protected function validateMarkAsReadOperation(Validator $validator): void
-    {
-        /** @var array <int,int> $messagesId */
-        $messagesId = $this
-            ->collect()
-            ->where(key: 'operation', operator: self::MARK_AS_READ_OPERATION)
-            ->pluck('value.id')
-            ->all();
-
-        $this->privateMessagesWithMarkAsReadOperation = PrivateMessageData::collectionFromId($messagesId);
-
-        /** @var \Illuminate\Support\Collection<int,\Haemanthus\Basement\Data\PrivateMessageData> */
-        $privateMessages = $this->privateMessagesWithMarkAsReadOperation->toCollection();
-
-        $privateMessages->each(function (PrivateMessageData $data, int $key) use ($validator): void {
-            if ($data->receiver_id === Auth::id()) {
-                return;
-            }
-
-            $validator->errors()->add(
-                key: "{$key}.value.id",
-                message: "The given {$key}.value.id cannot be marked as received because you didn't receive this private message",
-            );
-        });
-    }
-
-    /**
      * Determine if the user is authorized to make this request.
-     *
-     * @return bool
      */
     public function authorize(): bool
     {
@@ -68,7 +34,7 @@ class UpdatePrivateMessagesRequest extends FormRequest
     /**
      * Get the validation rules that apply to the request.
      *
-     * @return array<string, mixed>
+     * @return array<string,array<mixed>>
      */
     public function rules(): array
     {
@@ -80,8 +46,6 @@ class UpdatePrivateMessagesRequest extends FormRequest
 
     /**
      * Get private messages request that need to be marked as read.
-     *
-     * @return \Spatie\LaravelData\DataCollection
      */
     public function privateMessagesWithMarkAsReadOperation(): DataCollection
     {
@@ -90,14 +54,41 @@ class UpdatePrivateMessagesRequest extends FormRequest
 
     /**
      * Configure the validator instance.
-     *
-     * @param  \Illuminate\Validation\Validator  $validator
-     * @return void
      */
     public function withValidator(Validator $validator): void
     {
         $validator->after(function (Validator $validator): void {
             $this->validateMarkAsReadOperation($validator);
+        });
+    }
+
+    /**
+     * Validate if the given private messages can be marked as read by the user.
+     */
+    protected function validateMarkAsReadOperation(Validator $validator): void
+    {
+        /** @var array<int,int> $messagesId */
+        $messagesId = $this
+            ->collect()
+            ->where(key: 'operation', operator: self::MARK_AS_READ_OPERATION)
+            ->pluck('value.id')
+            ->all();
+
+        $this->privateMessagesWithMarkAsReadOperation = PrivateMessageData::collectionFromId($messagesId);
+
+        /** @var \Illuminate\Support\Collection<int,\Haemanthus\Basement\Data\PrivateMessageData> $privateMessages */
+        $privateMessages = $this->privateMessagesWithMarkAsReadOperation->toCollection();
+
+        $privateMessages->each(static function (PrivateMessageData $data, int $key) use ($validator): void {
+            if ($data->receiver_id === Auth::id()) {
+                return;
+            }
+
+            $validator->errors()->add(
+                key: "{$key}.value.id",
+                message: "The given {$key}.value.id cannot be marked as received
+                    because you didn't receive this private message",
+            );
         });
     }
 }

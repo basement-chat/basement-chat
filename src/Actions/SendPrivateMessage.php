@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Haemanthus\Basement\Actions;
 
 use Haemanthus\Basement\Contracts\SendPrivateMessage as SendPrivateMessageContract;
@@ -11,30 +13,7 @@ use Illuminate\Support\Facades\Notification;
 class SendPrivateMessage implements SendPrivateMessageContract
 {
     /**
-     * Notify receiver that a new message has been sent.
-     *
-     * @param \Haemanthus\Basement\Data\PrivateMessageData $privateMessage
-     * @return void
-     */
-    protected function notifyReceiver(PrivateMessageData $privateMessage): void
-    {
-        /** @var \Illuminate\Foundation\Auth\User&\Haemanthus\Basement\Contracts\User $receiver */
-        $receiver = $privateMessage->receiver->resolve();
-
-        Notification::send(
-            notifiables: $receiver,
-            notification: new PrivateMessageSent(
-                receiver: $receiver,
-                privateMessage: $privateMessage,
-            ),
-        );
-    }
-
-    /**
      * Send a private message to the receiver.
-     *
-     * @param \Haemanthus\Basement\Data\PrivateMessageData $privateMessage
-     * @return \Haemanthus\Basement\Data\PrivateMessageData
      */
     public function send(PrivateMessageData $privateMessage): PrivateMessageData
     {
@@ -52,5 +31,22 @@ class SendPrivateMessage implements SendPrivateMessageContract
         $this->notifyReceiver($privateMessage);
 
         return $privateMessage;
+    }
+
+    /**
+     * Notify receiver that a new message has been sent.
+     */
+    protected function notifyReceiver(PrivateMessageData $privateMessage): void
+    {
+        /** @var \Illuminate\Foundation\Auth\User&\Haemanthus\Basement\Contracts\User $receiver */
+        $receiver = $privateMessage->receiver->resolve();
+
+        Notification::send(
+            notifiables: $receiver,
+            notification: new PrivateMessageSent(
+                receiver: $receiver,
+                privateMessage: $privateMessage,
+            ),
+        );
     }
 }

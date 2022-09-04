@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Haemanthus\Basement\Casts;
 
 use Haemanthus\Basement\Enums\MessageType;
@@ -11,10 +13,6 @@ class AsMessageType implements Cast, CastsAttributes
 {
     /**
      * Cast the given value to message type enum.
-     *
-     * @param \Spatie\LaravelData\Support\DataProperty $property
-     * @param mixed $value
-     * @return \Haemanthus\Basement\Enums\MessageType
      */
     public function cast(DataProperty $property, mixed $value): MessageType
     {
@@ -33,12 +31,10 @@ class AsMessageType implements Cast, CastsAttributes
      * Transform the attribute from the underlying model values.
      *
      * @param  \Illuminate\Database\Eloquent\Model  $model
-     * @param  string  $key
      * @param  string|int  $value
-     * @param  array  $attributes
-     * @return \Haemanthus\Basement\Enums\MessageType
+     * @param  array<model-property<\Haemanthus\Basement\Models\PrivateMessage>,mixed>  $attributes
      */
-    public function get($model, string $key, mixed $value, array $attributes): MessageType
+    public function get(mixed $model, string $key, mixed $value, array $attributes): MessageType
     {
         return MessageType::from($value);
     }
@@ -47,12 +43,10 @@ class AsMessageType implements Cast, CastsAttributes
      * Transform the attribute to its underlying model values.
      *
      * @param  \Illuminate\Database\Eloquent\Model  $model
-     * @param  string  $key
      * @param  \Haemanthus\Basement\Enums\MessageType  $value
-     * @param  array  $attributes
-     * @return string
+     * @param  array<model-property<\Haemanthus\Basement\Models\PrivateMessage>,mixed>  $attributes
      */
-    public function set($model, string $key, mixed $value, array $attributes): string
+    public function set(mixed $model, string $key, mixed $value, array $attributes): string
     {
         return (string) $value->value;
     }

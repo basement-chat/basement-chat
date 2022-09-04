@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Haemanthus\Basement\Database\Factories;
 
 use Haemanthus\Basement\Enums\MessageType;
@@ -25,7 +27,7 @@ class PrivateMessageFactory extends Factory
      *
      * @return array<model-property<\Haemanthus\Basement\Models\PrivateMessage>, mixed>
      */
-    public function definition()
+    public function definition(): array
     {
         /** @var \Haemanthus\Basement\Tests\Fixtures\User $receiver */
         $receiver = User::inRandomOrder()->first();
@@ -47,7 +49,6 @@ class PrivateMessageFactory extends Factory
      *
      * @param \Illuminate\Foundation\Auth\User&\Haemanthus\Basement\Contracts\User $receiver
      * @param \Illuminate\Foundation\Auth\User&\Haemanthus\Basement\Contracts\User $sender
-     * @return self
      */
     public function betweenTwoUsers(Authenticatable $receiver, Authenticatable $sender): self
     {
@@ -61,7 +62,6 @@ class PrivateMessageFactory extends Factory
      * Indicate that the receiver and sender model's should be same.
      *
      * @param \Illuminate\Foundation\Auth\User&\Haemanthus\Basement\Contracts\User $user
-     * @return self
      */
     public function sendToSelf(Authenticatable $user): self
     {

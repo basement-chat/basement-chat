@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Haemanthus\Basement\Contracts;
 
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -11,8 +13,6 @@ interface AllContacts
      * Get all contact list.
      *
      * @param \Illuminate\Foundation\Auth\User&\Haemanthus\Basement\Contracts\User $user
-     *
-     * @return \Spatie\LaravelData\DataCollection
      */
     public function all(Authenticatable $user): DataCollection;
 }

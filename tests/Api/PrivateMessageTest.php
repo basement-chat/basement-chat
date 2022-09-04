@@ -1,12 +1,13 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Haemanthus\Basement\Tests\Api;
 
 use Haemanthus\Basement\Models\PrivateMessage;
 use Haemanthus\Basement\Tests\ApiJsonStructure;
 use Haemanthus\Basement\Tests\Fixtures\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-
 use function Pest\Laravel\actingAs;
 use function Pest\Laravel\get;
 use function Pest\Laravel\patch;
@@ -60,7 +61,7 @@ it(description: 'should get response status code 201 if can send a private messa
 
     $response->assertCreated();
     $response->assertJsonStructure([
-        'data' =>  $this->privateMessageStructure,
+        'data' => $this->privateMessageStructure,
     ]);
 });
 
@@ -105,7 +106,7 @@ it(description: 'should get response status code 200 if can mark private message
     $response = patch(
         uri: '/api/private-messages',
         data: $messages
-            ->map(fn (PrivateMessage $privateMessage): array => [
+            ->map(static fn (PrivateMessage $privateMessage): array => [
                 'operation' => 'mark as read',
                 'value' => ['id' => $privateMessage->id],
             ])
@@ -117,12 +118,11 @@ it(description: 'should get response status code 200 if can mark private message
 
     $response->assertOk();
     $response->assertJsonStructure([
-        'data' =>  [
+        'data' => [
             '*' => $this->privateMessageStructure,
         ],
     ]);
 });
-
 
 it(description: 'should get response status code 422 if mark message as read which is not received', closure: function (): void {
     [$receiver, $sender] = User::factory()->count(2)->create();
@@ -140,7 +140,7 @@ it(description: 'should get response status code 422 if mark message as read whi
     $response = patch(
         uri: '/api/private-messages',
         data: $messages
-            ->map(fn (PrivateMessage $privateMessage): array => [
+            ->map(static fn (PrivateMessage $privateMessage): array => [
                 'operation' => 'mark as read',
                 'value' => ['id' => $privateMessage->id],
             ])

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Haemanthus\Basement;
 
 use Haemanthus\Basement\Contracts\AllContacts;
@@ -16,7 +18,6 @@ class Basement implements BasementContract
     /**
      * The user model used by the application.
      *
-     * @var string
      * @phpstan-var class-string<\Illuminate\Foundation\Auth\User>&class-string<\Haemanthus\Basement\Contracts\User>
      */
     protected static string $userModel;
@@ -24,16 +25,12 @@ class Basement implements BasementContract
     /**
      * The private message model used by the application.
      *
-     * @var string
      * @phpstan-var class-string<\Haemanthus\Basement\Models\PrivateMessage>
      */
     protected static string $privateMessageModel;
 
     /**
      * Specify the user model used by the application.
-     *
-     * @param mixed $class
-     * @return void
      *
      * @throws \TypeError if the given user model is not a subclass of \Illuminate\Foundation\Auth\User
      *                    or does not implement the \Haemanthus\Basement\Contracts\User.
@@ -78,9 +75,6 @@ class Basement implements BasementContract
     /**
      * Specify the private message model used by the application.
      *
-     * @param mixed $class
-     * @return void
-     *
      * @throws \TypeError if the given user model is not a subclass of \Haemanthus\Basement\Models\PrivateMessage.
      */
     public static function usePrivateMessageModel(mixed $class): void
@@ -110,8 +104,6 @@ class Basement implements BasementContract
 
     /**
      * Get a new instance of the private message model.
-     *
-     * @return \Haemanthus\Basement\Models\PrivateMessage
      */
     public static function newPrivateMessageModel(): PrivateMessage
     {
@@ -122,7 +114,6 @@ class Basement implements BasementContract
      * Register a class / callback that should be used to get all contacts.
      *
      * @param  class-string<\Haemanthus\Basement\Contracts\AllContacts>   $class
-     * @return void
      */
     public static function allContactsUsing(string $class): void
     {
@@ -133,7 +124,6 @@ class Basement implements BasementContract
      * Register a class / callback that should be used to get all private messages.
      *
      * @param  class-string<\Haemanthus\Basement\Contracts\AllPrivateMessages>   $class
-     * @return void
      */
     public static function allPrivateMessagesUsing(string $class): void
     {
@@ -144,7 +134,6 @@ class Basement implements BasementContract
      * Register a class / callback that should be used to get mark private messages as read.
      *
      * @param  class-string<\Haemanthus\Basement\Contracts\MarkPrivatesMessagesAsRead>   $class
-     * @return void
      */
     public static function markPrivateMessagesAsReadUsing(string $class): void
     {
@@ -155,7 +144,6 @@ class Basement implements BasementContract
      * Register a class / callback that should be used to send a private message.
      *
      * @param  class-string<\Haemanthus\Basement\Contracts\SendPrivateMessage>   $class
-     * @return void
      */
     public static function sendPrivateMessagesUsing(string $class): void
     {

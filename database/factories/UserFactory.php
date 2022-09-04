@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Haemanthus\Basement\Database\Factories;
 
 use Haemanthus\Basement\Tests\Fixtures\User;
@@ -23,7 +25,7 @@ class UserFactory extends Factory
      *
      * @return array<model-property<\Haemanthus\Basement\Tests\Fixtures\User>, mixed>
      */
-    public function definition()
+    public function definition(): array
     {
         return [
             'name' => fake()->name(),

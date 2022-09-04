@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Haemanthus\Basement\Tests\Feature;
 
 use Haemanthus\Basement\Contracts\MarkPrivatesMessagesAsRead;
@@ -23,7 +25,7 @@ it(description: 'should be able to mark private messages as read', closure: func
     /** @var \Haemanthus\Basement\Tests\Fixtures\User $sender */
     /** @var \Haemanthus\Basement\Tests\TestCase $this */
 
-    $this->freezeTime(function (Carbon $time) use ($receiver, $sender): void {
+    $this->freezeTime(static function (Carbon $time) use ($receiver, $sender): void {
         $messagesId = PrivateMessage::factory()
             ->count(10)
             ->betweenTwoUsers(receiver: $receiver, sender: $sender)

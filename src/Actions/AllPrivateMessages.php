@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Haemanthus\Basement\Actions;
 
 use Haemanthus\Basement\Contracts\AllPrivateMessages as AllPrivateMessagesContract;
@@ -25,8 +27,6 @@ class AllPrivateMessages implements AllPrivateMessagesContract
      *
      * @param \Illuminate\Foundation\Auth\User&\Haemanthus\Basement\Contracts\User $receiver
      * @param \Illuminate\Foundation\Auth\User&\Haemanthus\Basement\Contracts\User $sender
-     *
-     * @return \Spatie\LaravelData\DataCollection
      */
     public function allBetweenTwoUsers(
         Authenticatable $receiver,

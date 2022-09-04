@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Haemanthus\Basement\Tests\Feature;
 
 use Haemanthus\Basement\Contracts\AllContacts;
@@ -28,7 +30,7 @@ it(description: 'should be able to get all contacts', closure: function (): void
     /** @var \Haemanthus\Basement\Data\ContactData $contact */
     $contact = $contacts
         ->toCollection()
-        ->first(fn (ContactData $data): bool => $data->id === $users[0]->id);
+        ->first(static fn (ContactData $data): bool => $data->id === $users[0]->id);
 
     expect($contact)->toBeInstanceOf(ContactData::class);
     expect($contact->id)->toBe($users[0]->id);
@@ -56,7 +58,7 @@ it(description: 'should have the last private message', closure: function (): vo
     $contact = $allContactsAction
         ->all($sender)
         ->toCollection()
-        ->first(fn (ContactData $data): bool => $data->id === $receiver->id);
+        ->first(static fn (ContactData $data): bool => $data->id === $receiver->id);
 
     expect($contact->last_private_message)->toBeInstanceOf(PrivateMessageData::class);
     expect($contact->last_private_message->id)->toBe($lastMessage->id);
@@ -85,7 +87,7 @@ it(description: 'should have the number of unread messages', closure: function (
     $contact = $allContactsAction
         ->all($receiver)
         ->toCollection()
-        ->first(fn (ContactData $data): bool => $data->id === $sender->id);
+        ->first(static fn (ContactData $data): bool => $data->id === $sender->id);
 
     expect($contact->unread_messages)->toBe(5);
 });

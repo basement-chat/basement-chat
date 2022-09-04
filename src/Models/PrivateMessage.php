@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Haemanthus\Basement\Models;
 
 use Haemanthus\Basement\Casts\AsMessageType;
@@ -78,8 +80,6 @@ class PrivateMessage extends Model
      * Scope a query to sort by id in descending order
      *
      * @param  \Illuminate\Database\Eloquent\Builder<PrivateMessage>  $query
-     *
-     * @return void
      */
     public function scopeOrderByDescId(Builder $query): void
     {
@@ -92,16 +92,14 @@ class PrivateMessage extends Model
      * @param  \Illuminate\Database\Eloquent\Builder<PrivateMessage>  $query
      * @param  \Illuminate\Foundation\Auth\User&\Haemanthus\Basement\Contracts\User $a
      * @param  \Illuminate\Foundation\Auth\User&\Haemanthus\Basement\Contracts\User $b
-     *
-     * @return void
      */
     public function scopeWhereBetweenTwoUsers(Builder $query, Authenticatable $a, Authenticatable $b): void
     {
-        $query->where(fn (Builder $clause): Builder => $clause
-            ->where(fn (Builder $subclause): Builder => $subclause
+        $query->where(static fn (Builder $clause): Builder => $clause
+            ->where(static fn (Builder $subclause): Builder => $subclause
                 ->whereBelongsTo($a, 'receiver')
                 ->whereBelongsTo($b, 'sender'))
-            ->orWhere(fn (Builder $subclause): Builder => $subclause
+            ->orWhere(static fn (Builder $subclause): Builder => $subclause
                 ->whereBelongsTo($b, 'receiver')
                 ->whereBelongsTo($a, 'sender')));
     }
@@ -110,9 +108,6 @@ class PrivateMessage extends Model
      * Scope a query to include only messages containing the given keyword.
      *
      * @param  \Illuminate\Database\Eloquent\Builder<PrivateMessage>  $query
-     * @param  string $keyword
-     *
-     * @return void
      */
     public function scopeWhereValueLike(Builder $query, string $keyword): void
     {

@@ -1,9 +1,14 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Haemanthus\Basement\Tests;
 
 trait ApiJsonStructure
 {
+    /**
+     * @var array<string>
+     */
     protected array $contactStructure = [
         'id',
         'name',
@@ -12,6 +17,9 @@ trait ApiJsonStructure
         'unread_messages',
     ];
 
+    /**
+     * @var array<array<string>>
+     */
     protected array $paginationStructure = [
         'links' => [
             'first',
@@ -27,6 +35,9 @@ trait ApiJsonStructure
         ],
     ];
 
+    /**
+     * @var array<string>
+     */
     protected array $privateMessageStructure = [
         'id',
         'receiver_id',

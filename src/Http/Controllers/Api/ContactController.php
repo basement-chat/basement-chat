@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Haemanthus\Basement\Http\Controllers\Api;
 
 use Haemanthus\Basement\Contracts\AllContacts;
@@ -12,9 +14,6 @@ class ContactController extends Controller
 {
     /**
      * Display a listing of the resource.
-     *
-     * @param \Haemanthus\Basement\Contracts\AllContacts $allContacts
-     * @return \Illuminate\Http\JsonResponse
      */
     public function index(AllContacts $allContacts): JsonResponse
     {
