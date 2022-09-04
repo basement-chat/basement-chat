@@ -14,7 +14,7 @@ class ContactController extends Controller
      * Display a listing of the resource.
      *
      * @param \Haemanthus\Basement\Contracts\AllContacts $allContacts
-     * @return \Illuminate\Http\Resources\Json\JsonResource
+     * @return \Illuminate\Http\JsonResponse
      */
     public function index(AllContacts $allContacts): JsonResponse
     {

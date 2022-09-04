@@ -21,23 +21,23 @@ class PrivateMessageData extends Data
     /**
      * Create a new private message data instance.
      *
-     * @param int|null $id
      * @param int $receiver_id
      * @param int $sender_id
      * @param \Haemanthus\Basement\Enums\MessageType $type
      * @param string $value
+     * @param int|null $id
      * @param \Illuminate\Support\Carbon|null $created_at
      * @param \Illuminate\Support\Carbon|null $read_at
      * @param \Spatie\LaravelData\Lazy|(Authenticatable&\Haemanthus\Basement\Contracts\User)|null $receiver
      * @param \Spatie\LaravelData\Lazy|(Authenticatable&\Haemanthus\Basement\Contracts\User)|null $sender
      */
     public function __construct(
-        public ?int $id = null,
         public int $receiver_id,
         public int $sender_id,
         #[WithCast(AsMessageType::class)]
         public MessageType $type,
         public string $value,
+        public ?int $id = null,
         public ?Carbon $created_at = null,
         public ?Carbon $read_at = null,
         public Lazy|Authenticatable|null $receiver = null,

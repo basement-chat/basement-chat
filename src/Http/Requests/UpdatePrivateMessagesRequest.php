@@ -31,24 +31,28 @@ class UpdatePrivateMessagesRequest extends FormRequest
      */
     protected function validateMarkAsReadOperation(Validator $validator): void
     {
-        $this->privateMessagesWithMarkAsReadOperation = PrivateMessageData::collectionFromId($this->safe()
+        /** @var array <int,int> $messagesId */
+        $messagesId = $this
             ->collect()
-            ->where('operation', self::MARK_AS_READ_OPERATION)
+            ->where(key: 'operation', operator: self::MARK_AS_READ_OPERATION)
             ->pluck('value.id')
-            ->all());
+            ->all();
 
-        $this->privateMessagesWithMarkAsReadOperation
-            ->toCollection()
-            ->each(function (PrivateMessageData $data, int $key) use ($validator): void {
-                if ($data->receiver_id === Auth::id()) {
-                    return;
-                }
+        $this->privateMessagesWithMarkAsReadOperation = PrivateMessageData::collectionFromId($messagesId);
 
-                $validator->errors()->add(
-                    key: "{$key}.value.id",
-                    message: "The given {$key}.value.id cannot be marked as received because you didn't receive this private message",
-                );
-            });
+        /** @var \Illuminate\Support\Collection<int,\Haemanthus\Basement\Data\PrivateMessageData> */
+        $privateMessages = $this->privateMessagesWithMarkAsReadOperation->toCollection();
+
+        $privateMessages->each(function (PrivateMessageData $data, int $key) use ($validator): void {
+            if ($data->receiver_id === Auth::id()) {
+                return;
+            }
+
+            $validator->errors()->add(
+                key: "{$key}.value.id",
+                message: "The given {$key}.value.id cannot be marked as received because you didn't receive this private message",
+            );
+        });
     }
 
     /**

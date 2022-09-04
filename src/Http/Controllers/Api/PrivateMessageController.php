@@ -52,11 +52,17 @@ class PrivateMessageController extends Controller
         StorePrivateMessageRequest $request,
         SendPrivateMessage $sendPrivateMessage
     ): JsonResponse {
+        /** @var int $senderId */
+        $senderId = Auth::id();
+
+        /** @var string $value */
+        $value = $request->input('value');
+
         $message = $sendPrivateMessage->send(new PrivateMessageData(
             receiver_id: $contact->id,
-            sender_id: Auth::id(),
+            sender_id: $senderId,
             type: MessageType::text(),
-            value: $request->input('value'),
+            value: $value,
         ));
 
         return (new JsonResource($message))->response()->setStatusCode(Response::HTTP_CREATED);
