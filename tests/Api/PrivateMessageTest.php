@@ -4,153 +4,161 @@ declare(strict_types=1);
 
 namespace Haemanthus\Basement\Tests\Api;
 
-use Haemanthus\Basement\Models\PrivateMessage;
 use Haemanthus\Basement\Tests\ApiJsonStructure;
 use Haemanthus\Basement\Tests\Fixtures\User;
+use Haemanthus\Basement\Tests\TestCase;
+use Haemanthus\Basement\Tests\WithPrivateMessages;
+use Haemanthus\Basement\Tests\WithUsers;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
-use function Pest\Laravel\actingAs;
-use function Pest\Laravel\get;
-use function Pest\Laravel\patch;
-use function Pest\Laravel\post;
+class PrivateMessageTest extends TestCase
+{
+    use ApiJsonStructure;
+    use RefreshDatabase;
+    use WithUsers;
+    use WithPrivateMessages;
 
-uses(ApiJsonStructure::class, RefreshDatabase::class);
+    protected User $receiver;
 
-it(description: 'should get response status code 200 if can get all private messages', closure: function (): void {
-    [$receiver, $sender] = User::factory()->count(2)->create();
+    protected User $sender;
 
-    /** @var \Haemanthus\Basement\Tests\Fixtures\User $receiver */
-    /** @var \Haemanthus\Basement\Tests\Fixtures\User $sender */
+    /**
+     * Setup the test environment.
+     */
+    protected function setUp(): void
+    {
+        parent::setUp();
 
-    PrivateMessage::factory()
-        ->count(15)
-        ->betweenTwoUsers(receiver: $receiver, sender: $sender)
-        ->create();
+        $this->setUpUsers();
+        $this->setUpPrivateMessages();
+        $this->addUsers(2);
 
-    actingAs($receiver);
+        $this->receiver = $this->users[0];
+        $this->sender = $this->users[1];
+    }
 
-    $response = get("/api/contacts/{$sender->id}/private-messages");
+    /**
+     * @test
+     */
+    public function itShouldGetResponseStatusCodeOkIfCanGetAllPrivateMessages(): void
+    {
+        $this->addPrivateMessages(receiver: $this->receiver, sender: $this->sender, count: 15);
 
-    $response->assertOk();
-    $response->assertJsonStructure(array_merge($this->paginationStructure, [
-        'data' => [
-            '*' => $this->privateMessageStructure,
-        ],
-    ]));
-});
+        $this->actingAs($this->sender);
 
-it(description: 'should be redirected to login page if not authenticated when getting all private messages', closure: function (): void {
-    /** @var \Haemanthus\Basement\Tests\Fixtures\User $user */
-    $user = User::factory()->create();
+        $response = $this->get("/api/contacts/{$this->receiver->id}/private-messages");
 
-    $response = get("/api/contacts/{$user->id}/private-messages");
+        $response->assertOk();
+        $response->assertJsonStructure(array_merge($this->paginationStructure, [
+            'data' => [
+                '*' => $this->privateMessageStructure,
+            ],
+        ]));
+    }
 
-    $response->assertRedirect(uri: 'login');
-});
+    /**
+     * @test
+     */
+    public function itShouldBeRedirectedToLoginPageIfNotAuthenticatedWhenGettingAllPrivateMessages(): void
+    {
+        $response = $this->get("/api/contacts/{$this->receiver->id}/private-messages");
 
-it(description: 'should get response status code 201 if can send a private message', closure: function (): void {
-    [$receiver, $sender] = User::factory()->count(2)->create();
+        $response->assertRedirect('login');
+    }
 
-    /** @var \Haemanthus\Basement\Tests\Fixtures\User $receiver */
-    /** @var \Haemanthus\Basement\Tests\Fixtures\User $sender */
+    /**
+     * @test
+     */
+    public function itShouldGetResponseStatusCodeCreatedIfCanSendAPrivateMessage(): void
+    {
+        $this->actingAs($this->sender);
 
-    actingAs($sender);
+        $response = $this->post(uri: "/api/contacts/{$this->receiver->id}/private-messages", data: [
+            'value' => fake()->text(),
+        ]);
 
-    $response = post(uri: "/api/contacts/{$receiver->id}/private-messages", data: [
-        'value' => fake()->text(),
-    ]);
+        $response->assertCreated();
+        $response->assertJsonStructure([
+            'data' => $this->privateMessageStructure,
+        ]);
+    }
 
-    $response->assertCreated();
-    $response->assertJsonStructure([
-        'data' => $this->privateMessageStructure,
-    ]);
-});
+    /**
+     * @test
+     */
+    public function itShouldGetResponseStatusCodeUnprocessableIfTheDataProvidedIsIncorrectWhenSendingAPrivateMessage(): void
+    {
+        $this->actingAs($this->sender);
 
-it(description: 'should get response status code 422 if the data provided is incorrect when sending a private message', closure: function (): void {
-    /** @var \Haemanthus\Basement\Tests\Fixtures\User $user */
-    $user = User::factory()->create();
-
-    actingAs($user);
-
-    $response = post(uri: "/api/contacts/{$user->id}/private-messages", headers: [
-        'Accept' => 'application/json',
-    ]);
-
-    $response->assertUnprocessable();
-    $response->assertJsonStructure(['message', 'errors' => ['value']]);
-});
-
-it(description: 'should be redirected to login page if not authenticated when sending a private message', closure: function (): void {
-    /** @var \Haemanthus\Basement\Tests\Fixtures\User $user */
-    $user = User::factory()->create();
-
-    $response = post(uri: "/api/contacts/{$user->id}/private-messages", data: [
-        'value' => fake()->text(),
-    ]);
-
-    $response->assertRedirect(uri: 'login');
-});
-
-it(description: 'should get response status code 200 if can mark private messages as read', closure: function (): void {
-    [$receiver, $sender] = User::factory()->count(2)->create();
-
-    /** @var \Haemanthus\Basement\Tests\Fixtures\User $receiver */
-    /** @var \Haemanthus\Basement\Tests\Fixtures\User $sender */
-
-    $messages = PrivateMessage::factory()
-        ->count(10)
-        ->betweenTwoUsers(receiver: $receiver, sender: $sender)
-        ->create();
-
-    actingAs($receiver);
-
-    $response = patch(
-        uri: '/api/private-messages',
-        data: $messages
-            ->map(static fn (PrivateMessage $privateMessage): array => [
-                'operation' => 'mark as read',
-                'value' => ['id' => $privateMessage->id],
-            ])
-            ->toArray(),
-        headers: [
+        $response = $this->post(uri: "/api/contacts/{$this->receiver->id}/private-messages", headers: [
             'Accept' => 'application/json',
-        ],
-    );
+        ]);
 
-    $response->assertOk();
-    $response->assertJsonStructure([
-        'data' => [
-            '*' => $this->privateMessageStructure,
-        ],
-    ]);
-});
+        $response->assertUnprocessable();
+        $response->assertJsonStructure(['message', 'errors' => ['value']]);
+    }
 
-it(description: 'should get response status code 422 if mark message as read which is not received', closure: function (): void {
-    [$receiver, $sender] = User::factory()->count(2)->create();
+    /**
+     * @test
+     */
+    public function itShouldBeRedirectedToLoginPageIfNotAuthenticatedWhenSendingAPrivateMessage(): void
+    {
+        $response = $this->post(uri: "/api/contacts/{$this->receiver->id}/private-messages", data: [
+            'value' => fake()->text(),
+        ]);
 
-    /** @var \Haemanthus\Basement\Tests\Fixtures\User $receiver */
-    /** @var \Haemanthus\Basement\Tests\Fixtures\User $sender */
+        $response->assertRedirect('login');
+    }
 
-    $messages = PrivateMessage::factory()
-        ->count(10)
-        ->betweenTwoUsers(receiver: $receiver, sender: $sender)
-        ->create();
+    /**
+     * @test
+     */
+    public function itShouldGetResponseStatusCodeOkIfCanMarkPrivateMessagesAsRead(): void
+    {
+        $this->addPrivateMessages(receiver: $this->receiver, sender: $this->sender, count: 10);
 
-    actingAs($sender);
+        $this->actingAs($this->receiver);
 
-    $response = patch(
-        uri: '/api/private-messages',
-        data: $messages
-            ->map(static fn (PrivateMessage $privateMessage): array => [
+        $response = $this->patch(
+            uri: '/api/private-messages',
+            data: $this->privateMessages->pluck('id')->map(static fn (int $id): array => [
                 'operation' => 'mark as read',
-                'value' => ['id' => $privateMessage->id],
-            ])
-            ->toArray(),
-        headers: [
-            'Accept' => 'application/json',
-        ],
-    );
+                'value' => ['id' => $id],
+            ])->toArray(),
+            headers: [
+                'Accept' => 'application/json',
+            ],
+        );
 
-    $response->assertUnprocessable();
-    $response->assertJsonStructure(['message', 'errors' => ['0.value.id']]);
-});
+        $response->assertOk();
+        $response->assertJsonStructure([
+            'data' => [
+                '*' => $this->privateMessageStructure,
+            ],
+        ]);
+    }
+
+    /**
+     * @test
+     */
+    public function itShouldGetResponseStatusCodeUnprocessableIfMarkMessageAsReachWhichIsNotReceived(): void
+    {
+        $this->addPrivateMessages(receiver: $this->receiver, sender: $this->sender, count: 10);
+
+        $this->actingAs($this->sender);
+
+        $response = $this->patch(
+            uri: '/api/private-messages',
+            data: $this->privateMessages->pluck('id')->map(static fn (int $id): array => [
+                'operation' => 'mark as read',
+                'value' => ['id' => $id],
+            ])->toArray(),
+            headers: [
+                'Accept' => 'application/json',
+            ],
+        );
+
+        $response->assertUnprocessable();
+        $response->assertJsonStructure(['message', 'errors' => ['0.value.id']]);
+    }
+}

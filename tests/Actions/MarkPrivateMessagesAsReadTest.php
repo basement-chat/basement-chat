@@ -6,43 +6,67 @@ namespace Haemanthus\Basement\Tests\Feature;
 
 use Haemanthus\Basement\Contracts\MarkPrivatesMessagesAsRead;
 use Haemanthus\Basement\Data\PrivateMessageData;
-use Haemanthus\Basement\Models\PrivateMessage;
 use Haemanthus\Basement\Notifications\PrivateMessageRead;
 use Haemanthus\Basement\Tests\Fixtures\User;
+use Haemanthus\Basement\Tests\TestCase;
+use Haemanthus\Basement\Tests\WithPrivateMessages;
+use Haemanthus\Basement\Tests\WithUsers;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Notification;
 
-uses(RefreshDatabase::class);
+class MarkPrivateMessagesAsReadTest extends TestCase
+{
+    use RefreshDatabase;
+    use WithPrivateMessages;
+    use WithUsers;
 
-it(description: 'should be able to mark private messages as read', closure: function (): void {
-    Notification::fake();
+    protected User $receiver;
 
-    [$receiver, $sender] = User::factory()->count(2)->create();
+    protected User $sender;
 
-    /** @var \Haemanthus\Basement\Tests\Fixtures\User $receiver */
-    /** @var \Haemanthus\Basement\Tests\Fixtures\User $sender */
-    /** @var \Haemanthus\Basement\Tests\TestCase $this */
+    /**
+     * Setup the test environment.
+     */
+    protected function setUp(): void
+    {
+        parent::setUp();
 
-    $this->freezeTime(static function (Carbon $time) use ($receiver, $sender): void {
-        $messagesId = PrivateMessage::factory()
-            ->count(10)
-            ->betweenTwoUsers(receiver: $receiver, sender: $sender)
-            ->create()
-            ->pluck('id')
-            ->toArray();
+        $this->setUpUsers();
+        $this->setUpPrivateMessages();
+        $this->addUsers(2);
 
-        /** @var \Haemanthus\Basement\Contracts\MarkPrivatesMessagesAsRead $markAsReadAction */
-        $markAsReadAction = app(MarkPrivatesMessagesAsRead::class);
+        $this->receiver = $this->users[0];
+        $this->sender = $this->users[1];
+    }
 
-        $markAsReadAction->markAsRead(
-            PrivateMessageData::collectionFromId(messagesId: $messagesId, with: ['sender']),
-        );
+    /**
+     * @test
+     */
+    public function itShouldBeAbleToMarkPrivateMessagesAsRead(): void
+    {
+        $this->addPrivateMessages(receiver: $this->receiver, sender: $this->sender, count: 10);
 
-        expect(DB::table('private_messages')->where('read_at', $time)->count())->toBe(10);
-    });
+        Notification::fake();
 
-    Notification::assertSentTo(notifiable: $sender, notification: PrivateMessageRead::class);
-    Notification::assertCount(1);
-});
+        $this->freezeTime(function (Carbon $time): void {
+            /** @var \Haemanthus\Basement\Contracts\MarkPrivatesMessagesAsRead $markAsRead */
+            $markAsRead = app(MarkPrivatesMessagesAsRead::class);
+            $markAsRead->markAsRead(
+                PrivateMessageData::collectionFromId(
+                    messagesId: $this->privateMessages->pluck('id')->toArray(),
+                    with: ['sender'],
+                ),
+            );
+
+            $this->assertSame(
+                expected: 10,
+                actual: DB::table('private_messages')->where('read_at', $time)->count(),
+            );
+        });
+
+        Notification::assertSentTo(notifiable: $this->sender, notification: PrivateMessageRead::class);
+        Notification::assertCount(1);
+    }
+}

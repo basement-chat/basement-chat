@@ -7,88 +7,101 @@ namespace Haemanthus\Basement\Tests\Feature;
 use Haemanthus\Basement\Contracts\AllPrivateMessages;
 use Haemanthus\Basement\Models\PrivateMessage;
 use Haemanthus\Basement\Tests\Fixtures\User;
+use Haemanthus\Basement\Tests\TestCase;
+use Haemanthus\Basement\Tests\WithPrivateMessages;
+use Haemanthus\Basement\Tests\WithUsers;
 use Illuminate\Contracts\Pagination\CursorPaginator;
 use Illuminate\Database\Eloquent\Factories\Sequence;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Pest\Expectation;
 use Spatie\LaravelData\DataCollection;
 
-uses(RefreshDatabase::class);
+class AllPrivateMessagesTest extends TestCase
+{
+    use RefreshDatabase;
+    use WithUsers;
+    use WithPrivateMessages;
 
-it(description: 'should be able to get all private messages between two users', closure: function (): void {
-    [$user1, $user2] = User::factory()->count(2)->create();
+    protected User $receiver;
 
-    /** @var \Haemanthus\Basement\Tests\Fixtures\User $user1 */
-    /** @var \Haemanthus\Basement\Tests\Fixtures\User $user2 */
+    protected User $sender;
 
-    $createdMessages = PrivateMessage::factory()
-        ->count(2)
-        ->betweenTwoUsers(receiver: $user1, sender: $user2)
-        ->create()
-        ->merge(PrivateMessage::factory()
-            ->count(2)
-            ->betweenTwoUsers(receiver: $user2, sender: $user1)
-            ->create())
-        ->collect()
-        ->reverse()
-        ->values();
+    /**
+     * Setup the test environment.
+     */
+    public function setUp(): void
+    {
+        parent::setUp();
 
-    /** @var \Haemanthus\Basement\Contracts\AllPrivateMessages $allPrivateMessagesAction */
-    $allPrivateMessagesAction = app(AllPrivateMessages::class);
+        $this->setUpUsers();
+        $this->setUpPrivateMessages();
+        $this->addUsers(2);
 
-    $messages = $allPrivateMessagesAction->allBetweenTwoUsers(receiver: $user1, sender: $user2);
+        $this->receiver = $this->users[0];
+        $this->sender = $this->users[1];
+    }
 
-    expect($messages)->toBeInstanceOf(DataCollection::class);
-    expect($messages->count())->toBe($createdMessages->count());
+    /**
+     * @test
+     */
+    public function itShouldBeAbleToGetAllPrivateMessagesBetweenTwoUsers(): void
+    {
+        $this->addPrivateMessages(receiver: $this->receiver, sender: $this->sender, count: 10);
+        $this->addPrivateMessages(receiver: $this->sender, sender: $this->receiver, count: 10);
 
-    $createdMessages->each(static fn (PrivateMessage $message, int $key): Expectation => expect($message->id)
-        ->toBe($messages[$key]->id));
-});
+        /** @var \Haemanthus\Basement\Contracts\AllPrivateMessages $allPrivateMessages */
+        $allPrivateMessages = app(AllPrivateMessages::class);
 
-it(description: 'should be cursor paginated every 50 messages', closure: function (): void {
-    [$receiver, $sender] = User::factory()->count(2)->create();
+        $messages = $allPrivateMessages->allBetweenTwoUsers(receiver: $this->receiver, sender: $this->sender);
 
-    /** @var \Haemanthus\Basement\Tests\Fixtures\User $receiver */
-    /** @var \Haemanthus\Basement\Tests\Fixtures\User $sender */
+        $this->assertInstanceOf(expected: DataCollection::class, actual: $messages);
+        $this->assertCount(expectedCount: $this->privateMessages->count(), haystack: $messages);
 
-    PrivateMessage::factory()
-        ->count(100)
-        ->betweenTwoUsers(receiver: $receiver, sender: $sender)
-        ->create();
+        $this->privateMessages
+            ->reverse()
+            ->values()
+            ->each(fn (PrivateMessage $message, int $key) => $this->assertSame(
+                expected: $message->id,
+                actual: $messages[$key]->id,
+            ));
+    }
 
-    /** @var \Haemanthus\Basement\Contracts\AllPrivateMessages $allPrivateMessagesAction */
-    $allPrivateMessagesAction = app(AllPrivateMessages::class);
+    /**
+     * @test
+     */
+    public function itShouldBeCursorPaginated(): void
+    {
+        $this->addPrivateMessages(receiver: $this->receiver, sender: $this->sender, count: 100);
+        $this->addPrivateMessages(receiver: $this->sender, sender: $this->receiver, count: 100);
 
-    $messages = $allPrivateMessagesAction->allBetweenTwoUsers(receiver: $receiver, sender: $sender);
+        /** @var \Haemanthus\Basement\Contracts\AllPrivateMessages $allPrivateMessages */
+        $allPrivateMessages = app(AllPrivateMessages::class);
 
-    expect($messages->count())->toBe(50);
-    expect($messages->items())->toBeInstanceOf(CursorPaginator::class);
-    expect($messages->items()->nextPageUrl())->toBeString();
-});
+        $messages = $allPrivateMessages->allBetweenTwoUsers(receiver: $this->receiver, sender: $this->sender);
 
-it(description: 'should be filtered by the given keyword', closure: function (): void {
-    [$receiver, $sender] = User::factory()->count(2)->create();
+        $this->assertCount(expectedCount: 50, haystack: $messages);
+        $this->assertInstanceOf(expected: CursorPaginator::class, actual: $messages->items());
+        $this->assertNotNull(actual: $messages->items()->nextPageUrl());
+    }
 
-    /** @var \Haemanthus\Basement\Tests\Fixtures\User $receiver */
-    /** @var \Haemanthus\Basement\Tests\Fixtures\User $sender */
-
-    $messages = PrivateMessage::factory()
-        ->count(30)
-        ->betweenTwoUsers(receiver: $receiver, sender: $sender)
-        ->state(new Sequence(
+    /**
+     * @test
+     */
+    public function itShouldBeFilteredByTheGivenKeyword(): void
+    {
+        $this->addPrivateMessages(receiver: $this->receiver, sender: $this->sender, count: 30, state: new Sequence(
             ['value' => 'Lorem ipsum dolor sit amet consectetur, adipisicing elit.'],
             ['value' => 'Enim rerum ullam tenetur voluptatem, nostrum aspernatur consequatur libero itaque eos.'],
-        ))
-        ->create();
+        ));
 
-    /** @var \Haemanthus\Basement\Contracts\AllPrivateMessages $allPrivateMessagesAction */
-    $allPrivateMessagesAction = app(AllPrivateMessages::class);
+        /** @var \Haemanthus\Basement\Contracts\AllPrivateMessages $allPrivateMessages */
+        $allPrivateMessages = app(AllPrivateMessages::class);
 
-    $messages = $allPrivateMessagesAction->allBetweenTwoUsers(
-        receiver: $receiver,
-        sender: $sender,
-        keyword: 'lorem ipsum dolor sit',
-    );
+        $messages = $allPrivateMessages->allBetweenTwoUsers(
+            receiver: $this->receiver,
+            sender: $this->sender,
+            keyword: 'lorem ipsum dolor sit',
+        );
 
-    expect($messages->count())->toBe(15);
-});
+        $this->assertCount(expectedCount: 15, haystack: $messages);
+    }
+}

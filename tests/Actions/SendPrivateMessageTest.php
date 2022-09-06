@@ -9,68 +9,95 @@ use Haemanthus\Basement\Data\PrivateMessageData;
 use Haemanthus\Basement\Models\PrivateMessage;
 use Haemanthus\Basement\Notifications\PrivateMessageSent;
 use Haemanthus\Basement\Tests\Fixtures\User;
+use Haemanthus\Basement\Tests\TestCase;
+use Haemanthus\Basement\Tests\WithPrivateMessages;
+use Haemanthus\Basement\Tests\WithUsers;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Notification;
 
-use function Pest\Laravel\assertDatabaseCount;
-use function Pest\Laravel\assertDatabaseHas;
+class SendPrivateMessageTest extends TestCase
+{
+    use RefreshDatabase;
+    use WithPrivateMessages;
+    use WithUsers;
 
-uses(RefreshDatabase::class);
+    protected User $receiver;
 
-it(description: 'should be able to send a private message', closure: function (): void {
-    Notification::fake();
-    User::factory()->count(2)->create();
+    protected User $sender;
 
-    $message = PrivateMessageData::from(PrivateMessage::factory()->make()->load('receiver'));
+    /**
+     * Setup the test environment.
+     */
+    protected function setUp(): void
+    {
+        parent::setUp();
 
-    /** @var \Haemanthus\Basement\Tests\TestCase $this */
+        $this->setUpUsers();
+        $this->setUpPrivateMessages();
+        $this->addUsers(2);
 
-    $this->freezeTime(static function (Carbon $time) use ($message): void {
-        /** @var \Haemanthus\Basement\Contracts\SendPrivateMessage $sendPrivateMessageAction */
-        $sendPrivateMessageAction = app(SendPrivateMessage::class);
-        $createdMessage = $sendPrivateMessageAction->send($message);
+        $this->receiver = $this->users[0];
+        $this->sender = $this->users[1];
+    }
 
-        expect($createdMessage)->toBeInstanceOf(PrivateMessageData::class);
-        expect($createdMessage->created_at->toString())->toBe($time->toString());
-        expect($createdMessage->receiver_id)->toBe($message->receiver_id);
-        expect($createdMessage->sender_id)->toBe($message->sender_id);
-        expect($createdMessage->type)->toBe($message->type);
-        expect($createdMessage->value)->toBe($message->value);
-    });
+    /**
+     * @test
+     */
+    public function itShouldBeAbleToSendAPrivateMessage(): void
+    {
+        Notification::fake();
 
-    assertDatabaseCount(table: 'private_messages', count: 1);
-    assertDatabaseHas(table: 'private_messages', data: [
-        'receiver_id' => $message->receiver_id,
-        'sender_id' => $message->sender_id,
-        'type' => $message->type->value,
-        'value' => $message->value,
-    ]);
+        /** @var \Haemanthus\Basement\Models\PrivateMessage $message */
+        $message = PrivateMessage::factory()->make();
 
-    Notification::assertCount(1);
-    Notification::assertSentTo(notifiable: $message->receiver->resolve(), notification: PrivateMessageSent::class);
-});
+        $this->freezeTime(function (Carbon $time) use ($message): void {
+            /** @var \Haemanthus\Basement\Contracts\SendPrivateMessage $sendPrivateMessageAction */
+            $sendPrivateMessageAction = app(SendPrivateMessage::class);
 
-it(description: 'should be marked as read if sending a message to self', closure: function (): void {
-    Notification::fake();
+            $createdMessage = $sendPrivateMessageAction->send(PrivateMessageData::from($message));
 
-    /** @var \Haemanthus\Basement\Tests\Fixtures\User $receiver */
-    $user = User::factory()->create();
+            $this->assertInstanceOf(expected: PrivateMessageData::class, actual: $createdMessage);
+            $this->assertInstanceOf(expected: Carbon::class, actual: $createdMessage->created_at);
+            $this->assertSame(expected: $time->toString(), actual: $createdMessage->created_at->toString());
+            $this->assertSame(expected: $message->receiver_id, actual: $createdMessage->receiver_id);
+            $this->assertSame(expected: $message->sender_id, actual: $createdMessage->sender_id);
+            $this->assertSame(expected: $message->type, actual: $createdMessage->type);
+            $this->assertSame(expected: $message->value, actual: $createdMessage->value);
+        });
 
-    $message = PrivateMessageData::from(
-        PrivateMessage::factory()->sendToSelf($user)->make()->load('sender')
-    );
+        $this->assertDatabaseCount(table: 'private_messages', count: 1);
+        $this->assertDatabaseHas(table: 'private_messages', data: [
+            'receiver_id' => $message->receiver_id,
+            'sender_id' => $message->sender_id,
+            'type' => $message->type->value,
+            'value' => $message->value,
+        ]);
 
-    /** @var \Haemanthus\Basement\Tests\TestCase $this */
+        Notification::assertCount(1);
+        Notification::assertSentTo(notifiable: User::find($message->receiver_id), notification: PrivateMessageSent::class);
+    }
 
-    $this->freezeTime(static function (Carbon $time) use ($message): void {
-        /** @var \Haemanthus\Basement\Contracts\SendPrivateMessage $sendPrivateMessageAction */
-        $sendPrivateMessageAction = app(SendPrivateMessage::class);
-        $createdMessage = $sendPrivateMessageAction->send($message);
+    /**
+     * @test
+     */
+    public function itShouldBeMarkedAsReadIfSendingAMessageToSelf(): void
+    {
+        Notification::fake();
 
-        expect($createdMessage)->toBeInstanceOf(PrivateMessageData::class);
+        $this->addPrivateMessages(receiver: $this->receiver, sender: $this->receiver);
 
-        expect($createdMessage->read_at)->toBeInstanceOf(Carbon::class);
-        expect($createdMessage->read_at->toString())->toBe($time->toString());
-    });
-});
+        $message = $this->privateMessages[0];
+
+        $this->freezeTime(function (Carbon $time) use ($message): void {
+            /** @var \Haemanthus\Basement\Contracts\SendPrivateMessage $sendPrivateMessageAction */
+            $sendPrivateMessageAction = app(SendPrivateMessage::class);
+            $createdMessage = $sendPrivateMessageAction->send(PrivateMessageData::from($message));
+
+            $this->assertInstanceOf(expected: PrivateMessageData::class, actual: $createdMessage);
+
+            $this->assertInstanceOf(expected: Carbon::class, actual: $createdMessage->read_at);
+            $this->assertSame(expected: $time->toString(), actual: $createdMessage->read_at->toString());
+        });
+    }
+}

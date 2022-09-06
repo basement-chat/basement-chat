@@ -18,7 +18,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
  * @property int $id
  * @property int $receiver_id
  * @property int $sender_id
- * @property string $type
+ * @property \Haemanthus\Basement\Enums\MessageType $type
  * @property string $value
  * @property \Illuminate\Support\Carbon $created_at
  * @property \Illuminate\Support\Carbon|null $read_at

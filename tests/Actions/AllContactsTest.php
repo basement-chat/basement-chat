@@ -8,123 +8,144 @@ use Haemanthus\Basement\Contracts\AllContacts;
 use Haemanthus\Basement\Data\ContactData;
 use Haemanthus\Basement\Data\PrivateMessageData;
 use Haemanthus\Basement\Enums\AvatarStyle;
-use Haemanthus\Basement\Models\PrivateMessage;
 use Haemanthus\Basement\Tests\Fixtures\User;
+use Haemanthus\Basement\Tests\TestCase;
+use Haemanthus\Basement\Tests\WithPrivateMessages;
+use Haemanthus\Basement\Tests\WithUsers;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Spatie\LaravelData\DataCollection;
 
-uses(RefreshDatabase::class);
+class AllContactsTest extends TestCase
+{
+    use RefreshDatabase;
+    use WithPrivateMessages;
+    use WithUsers;
 
-it(description: 'should be able to get all contacts', closure: function (): void {
-    /** @var \Illuminate\Database\Eloquent\Collection<\Haemanthus\Basement\Tests\Fixtures\User> $users */
-    $users = User::factory(count: 10)->create();
+    protected User $receiver;
 
-    /** @var \Haemanthus\Basement\Contracts\AllContacts $allContactsAction */
-    $allContactsAction = app(AllContacts::class);
+    protected User $sender1;
 
-    $contacts = $allContactsAction->all($users[0]);
+    protected User $sender2;
 
-    expect($contacts)->toBeInstanceOf(DataCollection::class);
-    expect($contacts->count())->toBe($users->count());
+    /**
+     * Setup the test environment.
+     */
+    protected function setUp(): void
+    {
+        parent::setUp();
 
-    /** @var \Haemanthus\Basement\Data\ContactData $contact */
-    $contact = $contacts
-        ->toCollection()
-        ->first(static fn (ContactData $data): bool => $data->id === $users[0]->id);
+        $this->setUpUsers();
+        $this->setUpPrivateMessages();
+        $this->addUsers(3);
 
-    expect($contact)->toBeInstanceOf(ContactData::class);
-    expect($contact->id)->toBe($users[0]->id);
-    expect($contact->name)->toBe($users[0]->name);
-    expect($contact->avatar)->toBe($users[0]->avatar);
-});
+        $this->receiver = $this->users[0];
+        $this->sender1 = $this->users[1];
+        $this->sender2 = $this->users[2];
+    }
 
-it(description: 'should have the last private message', closure: function (): void {
-    [$receiver, $sender] = User::factory()->count(2)->create();
+    /**
+     * @test
+     */
+    public function itShouldBeAbleToGetAllContacts(): void
+    {
+        /** @var \Haemanthus\Basement\Contracts\AllContacts $allContacts */
+        $allContacts = app(AllContacts::class);
 
-    /** @var \Haemanthus\Basement\Tests\Fixtures\User $receiver */
-    /** @var \Haemanthus\Basement\Tests\Fixtures\User $sender */
+        $contacts = $allContacts->all($this->receiver);
 
-    /** @var \Haemanthus\Basement\Models\PrivateMessage $lastMessage */
-    $lastMessage = PrivateMessage::factory()
-        ->count(5)
-        ->betweenTwoUsers(receiver: $receiver, sender: $sender)
-        ->create()
-        ->last();
+        $this->assertInstanceOf(expected: DataCollection::class, actual: $contacts);
+        $this->assertCount(expectedCount: 3, haystack: $contacts);
 
-    /** @var \Haemanthus\Basement\Contracts\AllContacts $allContactsAction */
-    $allContactsAction = app(AllContacts::class);
+        $contact = $this->sameContact(id: $this->receiver->id, contacts: $contacts);
 
-    /** @var \Haemanthus\Basement\Data\ContactData $contact */
-    $contact = $allContactsAction
-        ->all($sender)
-        ->toCollection()
-        ->first(static fn (ContactData $data): bool => $data->id === $receiver->id);
+        $this->assertInstanceOf(expected: ContactData::class, actual: $contact);
+        $this->assertSame(expected: $contact->id, actual: $this->receiver->id);
+        $this->assertSame(expected: $contact->name, actual: $this->receiver->name);
+        $this->assertSame(expected: $contact->avatar, actual: $this->receiver->avatar);
+    }
 
-    expect($contact->last_private_message)->toBeInstanceOf(PrivateMessageData::class);
-    expect($contact->last_private_message->id)->toBe($lastMessage->id);
-    expect($contact->last_private_message->receiver_id)->toBe($lastMessage->receiver_id);
-    expect($contact->last_private_message->sender_id)->toBe($lastMessage->sender_id);
-    expect($contact->last_private_message->type)->toBe($lastMessage->type);
-    expect($contact->last_private_message->created_at->toString())->toBe($lastMessage->created_at->toString());
-    expect($contact->last_private_message->read_at)->toBe($lastMessage->read_at);
-});
+    /**
+     * @test
+     */
+    public function itShouldHaveTheLastPrivateMessage(): void
+    {
+        $this->addPrivateMessages(receiver: $this->receiver, sender: $this->sender1, count: 10);
 
-it(description: 'should have the number of unread messages', closure: function (): void {
-    [$receiver, $sender] = User::factory()->count(2)->create();
+        /** @var \Haemanthus\Basement\Models\PrivateMessage $lastMessage */
+        $lastMessage = $this->privateMessages->last();
 
-    /** @var \Haemanthus\Basement\Tests\Fixtures\User $receiver */
-    /** @var \Haemanthus\Basement\Tests\Fixtures\User $sender */
+        /** @var \Haemanthus\Basement\Contracts\AllContacts $allContacts */
+        $allContacts = app(AllContacts::class);
 
-    PrivateMessage::factory()
-        ->count(5)
-        ->betweenTwoUsers(receiver: $receiver, sender: $sender)
-        ->create();
+        $contact = $this->sameContact(contacts: $allContacts->all($this->sender1), id: $this->receiver->id);
 
-    /** @var \Haemanthus\Basement\Contracts\AllContacts $allContactsAction */
-    $allContactsAction = app(AllContacts::class);
+        $this->assertInstanceOf(expected: PrivateMessageData::class, actual: $contact->last_private_message);
+        $this->assertSame(expected: $lastMessage->id, actual: $contact->last_private_message->id);
+        $this->assertSame(expected: $lastMessage->receiver_id, actual: $contact->last_private_message->receiver_id);
+        $this->assertSame(expected: $lastMessage->sender_id, actual: $contact->last_private_message->sender_id);
+        $this->assertSame(expected: $lastMessage->type, actual: $contact->last_private_message->type);
+        $this->assertSame(expected: $lastMessage->created_at->toString(), actual: $contact->last_private_message->created_at->toString());
+        $this->assertSame(expected: $lastMessage->read_at, actual: $contact->last_private_message->read_at);
+    }
 
-    /** @var \Haemanthus\Basement\Data\ContactData $contact */
-    $contact = $allContactsAction
-        ->all($receiver)
-        ->toCollection()
-        ->first(static fn (ContactData $data): bool => $data->id === $sender->id);
+    /**
+     * @test
+     */
+    public function itShouldHaveTheNumberOfUnreadMessages(): void
+    {
+        $this->addPrivateMessages(receiver: $this->receiver, sender: $this->sender1, count: 10);
 
-    expect($contact->unread_messages)->toBe(5);
-});
+        /** @var \Haemanthus\Basement\Contracts\AllContacts $allContacts */
+        $allContacts = app(AllContacts::class);
 
-it(description: 'should be sorted in desc order at the time the last message is received', closure: function (): void {
-    [$receiver, $sender1, $sender2] = User::factory()->count(3)->create();
+        $contact = $this->sameContact(id: $this->sender1->id, contacts: $allContacts->all($this->receiver));
 
-    /** @var \Haemanthus\Basement\Tests\Fixtures\User $receiver */
-    /** @var \Haemanthus\Basement\Tests\Fixtures\User $sender1 */
-    /** @var \Haemanthus\Basement\Tests\Fixtures\User $sender2 */
+        $this->assertSame(expected: $contact->unread_messages, actual: 10);
+    }
 
-    PrivateMessage::factory()->betweenTwoUsers(receiver: $receiver, sender: $sender1)->create();
-    PrivateMessage::factory()->betweenTwoUsers(receiver: $receiver, sender: $sender2)->create();
+    /**
+     * @test
+     */
+    public function itShouldBeSortedInDescOrderAtTheTimeTheLastMessageIsReceived(): void
+    {
+        $this->addPrivateMessages(receiver: $this->receiver, sender: $this->sender1, count: 10);
+        $this->addPrivateMessages(receiver: $this->receiver, sender: $this->sender2, count: 10);
 
-    /** @var \Haemanthus\Basement\Contracts\AllContacts $allContactsAction */
-    $allContactsAction = app(AllContacts::class);
+        /** @var \Haemanthus\Basement\Contracts\AllContacts $allContacts */
+        $allContacts = app(AllContacts::class);
 
-    /** @var \Spatie\LaravelData\DataCollection & array<\Haemanthus\Basement\Data\ContactData> $contacts */
-    $contacts = $allContactsAction->all($receiver);
+        /** @var \Spatie\LaravelData\DataCollection & array<\Haemanthus\Basement\Data\ContactData> $contacts */
+        $contacts = $allContacts->all($this->receiver);
 
-    expect($contacts[0]->id)->toBe($sender2->id);
-    expect($contacts[0]->name)->toBe($sender2->name);
+        $this->assertSame(expected: $this->sender2->id, actual: $contacts[0]->id);
+        $this->assertSame(expected: $this->sender1->id, actual: $contacts[1]->id);
+        $this->assertSame(expected: $this->receiver->id, actual: $contacts[2]->id);
+    }
 
-    expect($contacts[1]->id)->toBe($sender1->id);
-    expect($contacts[1]->name)->toBe($sender1->name);
+    /**
+     * @test
+     */
+    public function itAvatarPropertyShouldRepresentTheValueFromTheConfigFile(): void
+    {
+        config(['basement.avatar.style' => AvatarStyle::bigEars()]);
+        config(['basement.avatar.options' => ['size' => 32]]);
 
-    expect($contacts[2]->id)->toBe($receiver->id);
-    expect($contacts[2]->name)->toBe($receiver->name);
-});
+        /** @var \Haemanthus\Basement\Contracts\AllContacts $allContacts */
+        $allContacts = app(AllContacts::class);
 
-it(description: 'avatar property must represent the value from the config', closure: function (): void {
-    config(['basement.avatar.style' => AvatarStyle::bigEars()]);
-    config(['basement.avatar.options' => ['size' => 32]]);
+        $contact = $this->sameContact(contacts: $allContacts->all($this->sender1), id: $this->receiver->id);
 
-    /** @var \Haemanthus\Basement\Tests\Fixtures\User $user */
-    $user = User::factory()->create(['name' => 'John Doe']);
+        $this->assertSame(
+            expected: 'https://avatars.dicebear.com/api/big-ears/' . md5($contact->name) . '.svg?size=32',
+            actual: $contact->avatar,
+        );
+    }
 
-    expect($user->avatar)
-        ->toBe('https://avatars.dicebear.com/api/big-ears/4c2a904bafba06591225113ad17b5cec.svg?size=32');
-});
+    protected function sameContact(int $id, DataCollection $contacts): ContactData
+    {
+        /** @var \Haemanthus\Basement\Data\ContactData $contact */
+        $contact = $contacts->toCollection()->first(static fn (ContactData $data): bool => $data->id === $id);
+
+        return $contact;
+    }
+}
