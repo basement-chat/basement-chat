@@ -3,8 +3,8 @@
 declare(strict_types=1);
 
 use App\Models\User;
-use Haemanthus\Basement\Enums\AvatarStyle;
-use Haemanthus\Basement\Enums\ChatBoxPosition;
+use BasementChat\Basement\Enums\AvatarStyle;
+use BasementChat\Basement\Enums\ChatBoxPosition;
 
 return [
 
@@ -28,7 +28,7 @@ return [
     |
     | Specify the namespace and class used to get the user model instance. The
     | given class must extend the "Illuminate\Foundation\Auth\User" and
-    | implement the "Haemanthus\Basement\Contracts\User".
+    | implement the "BasementChat\Basement\Contracts\User".
     |
     */
 

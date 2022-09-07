@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Haemanthus\Basement\Contracts;
+namespace BasementChat\Basement\Contracts;
 
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
@@ -30,21 +30,21 @@ interface User
     /**
      * Get all private messages that the user receives.
      *
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany<\Haemanthus\Basement\Models\PrivateMessage>
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany<\BasementChat\Basement\Models\PrivateMessage>
      */
     public function privateMessagesReceived(): HasMany;
 
     /**
      * Get all private messages sent by the user.
      *
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany<\Haemanthus\Basement\Models\PrivateMessage>
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany<\BasementChat\Basement\Models\PrivateMessage>
      */
     public function privateMessagesSent(): HasMany;
 
     /**
      * Get the private message that owns the last private message id.
      *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo<Model, \Haemanthus\Basement\Models\PrivateMessage>
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo<Model, \BasementChat\Basement\Models\PrivateMessage>
      */
     public function lastPrivateMessage(): BelongsTo;
 
@@ -52,7 +52,7 @@ interface User
      * Scope a query to append the latest private message id.
      *
      * @param  \Illuminate\Database\Eloquent\Builder<Authenticatable>|\Illuminate\Database\Query\Builder  $query
-     * @param  \Illuminate\Foundation\Auth\User&\Haemanthus\Basement\Contracts\User $user
+     * @param  \Illuminate\Foundation\Auth\User&\BasementChat\Basement\Contracts\User $user
      */
     public function scopeAddSelectLastPrivateMessageId(Builder|QueryBuilder $query, Authenticatable $user): void;
 
@@ -60,7 +60,7 @@ interface User
      * Scope a query to append the number of unread messages.
      *
      * @param  \Illuminate\Database\Eloquent\Builder<Authenticatable>|\Illuminate\Database\Query\Builder  $query
-     * @param  \Illuminate\Foundation\Auth\User&\Haemanthus\Basement\Contracts\User $user
+     * @param  \Illuminate\Foundation\Auth\User&\BasementChat\Basement\Contracts\User $user
      */
     public function scopeAddSelectUnreadMessages(Builder|QueryBuilder $query, Authenticatable $user): void;
 }

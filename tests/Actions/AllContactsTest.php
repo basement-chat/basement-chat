@@ -2,16 +2,16 @@
 
 declare(strict_types=1);
 
-namespace Haemanthus\Basement\Tests\Feature;
+namespace BasementChat\Basement\Tests\Feature;
 
-use Haemanthus\Basement\Contracts\AllContacts;
-use Haemanthus\Basement\Data\ContactData;
-use Haemanthus\Basement\Data\PrivateMessageData;
-use Haemanthus\Basement\Enums\AvatarStyle;
-use Haemanthus\Basement\Tests\Fixtures\User;
-use Haemanthus\Basement\Tests\TestCase;
-use Haemanthus\Basement\Tests\WithPrivateMessages;
-use Haemanthus\Basement\Tests\WithUsers;
+use BasementChat\Basement\Contracts\AllContacts;
+use BasementChat\Basement\Data\ContactData;
+use BasementChat\Basement\Data\PrivateMessageData;
+use BasementChat\Basement\Enums\AvatarStyle;
+use BasementChat\Basement\Tests\Fixtures\User;
+use BasementChat\Basement\Tests\TestCase;
+use BasementChat\Basement\Tests\WithPrivateMessages;
+use BasementChat\Basement\Tests\WithUsers;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Spatie\LaravelData\DataCollection;
 
@@ -48,7 +48,7 @@ class AllContactsTest extends TestCase
      */
     public function itShouldBeAbleToGetAllContacts(): void
     {
-        /** @var \Haemanthus\Basement\Contracts\AllContacts $allContacts */
+        /** @var \BasementChat\Basement\Contracts\AllContacts $allContacts */
         $allContacts = app(AllContacts::class);
 
         $contacts = $allContacts->all($this->receiver);
@@ -71,10 +71,10 @@ class AllContactsTest extends TestCase
     {
         $this->addPrivateMessages(receiver: $this->receiver, sender: $this->sender1, count: 10);
 
-        /** @var \Haemanthus\Basement\Models\PrivateMessage $lastMessage */
+        /** @var \BasementChat\Basement\Models\PrivateMessage $lastMessage */
         $lastMessage = $this->privateMessages->last();
 
-        /** @var \Haemanthus\Basement\Contracts\AllContacts $allContacts */
+        /** @var \BasementChat\Basement\Contracts\AllContacts $allContacts */
         $allContacts = app(AllContacts::class);
 
         $contact = $this->sameContact(contacts: $allContacts->all($this->sender1), id: $this->receiver->id);
@@ -95,7 +95,7 @@ class AllContactsTest extends TestCase
     {
         $this->addPrivateMessages(receiver: $this->receiver, sender: $this->sender1, count: 10);
 
-        /** @var \Haemanthus\Basement\Contracts\AllContacts $allContacts */
+        /** @var \BasementChat\Basement\Contracts\AllContacts $allContacts */
         $allContacts = app(AllContacts::class);
 
         $contact = $this->sameContact(id: $this->sender1->id, contacts: $allContacts->all($this->receiver));
@@ -111,10 +111,10 @@ class AllContactsTest extends TestCase
         $this->addPrivateMessages(receiver: $this->receiver, sender: $this->sender1, count: 10);
         $this->addPrivateMessages(receiver: $this->receiver, sender: $this->sender2, count: 10);
 
-        /** @var \Haemanthus\Basement\Contracts\AllContacts $allContacts */
+        /** @var \BasementChat\Basement\Contracts\AllContacts $allContacts */
         $allContacts = app(AllContacts::class);
 
-        /** @var \Spatie\LaravelData\DataCollection & array<\Haemanthus\Basement\Data\ContactData> $contacts */
+        /** @var \Spatie\LaravelData\DataCollection & array<\BasementChat\Basement\Data\ContactData> $contacts */
         $contacts = $allContacts->all($this->receiver);
 
         $this->assertSame(expected: $this->sender2->id, actual: $contacts[0]->id);
@@ -130,7 +130,7 @@ class AllContactsTest extends TestCase
         config(['basement.avatar.style' => AvatarStyle::bigEars()]);
         config(['basement.avatar.options' => ['size' => 32]]);
 
-        /** @var \Haemanthus\Basement\Contracts\AllContacts $allContacts */
+        /** @var \BasementChat\Basement\Contracts\AllContacts $allContacts */
         $allContacts = app(AllContacts::class);
 
         $contact = $this->sameContact(contacts: $allContacts->all($this->sender1), id: $this->receiver->id);
@@ -143,7 +143,7 @@ class AllContactsTest extends TestCase
 
     protected function sameContact(int $id, DataCollection $contacts): ContactData
     {
-        /** @var \Haemanthus\Basement\Data\ContactData $contact */
+        /** @var \BasementChat\Basement\Data\ContactData $contact */
         $contact = $contacts->toCollection()->first(static fn (ContactData $data): bool => $data->id === $id);
 
         return $contact;

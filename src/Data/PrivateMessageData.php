@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Haemanthus\Basement\Data;
+namespace BasementChat\Basement\Data;
 
-use Haemanthus\Basement\Casts\AsMessageType;
-use Haemanthus\Basement\Enums\MessageType;
-use Haemanthus\Basement\Facades\Basement;
+use BasementChat\Basement\Casts\AsMessageType;
+use BasementChat\Basement\Enums\MessageType;
+use BasementChat\Basement\Facades\Basement;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Support\Carbon;
 use Spatie\LaravelData\Attributes\WithCast;
@@ -26,8 +26,8 @@ class PrivateMessageData extends Data
     /**
      * Create a new private message data instance.
      *
-     * @param \Spatie\LaravelData\Lazy|(Authenticatable&\Haemanthus\Basement\Contracts\User)|null $receiver
-     * @param \Spatie\LaravelData\Lazy|(Authenticatable&\Haemanthus\Basement\Contracts\User)|null $sender
+     * @param \Spatie\LaravelData\Lazy|(Authenticatable&\BasementChat\Basement\Contracts\User)|null $receiver
+     * @param \Spatie\LaravelData\Lazy|(Authenticatable&\BasementChat\Basement\Contracts\User)|null $sender
      */
     public function __construct(
         public int $receiver_id,

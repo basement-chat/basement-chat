@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace Haemanthus\Basement\Actions;
+namespace BasementChat\Basement\Actions;
 
-use Haemanthus\Basement\Contracts\MarkPrivatesMessagesAsRead as MarkPrivatesMessagesAsReadContract;
-use Haemanthus\Basement\Data\PrivateMessageData;
-use Haemanthus\Basement\Facades\Basement;
-use Haemanthus\Basement\Notifications\PrivateMessageRead;
+use BasementChat\Basement\Contracts\MarkPrivatesMessagesAsRead as MarkPrivatesMessagesAsReadContract;
+use BasementChat\Basement\Data\PrivateMessageData;
+use BasementChat\Basement\Facades\Basement;
+use BasementChat\Basement\Notifications\PrivateMessageRead;
 use Illuminate\Support\Facades\Notification;
 use Spatie\LaravelData\DataCollection;
 use Spatie\LaravelData\Lazy;
@@ -35,14 +35,14 @@ class MarkPrivatesMessagesAsRead implements MarkPrivatesMessagesAsReadContract
      */
     protected function notifySenders(DataCollection $privateMessages): void
     {
-        /** @var \Illuminate\Support\Collection<int,\Haemanthus\Basement\Data\PrivateMessageData> $collection */
+        /** @var \Illuminate\Support\Collection<int,\BasementChat\Basement\Data\PrivateMessageData> $collection */
         $collection = $privateMessages->toCollection();
 
         /** @var \Illuminate\Support\Collection<int,\Spatie\LaravelData\Lazy> $senders */
         $senders = $collection->unique('sender_id')->pluck('sender');
 
         $senders->each(static function (Lazy $sender) use ($collection): void {
-            /** @var \Illuminate\Foundation\Auth\User&\Haemanthus\Basement\Contracts\User $user */
+            /** @var \Illuminate\Foundation\Auth\User&\BasementChat\Basement\Contracts\User $user */
             $user = $sender->resolve();
             $ownedMessages = $collection->filter(static fn (PrivateMessageData $data): bool => $data->id === $user->id);
 

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Haemanthus\Basement\Support\TypeScriptTransformer;
+namespace BasementChat\Basement\Support\TypeScriptTransformer;
 
 use Spatie\LaravelData\Support\TypeScriptTransformer\DataTypeScriptTransformer as SpatieTypeScriptTransformer;
 use Spatie\TypeScriptTransformer\Structures\MissingSymbolsCollection;

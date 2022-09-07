@@ -2,15 +2,15 @@
 
 declare(strict_types=1);
 
-namespace Haemanthus\Basement\Tests;
+namespace BasementChat\Basement\Tests;
 
-use Haemanthus\Basement\Tests\Fixtures\User;
+use BasementChat\Basement\Tests\Fixtures\User;
 use Illuminate\Database\Eloquent\Collection;
 
 trait WithUsers
 {
     /**
-     * @var \Illuminate\Database\Eloquent\Collection<int,\Haemanthus\Basement\Tests\Fixtures\User>
+     * @var \Illuminate\Database\Eloquent\Collection<int,\BasementChat\Basement\Tests\Fixtures\User>
      */
     protected Collection $users;
 

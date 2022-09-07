@@ -2,17 +2,17 @@
 
 declare(strict_types=1);
 
-namespace Haemanthus\Basement\Tests;
+namespace BasementChat\Basement\Tests;
 
-use Haemanthus\Basement\Models\PrivateMessage;
-use Haemanthus\Basement\Tests\Fixtures\User;
+use BasementChat\Basement\Models\PrivateMessage;
+use BasementChat\Basement\Tests\Fixtures\User;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\Sequence;
 
 trait WithPrivateMessages
 {
     /**
-     * @var \Illuminate\Database\Eloquent\Collection<int,\Haemanthus\Basement\Models\PrivateMessage>
+     * @var \Illuminate\Database\Eloquent\Collection<int,\BasementChat\Basement\Models\PrivateMessage>
      */
     protected ?Collection $privateMessages = null;
 

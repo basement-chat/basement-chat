@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace Haemanthus\Basement\Tests\Api;
+namespace BasementChat\Basement\Tests\Api;
 
-use Haemanthus\Basement\Tests\ApiJsonStructure;
-use Haemanthus\Basement\Tests\Fixtures\User;
-use Haemanthus\Basement\Tests\TestCase;
-use Haemanthus\Basement\Tests\WithPrivateMessages;
-use Haemanthus\Basement\Tests\WithUsers;
+use BasementChat\Basement\Tests\ApiJsonStructure;
+use BasementChat\Basement\Tests\Fixtures\User;
+use BasementChat\Basement\Tests\TestCase;
+use BasementChat\Basement\Tests\WithPrivateMessages;
+use BasementChat\Basement\Tests\WithUsers;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class PrivateMessageTest extends TestCase

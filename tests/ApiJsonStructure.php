@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Haemanthus\Basement\Tests;
+namespace BasementChat\Basement\Tests;
 
 trait ApiJsonStructure
 {

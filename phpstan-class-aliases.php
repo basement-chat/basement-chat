@@ -1,3 +1,3 @@
 <?php
 
-class_alias(\Haemanthus\Basement\Tests\Fixtures\User::class, \App\Models\User::class);
+class_alias(\BasementChat\Basement\Tests\Fixtures\User::class, \App\Models\User::class);

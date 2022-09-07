@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Haemanthus\Basement\Notifications;
+namespace BasementChat\Basement\Notifications;
 
 use Illuminate\Broadcasting\PresenceChannel;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
@@ -28,8 +28,8 @@ class PrivateMessageRead extends Notification implements ShouldBroadcast
     /**
      * Create a new notification instance.
      *
-     * @param \Illuminate\Foundation\Auth\User&\Haemanthus\Basement\Contracts\User $sender
-     * @param \Illuminate\Support\Collection<int,\Haemanthus\Basement\Data\PrivateMessageData> $privateMessages
+     * @param \Illuminate\Foundation\Auth\User&\BasementChat\Basement\Contracts\User $sender
+     * @param \Illuminate\Support\Collection<int,\BasementChat\Basement\Data\PrivateMessageData> $privateMessages
      */
     public function __construct(Authenticatable $sender, Collection $privateMessages)
     {

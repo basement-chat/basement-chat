@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace Haemanthus\Basement\Actions;
+namespace BasementChat\Basement\Actions;
 
-use Haemanthus\Basement\Contracts\SendPrivateMessage as SendPrivateMessageContract;
-use Haemanthus\Basement\Data\PrivateMessageData;
-use Haemanthus\Basement\Facades\Basement;
-use Haemanthus\Basement\Notifications\PrivateMessageSent;
+use BasementChat\Basement\Contracts\SendPrivateMessage as SendPrivateMessageContract;
+use BasementChat\Basement\Data\PrivateMessageData;
+use BasementChat\Basement\Facades\Basement;
+use BasementChat\Basement\Notifications\PrivateMessageSent;
 use Illuminate\Support\Facades\Notification;
 
 class SendPrivateMessage implements SendPrivateMessageContract
@@ -38,7 +38,7 @@ class SendPrivateMessage implements SendPrivateMessageContract
      */
     protected function notifyReceiver(PrivateMessageData $privateMessage): void
     {
-        /** @var \Illuminate\Foundation\Auth\User&\Haemanthus\Basement\Contracts\User $receiver */
+        /** @var \Illuminate\Foundation\Auth\User&\BasementChat\Basement\Contracts\User $receiver */
         $receiver = $privateMessage->receiver->resolve();
 
         Notification::send(

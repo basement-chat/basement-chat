@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Haemanthus\Basement\Commands;
+namespace BasementChat\Basement\Commands;
 
 use Illuminate\Console\Command;
 

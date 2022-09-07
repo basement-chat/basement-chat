@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace Haemanthus\Basement\Tests;
+namespace BasementChat\Basement\Tests;
 
 use BeyondCode\DumpServer\DumpServerServiceProvider;
-use Haemanthus\Basement\BasementServiceProvider;
-use Haemanthus\Basement\Contracts\Migration;
-use Haemanthus\Basement\Tests\Fixtures\User;
+use BasementChat\Basement\BasementServiceProvider;
+use BasementChat\Basement\Contracts\Migration;
+use BasementChat\Basement\Tests\Fixtures\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Http\Response;
 use Laravel\Sanctum\SanctumServiceProvider;
@@ -24,7 +24,7 @@ class TestCase extends Orchestra
         parent::setUp();
 
         Factory::guessFactoryNamesUsing(
-            static fn (string $modelName) => 'Haemanthus\\Basement\\Database\\Factories\\' . class_basename($modelName) . 'Factory'
+            static fn (string $modelName) => 'BasementChat\\Basement\\Database\\Factories\\' . class_basename($modelName) . 'Factory'
         );
     }
 

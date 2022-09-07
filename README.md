@@ -55,8 +55,8 @@ php artisan vendor:publish --tag="basement-views"
 ## Usage
 
 ```php
-$basement = new Haemanthus\Basement();
-echo $basement->echoPhrase('Hello, Haemanthus!');
+$basement = new BasementChat\Basement();
+echo $basement->echoPhrase('Hello, BasementChat!');
 ```
 
 ## Testing

@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace Haemanthus\Basement\Facades;
+namespace BasementChat\Basement\Facades;
 
-use Haemanthus\Basement\Contracts\Basement as BasementContract;
+use BasementChat\Basement\Contracts\Basement as BasementContract;
 use Illuminate\Support\Facades\Facade;
 
 /**
- * @mixin \Haemanthus\Basement\Basement
+ * @mixin \BasementChat\Basement\Basement
  */
 class Basement extends Facade
 {

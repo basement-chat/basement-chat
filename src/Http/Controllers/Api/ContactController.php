@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Haemanthus\Basement\Http\Controllers\Api;
+namespace BasementChat\Basement\Http\Controllers\Api;
 
-use Haemanthus\Basement\Contracts\AllContacts;
+use BasementChat\Basement\Contracts\AllContacts;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Routing\Controller;
@@ -17,7 +17,7 @@ class ContactController extends Controller
      */
     public function index(AllContacts $allContacts): JsonResponse
     {
-        /** @var \Illuminate\Foundation\Auth\User&\Haemanthus\Basement\Contracts\User $user */
+        /** @var \Illuminate\Foundation\Auth\User&\BasementChat\Basement\Contracts\User $user */
         $user = Auth::user();
         $contacts = $allContacts->all($user);
 

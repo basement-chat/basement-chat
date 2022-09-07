@@ -1,6 +1,6 @@
 preset: package
 
-namespace: Haemanthus\Basement
+namespace: BasementChat\Basement
 user-auth-provider: App\Models\User
 
 paths:
@@ -15,13 +15,13 @@ migration:
   prefix: ''
 
 console:
-  namespace: Haemanthus\Basement\Console
+  namespace: BasementChat\Basement\Console
 
 model:
-  namespace: Haemanthus\Basement\Models
+  namespace: BasementChat\Basement\Models
 
 provider:
-  namespace: Haemanthus\Basement\Providers
+  namespace: BasementChat\Basement\Providers
 
 testing:
-  namespace: Haemanthus\Basement\Tests
+  namespace: BasementChat\Basement\Tests

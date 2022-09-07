@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Haemanthus\Basement\Contracts;
+namespace BasementChat\Basement\Contracts;
 
-use Haemanthus\Basement\Data\PrivateMessageData;
+use BasementChat\Basement\Data\PrivateMessageData;
 
 interface SendPrivateMessage
 {

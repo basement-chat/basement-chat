@@ -2,15 +2,15 @@
 
 declare(strict_types=1);
 
-namespace Haemanthus\Basement;
+namespace BasementChat\Basement;
 
-use Haemanthus\Basement\Contracts\AllContacts;
-use Haemanthus\Basement\Contracts\AllPrivateMessages;
-use Haemanthus\Basement\Contracts\Basement as BasementContract;
-use Haemanthus\Basement\Contracts\MarkPrivatesMessagesAsRead;
-use Haemanthus\Basement\Contracts\SendPrivateMessage;
-use Haemanthus\Basement\Contracts\User as UserContract;
-use Haemanthus\Basement\Models\PrivateMessage;
+use BasementChat\Basement\Contracts\AllContacts;
+use BasementChat\Basement\Contracts\AllPrivateMessages;
+use BasementChat\Basement\Contracts\Basement as BasementContract;
+use BasementChat\Basement\Contracts\MarkPrivatesMessagesAsRead;
+use BasementChat\Basement\Contracts\SendPrivateMessage;
+use BasementChat\Basement\Contracts\User as UserContract;
+use BasementChat\Basement\Models\PrivateMessage;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
 class Basement implements BasementContract
@@ -18,14 +18,14 @@ class Basement implements BasementContract
     /**
      * The user model used by the application.
      *
-     * @phpstan-var class-string<\Illuminate\Foundation\Auth\User>&class-string<\Haemanthus\Basement\Contracts\User>
+     * @phpstan-var class-string<\Illuminate\Foundation\Auth\User>&class-string<\BasementChat\Basement\Contracts\User>
      */
     protected static string $userModel;
 
     /**
      * The private message model used by the application.
      *
-     * @phpstan-var class-string<\Haemanthus\Basement\Models\PrivateMessage>
+     * @phpstan-var class-string<\BasementChat\Basement\Models\PrivateMessage>
      */
     protected static string $privateMessageModel;
 
@@ -33,7 +33,7 @@ class Basement implements BasementContract
      * Specify the user model used by the application.
      *
      * @throws \TypeError if the given user model is not a subclass of \Illuminate\Foundation\Auth\User
-     *                    or does not implement the \Haemanthus\Basement\Contracts\User.
+     *                    or does not implement the \BasementChat\Basement\Contracts\User.
      */
     public static function useUserModel(mixed $class): void
     {
@@ -55,7 +55,7 @@ class Basement implements BasementContract
     /**
      * Get the name of the user model used by the application.
      *
-     * @return class-string<\Illuminate\Foundation\Auth\User>&class-string<\Haemanthus\Basement\Contracts\User>
+     * @return class-string<\Illuminate\Foundation\Auth\User>&class-string<\BasementChat\Basement\Contracts\User>
      */
     public static function userModel(): string
     {
@@ -65,7 +65,7 @@ class Basement implements BasementContract
     /**
      * Get a new instance of the user model.
      *
-     * @return \Illuminate\Foundation\Auth\User&\Haemanthus\Basement\Contracts\User
+     * @return \Illuminate\Foundation\Auth\User&\BasementChat\Basement\Contracts\User
      */
     public static function newUserModel(): Authenticatable
     {
@@ -75,7 +75,7 @@ class Basement implements BasementContract
     /**
      * Specify the private message model used by the application.
      *
-     * @throws \TypeError if the given user model is not a subclass of \Haemanthus\Basement\Models\PrivateMessage.
+     * @throws \TypeError if the given user model is not a subclass of \BasementChat\Basement\Models\PrivateMessage.
      */
     public static function usePrivateMessageModel(mixed $class): void
     {
@@ -95,7 +95,7 @@ class Basement implements BasementContract
     /**
      * Get the name of the private message model used by the application.
      *
-     * @return class-string<\Haemanthus\Basement\Models\PrivateMessage>
+     * @return class-string<\BasementChat\Basement\Models\PrivateMessage>
      */
     public static function privateMessageModel(): string
     {
@@ -113,7 +113,7 @@ class Basement implements BasementContract
     /**
      * Register a class / callback that should be used to get all contacts.
      *
-     * @param  class-string<\Haemanthus\Basement\Contracts\AllContacts>   $class
+     * @param  class-string<\BasementChat\Basement\Contracts\AllContacts>   $class
      */
     public static function allContactsUsing(string $class): void
     {
@@ -123,7 +123,7 @@ class Basement implements BasementContract
     /**
      * Register a class / callback that should be used to get all private messages.
      *
-     * @param  class-string<\Haemanthus\Basement\Contracts\AllPrivateMessages>   $class
+     * @param  class-string<\BasementChat\Basement\Contracts\AllPrivateMessages>   $class
      */
     public static function allPrivateMessagesUsing(string $class): void
     {
@@ -133,7 +133,7 @@ class Basement implements BasementContract
     /**
      * Register a class / callback that should be used to get mark private messages as read.
      *
-     * @param  class-string<\Haemanthus\Basement\Contracts\MarkPrivatesMessagesAsRead>   $class
+     * @param  class-string<\BasementChat\Basement\Contracts\MarkPrivatesMessagesAsRead>   $class
      */
     public static function markPrivateMessagesAsReadUsing(string $class): void
     {
@@ -143,7 +143,7 @@ class Basement implements BasementContract
     /**
      * Register a class / callback that should be used to send a private message.
      *
-     * @param  class-string<\Haemanthus\Basement\Contracts\SendPrivateMessage>   $class
+     * @param  class-string<\BasementChat\Basement\Contracts\SendPrivateMessage>   $class
      */
     public static function sendPrivateMessagesUsing(string $class): void
     {

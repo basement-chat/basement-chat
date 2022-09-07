@@ -2,16 +2,16 @@
 
 declare(strict_types=1);
 
-namespace Haemanthus\Basement\Tests\Feature;
+namespace BasementChat\Basement\Tests\Feature;
 
-use Haemanthus\Basement\Contracts\SendPrivateMessage;
-use Haemanthus\Basement\Data\PrivateMessageData;
-use Haemanthus\Basement\Models\PrivateMessage;
-use Haemanthus\Basement\Notifications\PrivateMessageSent;
-use Haemanthus\Basement\Tests\Fixtures\User;
-use Haemanthus\Basement\Tests\TestCase;
-use Haemanthus\Basement\Tests\WithPrivateMessages;
-use Haemanthus\Basement\Tests\WithUsers;
+use BasementChat\Basement\Contracts\SendPrivateMessage;
+use BasementChat\Basement\Data\PrivateMessageData;
+use BasementChat\Basement\Models\PrivateMessage;
+use BasementChat\Basement\Notifications\PrivateMessageSent;
+use BasementChat\Basement\Tests\Fixtures\User;
+use BasementChat\Basement\Tests\TestCase;
+use BasementChat\Basement\Tests\WithPrivateMessages;
+use BasementChat\Basement\Tests\WithUsers;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Notification;
@@ -48,11 +48,11 @@ class SendPrivateMessageTest extends TestCase
     {
         Notification::fake();
 
-        /** @var \Haemanthus\Basement\Models\PrivateMessage $message */
+        /** @var \BasementChat\Basement\Models\PrivateMessage $message */
         $message = PrivateMessage::factory()->make();
 
         $this->freezeTime(function (Carbon $time) use ($message): void {
-            /** @var \Haemanthus\Basement\Contracts\SendPrivateMessage $sendPrivateMessageAction */
+            /** @var \BasementChat\Basement\Contracts\SendPrivateMessage $sendPrivateMessageAction */
             $sendPrivateMessageAction = app(SendPrivateMessage::class);
 
             $createdMessage = $sendPrivateMessageAction->send(PrivateMessageData::from($message));
@@ -90,7 +90,7 @@ class SendPrivateMessageTest extends TestCase
         $message = $this->privateMessages[0];
 
         $this->freezeTime(function (Carbon $time) use ($message): void {
-            /** @var \Haemanthus\Basement\Contracts\SendPrivateMessage $sendPrivateMessageAction */
+            /** @var \BasementChat\Basement\Contracts\SendPrivateMessage $sendPrivateMessageAction */
             $sendPrivateMessageAction = app(SendPrivateMessage::class);
             $createdMessage = $sendPrivateMessageAction->send(PrivateMessageData::from($message));
 

@@ -1,6 +1,6 @@
 <?php
 
-use Haemanthus\Basement\Support\TypeScriptTransformer\DataTypeScriptTransformer;
+use BasementChat\Basement\Support\TypeScriptTransformer\DataTypeScriptTransformer;
 use Spatie\TypeScriptTransformer\Collectors\DefaultCollector;
 use Spatie\TypeScriptTransformer\Formatters\PrettierFormatter;
 use Spatie\TypeScriptTransformer\Transformers\SpatieEnumTransformer;

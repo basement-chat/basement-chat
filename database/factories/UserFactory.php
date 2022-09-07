@@ -2,28 +2,28 @@
 
 declare(strict_types=1);
 
-namespace Haemanthus\Basement\Database\Factories;
+namespace BasementChat\Basement\Database\Factories;
 
-use Haemanthus\Basement\Tests\Fixtures\User;
+use BasementChat\Basement\Tests\Fixtures\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Str;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\Haemanthus\Basement\Tests\Fixtures\User>
+ * @extends \Illuminate\Database\Eloquent\Factories\Factory<\BasementChat\Basement\Tests\Fixtures\User>
  */
 class UserFactory extends Factory
 {
     /**
      * The name of the factory's corresponding model.
      *
-     * @var class-string<\Haemanthus\Basement\Tests\Fixtures\User>
+     * @var class-string<\BasementChat\Basement\Tests\Fixtures\User>
      */
     protected $model = User::class;
 
     /**
      * Define the model's default state.
      *
-     * @return array<model-property<\Haemanthus\Basement\Tests\Fixtures\User>, mixed>
+     * @return array<model-property<\BasementChat\Basement\Tests\Fixtures\User>, mixed>
      */
     public function definition(): array
     {

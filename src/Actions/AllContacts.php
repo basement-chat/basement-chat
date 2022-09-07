@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Haemanthus\Basement\Actions;
+namespace BasementChat\Basement\Actions;
 
-use Haemanthus\Basement\Contracts\AllContacts as AllContactsContract;
-use Haemanthus\Basement\Data\ContactData;
-use Haemanthus\Basement\Facades\Basement;
+use BasementChat\Basement\Contracts\AllContacts as AllContactsContract;
+use BasementChat\Basement\Data\ContactData;
+use BasementChat\Basement\Facades\Basement;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Spatie\LaravelData\DataCollection;
 
@@ -15,7 +15,7 @@ class AllContacts implements AllContactsContract
     /**
      * Get all contact list.
      *
-     * @param \Illuminate\Foundation\Auth\User&\Haemanthus\Basement\Contracts\User $user
+     * @param \Illuminate\Foundation\Auth\User&\BasementChat\Basement\Contracts\User $user
      */
     public function all(Authenticatable $user): DataCollection
     {

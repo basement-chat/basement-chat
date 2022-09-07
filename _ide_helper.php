@@ -3,7 +3,7 @@
 // @formatter:off
 // phpcs:ignoreFile
 
-namespace Haemanthus\Basement\Contracts {
+namespace BasementChat\Basement\Contracts {
     /**
      * @property int $id
      * @property string|null $name
@@ -15,11 +15,11 @@ namespace Haemanthus\Basement\Contracts {
     interface User {}
 }
 
-namespace Haemanthus\Basement\Facades {
-    class Basement extends \Haemanthus\Basement\Basement {}
+namespace BasementChat\Basement\Facades {
+    class Basement extends \BasementChat\Basement\Basement {}
 }
 
-namespace Haemanthus\Basement\Models
+namespace BasementChat\Basement\Models
 {
     class PrivateMessage extends \Eloquent
     {

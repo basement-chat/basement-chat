@@ -2,14 +2,14 @@
 
 declare(strict_types=1);
 
-namespace Haemanthus\Basement\Tests\Feature;
+namespace BasementChat\Basement\Tests\Feature;
 
-use Haemanthus\Basement\Contracts\AllPrivateMessages;
-use Haemanthus\Basement\Models\PrivateMessage;
-use Haemanthus\Basement\Tests\Fixtures\User;
-use Haemanthus\Basement\Tests\TestCase;
-use Haemanthus\Basement\Tests\WithPrivateMessages;
-use Haemanthus\Basement\Tests\WithUsers;
+use BasementChat\Basement\Contracts\AllPrivateMessages;
+use BasementChat\Basement\Models\PrivateMessage;
+use BasementChat\Basement\Tests\Fixtures\User;
+use BasementChat\Basement\Tests\TestCase;
+use BasementChat\Basement\Tests\WithPrivateMessages;
+use BasementChat\Basement\Tests\WithUsers;
 use Illuminate\Contracts\Pagination\CursorPaginator;
 use Illuminate\Database\Eloquent\Factories\Sequence;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -48,7 +48,7 @@ class AllPrivateMessagesTest extends TestCase
         $this->addPrivateMessages(receiver: $this->receiver, sender: $this->sender, count: 10);
         $this->addPrivateMessages(receiver: $this->sender, sender: $this->receiver, count: 10);
 
-        /** @var \Haemanthus\Basement\Contracts\AllPrivateMessages $allPrivateMessages */
+        /** @var \BasementChat\Basement\Contracts\AllPrivateMessages $allPrivateMessages */
         $allPrivateMessages = app(AllPrivateMessages::class);
 
         $messages = $allPrivateMessages->allBetweenTwoUsers(receiver: $this->receiver, sender: $this->sender);
@@ -73,7 +73,7 @@ class AllPrivateMessagesTest extends TestCase
         $this->addPrivateMessages(receiver: $this->receiver, sender: $this->sender, count: 100);
         $this->addPrivateMessages(receiver: $this->sender, sender: $this->receiver, count: 100);
 
-        /** @var \Haemanthus\Basement\Contracts\AllPrivateMessages $allPrivateMessages */
+        /** @var \BasementChat\Basement\Contracts\AllPrivateMessages $allPrivateMessages */
         $allPrivateMessages = app(AllPrivateMessages::class);
 
         $messages = $allPrivateMessages->allBetweenTwoUsers(receiver: $this->receiver, sender: $this->sender);
@@ -93,7 +93,7 @@ class AllPrivateMessagesTest extends TestCase
             ['value' => 'Enim rerum ullam tenetur voluptatem, nostrum aspernatur consequatur libero itaque eos.'],
         ));
 
-        /** @var \Haemanthus\Basement\Contracts\AllPrivateMessages $allPrivateMessages */
+        /** @var \BasementChat\Basement\Contracts\AllPrivateMessages $allPrivateMessages */
         $allPrivateMessages = app(AllPrivateMessages::class);
 
         $messages = $allPrivateMessages->allBetweenTwoUsers(

@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Haemanthus\Basement\Http\Requests;
+namespace BasementChat\Basement\Http\Requests;
 
-use Haemanthus\Basement\Data\PrivateMessageData;
+use BasementChat\Basement\Data\PrivateMessageData;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\Rule;
@@ -76,7 +76,7 @@ class UpdatePrivateMessagesRequest extends FormRequest
 
         $this->privateMessagesWithMarkAsReadOperation = PrivateMessageData::collectionFromId($messagesId);
 
-        /** @var \Illuminate\Support\Collection<int,\Haemanthus\Basement\Data\PrivateMessageData> $privateMessages */
+        /** @var \Illuminate\Support\Collection<int,\BasementChat\Basement\Data\PrivateMessageData> $privateMessages */
         $privateMessages = $this->privateMessagesWithMarkAsReadOperation->toCollection();
 
         $privateMessages->each(static function (PrivateMessageData $data, int $key) use ($validator): void {

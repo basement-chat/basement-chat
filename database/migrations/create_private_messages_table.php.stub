@@ -1,9 +1,9 @@
 <?php
 
 use App\Models\User;
-use Haemanthus\Basement\Contracts\Migration as MigrationContract;
-use Haemanthus\Basement\Enums\MessageType;
-use Haemanthus\Basement\Facades\Basement;
+use BasementChat\Basement\Contracts\Migration as MigrationContract;
+use BasementChat\Basement\Enums\MessageType;
+use BasementChat\Basement\Facades\Basement;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;

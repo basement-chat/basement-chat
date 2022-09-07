@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Haemanthus\Basement\Enums;
+namespace BasementChat\Basement\Enums;
 
 use Spatie\Enum\Enum;
 

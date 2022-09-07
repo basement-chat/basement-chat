@@ -2,8 +2,8 @@
 
 declare(strict_types=1);
 
-use Haemanthus\Basement\Http\Controllers\Api\ContactController;
-use Haemanthus\Basement\Http\Controllers\Api\PrivateMessageController;
+use BasementChat\Basement\Http\Controllers\Api\ContactController;
+use BasementChat\Basement\Http\Controllers\Api\PrivateMessageController;
 use Illuminate\Support\Facades\Route;
 
 $middleware = config('basement.middleware');

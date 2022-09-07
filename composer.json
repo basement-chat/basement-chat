@@ -1,5 +1,5 @@
 {
-  "name": "haemanthus/basement",
+  "name": "basement-chat/basement",
   "description": "Easily add a real-time chat widget to your existing Laravel App!",
   "keywords": [
     "laravel",
@@ -43,13 +43,13 @@
   },
   "autoload": {
     "psr-4": {
-      "Haemanthus\\Basement\\": "src",
-      "Haemanthus\\Basement\\Database\\Factories\\": "database/factories"
+      "BasementChat\\Basement\\": "src",
+      "BasementChat\\Basement\\Database\\Factories\\": "database/factories"
     }
   },
   "autoload-dev": {
     "psr-4": {
-      "Haemanthus\\Basement\\Tests\\": "tests"
+      "BasementChat\\Basement\\Tests\\": "tests"
     }
   },
   "scripts": {
@@ -79,10 +79,10 @@
   "extra": {
     "laravel": {
       "providers": [
-        "Haemanthus\\Basement\\BasementServiceProvider"
+        "BasementChat\\Basement\\BasementServiceProvider"
       ],
       "aliases": {
-        "Basement": "Haemanthus\\Basement\\Facades\\Basement"
+        "Basement": "BasementChat\\Basement\\Facades\\Basement"
       }
     }
   },

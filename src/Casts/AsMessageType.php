@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Haemanthus\Basement\Casts;
+namespace BasementChat\Basement\Casts;
 
-use Haemanthus\Basement\Enums\MessageType;
+use BasementChat\Basement\Enums\MessageType;
 use Illuminate\Contracts\Database\Eloquent\CastsAttributes;
 use Spatie\LaravelData\Casts\Cast;
 use Spatie\LaravelData\Support\DataProperty;
@@ -32,7 +32,7 @@ class AsMessageType implements Cast, CastsAttributes
      *
      * @param  \Illuminate\Database\Eloquent\Model  $model
      * @param  string|int  $value
-     * @param  array<model-property<\Haemanthus\Basement\Models\PrivateMessage>,mixed>  $attributes
+     * @param  array<model-property<\BasementChat\Basement\Models\PrivateMessage>,mixed>  $attributes
      */
     public function get(mixed $model, string $key, mixed $value, array $attributes): MessageType
     {
@@ -43,8 +43,8 @@ class AsMessageType implements Cast, CastsAttributes
      * Transform the attribute to its underlying model values.
      *
      * @param  \Illuminate\Database\Eloquent\Model  $model
-     * @param  \Haemanthus\Basement\Enums\MessageType  $value
-     * @param  array<model-property<\Haemanthus\Basement\Models\PrivateMessage>,mixed>  $attributes
+     * @param  \BasementChat\Basement\Enums\MessageType  $value
+     * @param  array<model-property<\BasementChat\Basement\Models\PrivateMessage>,mixed>  $attributes
      */
     public function set(mixed $model, string $key, mixed $value, array $attributes): string
     {

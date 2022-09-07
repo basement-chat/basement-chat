@@ -2,15 +2,15 @@
 
 declare(strict_types=1);
 
-namespace Haemanthus\Basement\Tests\Feature;
+namespace BasementChat\Basement\Tests\Feature;
 
-use Haemanthus\Basement\Contracts\MarkPrivatesMessagesAsRead;
-use Haemanthus\Basement\Data\PrivateMessageData;
-use Haemanthus\Basement\Notifications\PrivateMessageRead;
-use Haemanthus\Basement\Tests\Fixtures\User;
-use Haemanthus\Basement\Tests\TestCase;
-use Haemanthus\Basement\Tests\WithPrivateMessages;
-use Haemanthus\Basement\Tests\WithUsers;
+use BasementChat\Basement\Contracts\MarkPrivatesMessagesAsRead;
+use BasementChat\Basement\Data\PrivateMessageData;
+use BasementChat\Basement\Notifications\PrivateMessageRead;
+use BasementChat\Basement\Tests\Fixtures\User;
+use BasementChat\Basement\Tests\TestCase;
+use BasementChat\Basement\Tests\WithPrivateMessages;
+use BasementChat\Basement\Tests\WithUsers;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
@@ -51,7 +51,7 @@ class MarkPrivateMessagesAsReadTest extends TestCase
         Notification::fake();
 
         $this->freezeTime(function (Carbon $time): void {
-            /** @var \Haemanthus\Basement\Contracts\MarkPrivatesMessagesAsRead $markAsRead */
+            /** @var \BasementChat\Basement\Contracts\MarkPrivatesMessagesAsRead $markAsRead */
             $markAsRead = app(MarkPrivatesMessagesAsRead::class);
             $markAsRead->markAsRead(
                 PrivateMessageData::collectionFromId(

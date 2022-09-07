@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Haemanthus\Basement\Observers;
+namespace BasementChat\Basement\Observers;
 
-use Haemanthus\Basement\Models\PrivateMessage;
+use BasementChat\Basement\Models\PrivateMessage;
 
 class PrivateMessageObserver
 {

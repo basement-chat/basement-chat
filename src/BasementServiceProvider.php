@@ -2,17 +2,17 @@
 
 declare(strict_types=1);
 
-namespace Haemanthus\Basement;
+namespace BasementChat\Basement;
 
 use App\Models\User;
-use Haemanthus\Basement\Actions\AllContacts;
-use Haemanthus\Basement\Actions\AllPrivateMessages;
-use Haemanthus\Basement\Actions\MarkPrivatesMessagesAsRead;
-use Haemanthus\Basement\Actions\SendPrivateMessage;
-use Haemanthus\Basement\Commands\BasementCommand;
-use Haemanthus\Basement\Contracts\Basement as BasementContract;
-use Haemanthus\Basement\Models\PrivateMessage;
-use Haemanthus\Basement\Observers\PrivateMessageObserver;
+use BasementChat\Basement\Actions\AllContacts;
+use BasementChat\Basement\Actions\AllPrivateMessages;
+use BasementChat\Basement\Actions\MarkPrivatesMessagesAsRead;
+use BasementChat\Basement\Actions\SendPrivateMessage;
+use BasementChat\Basement\Commands\BasementCommand;
+use BasementChat\Basement\Contracts\Basement as BasementContract;
+use BasementChat\Basement\Models\PrivateMessage;
+use BasementChat\Basement\Observers\PrivateMessageObserver;
 use Illuminate\Support\Facades\Route;
 use Spatie\LaravelPackageTools\Package;
 use Spatie\LaravelPackageTools\PackageServiceProvider;

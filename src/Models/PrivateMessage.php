@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Haemanthus\Basement\Models;
+namespace BasementChat\Basement\Models;
 
-use Haemanthus\Basement\Casts\AsMessageType;
-use Haemanthus\Basement\Contracts\User as UserContract;
-use Haemanthus\Basement\Facades\Basement;
+use BasementChat\Basement\Casts\AsMessageType;
+use BasementChat\Basement\Contracts\User as UserContract;
+use BasementChat\Basement\Facades\Basement;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -18,12 +18,12 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
  * @property int $id
  * @property int $receiver_id
  * @property int $sender_id
- * @property \Haemanthus\Basement\Enums\MessageType $type
+ * @property \BasementChat\Basement\Enums\MessageType $type
  * @property string $value
  * @property \Illuminate\Support\Carbon $created_at
  * @property \Illuminate\Support\Carbon|null $read_at
  *
- * @method static \Haemanthus\Basement\Database\Factories\PrivateMessageFactory factory(...$parameters)
+ * @method static \BasementChat\Basement\Database\Factories\PrivateMessageFactory factory(...$parameters)
  * @method static PrivateMessage orderByDescId()
  * @method static PrivateMessage whereBetweenTwoUsers(Authenticatable $a, Authenticatable $b)
  * @method static PrivateMessage whereValueLike(string $keyword)
@@ -90,8 +90,8 @@ class PrivateMessage extends Model
      * Scope a query to include only messages between two specific users.
      *
      * @param  \Illuminate\Database\Eloquent\Builder<PrivateMessage>  $query
-     * @param  \Illuminate\Foundation\Auth\User&\Haemanthus\Basement\Contracts\User $a
-     * @param  \Illuminate\Foundation\Auth\User&\Haemanthus\Basement\Contracts\User $b
+     * @param  \Illuminate\Foundation\Auth\User&\BasementChat\Basement\Contracts\User $a
+     * @param  \Illuminate\Foundation\Auth\User&\BasementChat\Basement\Contracts\User $b
      */
     public function scopeWhereBetweenTwoUsers(Builder $query, Authenticatable $a, Authenticatable $b): void
     {

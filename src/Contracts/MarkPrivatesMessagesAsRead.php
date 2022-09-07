@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Haemanthus\Basement\Contracts;
+namespace BasementChat\Basement\Contracts;
 
 use Spatie\LaravelData\DataCollection;
 
