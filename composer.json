@@ -37,6 +37,8 @@
     "phpstan/phpstan-deprecation-rules": "^1.0",
     "phpstan/phpstan-phpunit": "^1.0",
     "phpunit/phpunit": "^9.5",
+    "spatie/laravel-typescript-transformer": "^2.1",
+    "spatie/typescript-transformer": "^2.1",
     "squizlabs/php_codesniffer": "^3.7"
   },
   "autoload": {
@@ -52,10 +54,6 @@
   },
   "scripts": {
     "analyse": "vendor/bin/phpstan analyse --memory-limit=1G",
-    "insights": "vendor/bin/phpinsights analyse config database routes src",
-    "test": "vendor/bin/pest",
-    "test-coverage": "@php -dxdebug.mode=coverage vendor/bin/pest --coverage",
-    "format": "vendor/bin/pint",
     "canvas": "vendor/bin/canvas",
     "dumper:start": [
       "Composer\\Config::disableProcessTimeout",
@@ -64,7 +62,12 @@
     "dumper:serve": [
       "Composer\\Config::disableProcessTimeout",
       "@php -S localhost:8000 dump.html"
-    ]
+    ],
+    "format": "vendor/bin/pint",
+    "insights": "vendor/bin/phpinsights analyse config database routes src",
+    "test": "vendor/bin/pest",
+    "test-coverage": "@php -dxdebug.mode=coverage vendor/bin/pest --coverage",
+    "ts-transform": "@php phpts-transform.php"
   },
   "config": {
     "sort-packages": true,

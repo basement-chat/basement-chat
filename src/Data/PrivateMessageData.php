@@ -13,11 +13,14 @@ use Spatie\LaravelData\Attributes\WithCast;
 use Spatie\LaravelData\Data;
 use Spatie\LaravelData\DataCollection;
 use Spatie\LaravelData\Lazy;
+use Spatie\TypeScriptTransformer\Attributes\LiteralTypeScriptType;
+use Spatie\TypeScriptTransformer\Attributes\TypeScript;
 
 /**
  * @property Spatie\LaravelData\Lazy $receiver
  * @property Spatie\LaravelData\Lazy $sender
  */
+#[TypeScript]
 class PrivateMessageData extends Data
 {
     /**
@@ -32,6 +35,7 @@ class PrivateMessageData extends Data
         #[WithCast(AsMessageType::class)]
         public MessageType $type,
         public string $value,
+        #[LiteralTypeScriptType('number')]
         public ?int $id = null,
         public ?Carbon $created_at = null,
         public ?Carbon $read_at = null,

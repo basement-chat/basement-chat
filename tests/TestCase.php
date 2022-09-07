@@ -10,7 +10,6 @@ use Haemanthus\Basement\Contracts\Migration;
 use Haemanthus\Basement\Tests\Fixtures\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Http\Response;
-use Illuminate\Support\Facades\Route;
 use Laravel\Sanctum\SanctumServiceProvider;
 use Orchestra\Testbench\TestCase as Orchestra;
 use Spatie\LaravelData\LaravelDataServiceProvider;
@@ -30,6 +29,16 @@ class TestCase extends Orchestra
     }
 
     /**
+     * Define routes setup.
+     *
+     * @param  \Illuminate\Routing\Router  $router
+     */
+    protected function defineRoutes($router): void
+    {
+        $router->get(uri: 'login', action: static fn (): Response => response())->name('login');
+    }
+
+    /**
      * Define environment setup.
      *
      * @param \Illuminate\Foundation\Application $app
@@ -38,8 +47,6 @@ class TestCase extends Orchestra
     {
         config()->set('basement.user_model', User::class);
         config()->set('database.default', 'testing');
-
-        Route::get(uri: 'login', action: static fn (): Response => response())->name('login');
 
         collect([
             include __DIR__ . '/../database/migrations/create_users_table.php.stub',

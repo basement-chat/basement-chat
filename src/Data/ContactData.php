@@ -5,7 +5,9 @@ declare(strict_types=1);
 namespace Haemanthus\Basement\Data;
 
 use Spatie\LaravelData\Data;
+use Spatie\TypeScriptTransformer\Attributes\TypeScript;
 
+#[TypeScript]
 class ContactData extends Data
 {
     /**

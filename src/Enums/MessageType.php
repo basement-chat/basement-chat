@@ -6,11 +6,13 @@ namespace Haemanthus\Basement\Enums;
 
 use Illuminate\Support\Str;
 use Spatie\Enum\Enum;
+use Spatie\TypeScriptTransformer\Attributes\TypeScript;
 
 /**
  * @method static self document()
  * @method static self text()
  */
+#[TypeScript]
 class MessageType extends Enum
 {
     /**
