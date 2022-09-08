@@ -1,14 +1,13 @@
 <?php
 
 use App\Models\User;
-use BasementChat\Basement\Contracts\Migration as MigrationContract;
 use BasementChat\Basement\Enums\MessageType;
 use BasementChat\Basement\Facades\Basement;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-return new class extends Migration implements MigrationContract
+return new class extends Migration
 {
     /**
      * Run the migrations.
