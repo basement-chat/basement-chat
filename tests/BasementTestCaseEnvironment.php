@@ -3,9 +3,11 @@
 namespace BasementChat\Basement\Tests;
 
 use BasementChat\Basement\BasementServiceProvider;
+use BasementChat\Basement\Tests\Fixtures\User;
 use BeyondCode\DumpServer\DumpServerServiceProvider;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Config;
 use Laravel\Sanctum\SanctumServiceProvider;
 use Spatie\LaravelData\LaravelDataServiceProvider;
 
@@ -21,6 +23,16 @@ trait BasementTestCaseEnvironment
         Factory::guessFactoryNamesUsing(
             static fn (string $modelName) => 'BasementChat\\Basement\\Database\\Factories\\' . class_basename($modelName) . 'Factory'
         );
+    }
+
+    /**
+     * Define environment setup.
+     *
+     * @param \Illuminate\Foundation\Application $app
+     */
+    public function getEnvironmentSetUp($app): void
+    {
+        Config::set(key: 'basement.user_model', value: User::class);
     }
 
     /**

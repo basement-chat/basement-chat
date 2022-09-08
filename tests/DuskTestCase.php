@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace BasementChat\Basement\Tests;
 
-use BasementChat\Basement\Tests\Fixtures\User;
 use Illuminate\Support\Facades\Config;
 use Orchestra\Testbench\Dusk\Options;
 use Orchestra\Testbench\Dusk\TestCase as OrchestraDuskTestCase;
@@ -12,7 +11,8 @@ use Orchestra\Testbench\Dusk\TestCase as OrchestraDuskTestCase;
 class DuskTestCase extends OrchestraDuskTestCase
 {
     use BasementTestCaseEnvironment {
-        BasementTestCaseEnvironment::setUp as setUpBasementTestCaseEnvironment;
+        BasementTestCaseEnvironment::setUp as setUpBasementEnvironment;
+        BasementTestCaseEnvironment::getEnvironmentSetUp as getBasementEnvironmentSetUp;
     }
 
     /**
@@ -22,9 +22,10 @@ class DuskTestCase extends OrchestraDuskTestCase
     {
         parent::setUp();
 
-        $this->setUpBasementTestCaseEnvironment();
+        $this->setUpBasementEnvironment();
 
         Options::withoutUI();
+        Options::addArgument('--no-sandbox');
     }
 
     /**
@@ -34,7 +35,8 @@ class DuskTestCase extends OrchestraDuskTestCase
      */
     public function getEnvironmentSetUp($app): void
     {
-        Config::set(key: 'basement.user_model', value: User::class);
+        $this->getBasementEnvironmentSetUp($app);
+
         Config::set(key: 'database.default', value: 'sqlite');
 
         $this->defineRoutes($app['router']);
