@@ -53,15 +53,11 @@ trait BasementTestCaseEnvironment
      */
     protected function defineRoutes($router): void
     {
-        $router->get(
-            uri: '/',
-            action: static fn (): Response => response('Hello World'),
-        )->name('login');
-
-        $router->get(
-            uri: '/login',
-            action: static fn (): Response => response('This is a fake login page, intended for testing'),
-        )->name('login');
+        $router
+            ->get(uri: '/login', action: static fn (): Response => response(
+                'This is a fake login page, intended for testing'
+            ))
+            ->name('login');
     }
 
     /**

@@ -1,0 +1,8 @@
+env:
+  - APP_URL=127.0.0.1:8001
+  - APP_ENV=testing
+  - APP_DEBUG=true
+  - APP_KEY=base64:IDrlmrVwu65iBhbUpPq3fsv7kybcnfUFZmY1wk+mamE=
+  - DB_CONNECTION=sqlite
+  - SESSION_DRIVER=cookie
+  - SANCTUM_STATEFUL_DOMAINS=127.0.0.1:8001

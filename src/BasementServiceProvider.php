@@ -13,6 +13,8 @@ use BasementChat\Basement\Commands\BasementCommand;
 use BasementChat\Basement\Contracts\Basement as BasementContract;
 use BasementChat\Basement\Models\PrivateMessage;
 use BasementChat\Basement\Observers\PrivateMessageObserver;
+use BasementChat\Basement\View\Components\ChatBox;
+use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\Facades\Route;
 use Spatie\LaravelPackageTools\Package;
 use Spatie\LaravelPackageTools\PackageServiceProvider;
@@ -30,7 +32,7 @@ class BasementServiceProvider extends PackageServiceProvider
             ->name('basement')
             ->hasConfigFile()
             ->hasViews()
-            ->hasMigration('create_private_messages_table')
+            ->hasMigration('2022_09_08_020534_create_private_messages_table')
             ->hasRoute('api')
             ->hasCommand(BasementCommand::class);
     }
@@ -63,6 +65,7 @@ class BasementServiceProvider extends PackageServiceProvider
         PrivateMessage::observe(PrivateMessageObserver::class);
 
         $this->registerRouteModelBindings();
+        $this->registerBladeComponents();
     }
 
     /**
@@ -71,5 +74,13 @@ class BasementServiceProvider extends PackageServiceProvider
     protected function registerRouteModelBindings(): void
     {
         Route::bind('contact', static fn (string|int $value) => Basement::newUserModel()->findOrFail($value));
+    }
+
+    /**
+     * Register the application's blade view components.
+     */
+    protected function registerBladeComponents(): void
+    {
+        Blade::component('basement::chat-box', ChatBox::class);
     }
 }

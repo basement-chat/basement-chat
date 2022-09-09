@@ -16,11 +16,17 @@ trait WithPrivateMessages
      */
     protected ?Collection $privateMessages = null;
 
+    /**
+     * Initialize the default value for the $privateMessages class property.
+     */
     protected function setUpPrivateMessages(): void
     {
         $this->privateMessages = new Collection();
     }
 
+    /**
+     * Add new private messages to the database and append to the $privateMessages class property.
+     */
     protected function addPrivateMessages(
         User $receiver,
         User $sender,

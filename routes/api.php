@@ -9,10 +9,10 @@ use Illuminate\Support\Facades\Route;
 $middleware = config('basement.middleware');
 
 Route::middleware(is_array($middleware) || is_string($middleware) ? $middleware : [
-    'auth:sanctum',
-    'throttle:api',
     \Laravel\Sanctum\Http\Middleware\EnsureFrontendRequestsAreStateful::class,
+    'throttle:api',
     \Illuminate\Routing\Middleware\SubstituteBindings::class,
+    'auth:sanctum',
 ])->name('api.')->prefix('api')->group(static function (): void {
     Route::apiResource(name: 'contacts', controller: ContactController::class)
         ->only('index');

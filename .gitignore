@@ -7,7 +7,6 @@ docs
 package-lock.json
 phpunit.xml
 phpstan.neon
-testbench.yaml
 vendor
 node_modules
 dump.html

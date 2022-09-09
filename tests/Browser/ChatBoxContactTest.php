@@ -2,14 +2,16 @@
 
 namespace BasementChat\Basement\Tests\Browser;
 
-use BasementChat\Basement\Tests\DuskTestCase;
+use BasementChat\Basement\Tests\BrowserTestCase;
 use BasementChat\Basement\Tests\Fixtures\User;
 use BasementChat\Basement\Tests\WithPrivateMessages;
 use BasementChat\Basement\Tests\WithUsers;
+use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Laravel\Dusk\Browser;
 
-class ChatBoxContactTest extends DuskTestCase
+class ChatBoxContactTest extends BrowserTestCase
 {
+    use DatabaseMigrations;
     use WithPrivateMessages;
     use WithUsers;
 
@@ -40,10 +42,9 @@ class ChatBoxContactTest extends DuskTestCase
      */
     public function itShouldBeAbleToSeeAllContacts(): void
     {
-        $this->browse(function (Browser $browser): void {
-            $browser
-                ->visit('/')
-                ->assertSee('Hello');
-        });
+        $this->browse(fn (Browser $browser) => $browser
+            ->loginAs($this->receiver, guard: 'web')
+            ->visit('/dashboard')
+            ->pause(1000000));
     }
 }

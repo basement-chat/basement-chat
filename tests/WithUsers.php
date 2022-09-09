@@ -14,11 +14,17 @@ trait WithUsers
      */
     protected Collection $users;
 
+    /**
+     * Initialize the default value for the $users class property.
+     */
     protected function setUpUsers(): void
     {
         $this->users = new Collection();
     }
 
+    /**
+     * Add new users to the database and append to the $users class property.
+     */
     protected function addUsers(int $count = 1): void
     {
         $users = User::factory()->count($count)->create();
