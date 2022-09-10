@@ -44,7 +44,7 @@ interface User
     /**
      * Get the private message that owns the last private message id.
      *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo<Model, \BasementChat\Basement\Models\PrivateMessage>
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo<Model,\BasementChat\Basement\Models\PrivateMessage>
      */
     public function lastPrivateMessage(): BelongsTo;
 

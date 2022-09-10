@@ -10,3 +10,4 @@ phpstan.neon
 vendor
 node_modules
 dump.html
+_ide_helper.php

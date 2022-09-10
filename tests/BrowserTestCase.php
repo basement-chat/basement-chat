@@ -5,12 +5,13 @@ declare(strict_types=1);
 namespace BasementChat\Basement\Tests;
 
 use BasementChat\Basement\Tests\Fixtures\User;
+use Illuminate\Contracts\View\View;
 use Illuminate\Cookie\Middleware\EncryptCookies;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Config;
 use Orchestra\Testbench\Dusk\Options;
 use Orchestra\Testbench\Dusk\TestCase as OrchestraDuskTestCase;
 use Orchestra\Testbench\Http\Middleware\VerifyCsrfToken;
+use Symfony\Component\Process\Process;
 
 class BrowserTestCase extends OrchestraDuskTestCase
 {
@@ -29,8 +30,9 @@ class BrowserTestCase extends OrchestraDuskTestCase
 
         $this->setUpBasementEnvironment();
         $this->defineDatabaseMigrations();
+        $this->publishAssets();
 
-        Options::withoutUI();
+        Options::withUI();
         Options::addArgument('--no-sandbox');
     }
 
@@ -46,6 +48,7 @@ class BrowserTestCase extends OrchestraDuskTestCase
         Config::set(key: 'auth.providers.users.model', value: User::class);
         Config::set(key: 'sanctum.middleware.encrypt_cookies', value: EncryptCookies::class);
         Config::set(key: 'sanctum.middleware.verify_csrf_token', value: VerifyCsrfToken::class);
+        Config::set(key: 'view.cache', value: false);
         Config::set(key: 'view.paths', value: [
             resource_path('views'),
             __DIR__ . '/../resources/views',
@@ -65,8 +68,22 @@ class BrowserTestCase extends OrchestraDuskTestCase
         $this->defineRoutesBasementEnvironment($router);
 
         $router
-            ->get(uri: '/dashboard', action: static fn () => dump(Auth::user()))
+            ->get(uri: '/dashboard', action: static fn (): View => view('dashboard'))
             ->middleware('web')
             ->name('dashboard');
+    }
+
+    /**
+     * Run command to bundled and publish public asset files.
+     */
+    protected function publishAssets(): void
+    {
+        $process = new Process(['npm', 'run', 'build']);
+        $process->run();
+
+        $this->artisan(command: 'vendor:publish', parameters: [
+            '--tag' => 'basement-public-dir',
+            '--force' => true,
+        ]);
     }
 }
