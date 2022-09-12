@@ -2,6 +2,7 @@
 
 namespace BasementChat\Basement\Tests\Browser;
 
+use BasementChat\Basement\Tests\Browser\Components\ChatBoxComponent;
 use BasementChat\Basement\Tests\BrowserTestCase;
 use BasementChat\Basement\Tests\Fixtures\User;
 use BasementChat\Basement\Tests\WithPrivateMessages;
@@ -40,11 +41,24 @@ class ChatBoxContactTest extends BrowserTestCase
     /**
      * @test
      */
-    public function itShouldBeAbleToSeeAllContacts(): void
+    public function itShouldBeAbleToSeeAllContactsWithTheirOnlineStatus(): void
     {
-        $this->browse(fn (Browser $browser) => $browser
-            ->loginAs($this->receiver, guard: 'web')
-            ->visit('/dashboard')
-            ->pause(1000000));
+        $this->browse(function (Browser $browserReceiver, Browser $browserSender): void {
+            $browserReceiver->loginAs($this->receiver, guard: 'web');
+            $browserReceiver->visit('/dashboard');
+
+            $browserSender->loginAs($this->sender1, guard: 'web');
+            $browserSender->visit('/dashboard');
+
+            $browserReceiver->within(
+                selector: new ChatBoxComponent(),
+                callback: fn (Browser $component) => $component
+                    ->openChatBox()
+                    ->waitUntilContactsVisible()
+                    ->assertSeeContacts($this->receiver->name, $this->sender1->name, $this->sender2->name)
+                    ->assertContactsIsOnline($this->receiver->name, $this->sender1->name)
+                    ->assertContactsIsOffline($this->sender2->name),
+            );
+        });
     }
 }

@@ -24,8 +24,6 @@ class PrivateMessageController extends Controller
      * Display a listing of the resource.
      *
      * @param  \Illuminate\Foundation\Auth\User&\BasementChat\Basement\Contracts\User  $contact
-     *
-     * @see \BasementChat\Basement\BasementServiceProvider about how the $contact parameter is resolved
      */
     public function index(Authenticatable $contact, AllPrivateMessages $allPrivateMessages): JsonResponse
     {
@@ -41,8 +39,6 @@ class PrivateMessageController extends Controller
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Foundation\Auth\User&\BasementChat\Basement\Contracts\User  $contact
-     *
-     * @see \BasementChat\Basement\BasementServiceProvider about how the $contact parameter is resolved
      */
     public function store(
         Authenticatable $contact,
@@ -66,7 +62,7 @@ class PrivateMessageController extends Controller
     }
 
     /**
-     * Update the specified resource in storage.
+     * Update specified resources in storage.
      */
     public function updates(
         UpdatePrivateMessagesRequest $request,
