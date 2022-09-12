@@ -5,12 +5,16 @@ declare(strict_types=1);
 namespace BasementChat\Basement\Tests;
 
 use BasementChat\Basement\Tests\Fixtures\User;
+use Illuminate\Broadcasting\BroadcastServiceProvider;
 use Illuminate\Contracts\View\View;
 use Illuminate\Cookie\Middleware\EncryptCookies;
+use Illuminate\Support\Facades\Broadcast;
 use Illuminate\Support\Facades\Config;
+use Illuminate\Support\Facades\File;
 use Orchestra\Testbench\Dusk\Options;
 use Orchestra\Testbench\Dusk\TestCase as OrchestraDuskTestCase;
 use Orchestra\Testbench\Http\Middleware\VerifyCsrfToken;
+use OwenVoke\BladeFontAwesome\BladeFontAwesomeServiceProvider;
 use Symfony\Component\Process\Process;
 
 class BrowserTestCase extends OrchestraDuskTestCase
@@ -18,7 +22,8 @@ class BrowserTestCase extends OrchestraDuskTestCase
     use BasementTestCaseEnvironment {
         BasementTestCaseEnvironment::setUp as setUpBasementEnvironment;
         BasementTestCaseEnvironment::getEnvironmentSetUp as getBasementEnvironmentSetUp;
-        BasementTestCaseEnvironment::defineRoutes as defineRoutesBasementEnvironment;
+        BasementTestCaseEnvironment::getPackageProviders as getBasementEnvironmentPackageProviders;
+        BasementTestCaseEnvironment::defineRoutes as defineBasementEnvironmentRoutes;
     }
 
     /**
@@ -43,6 +48,7 @@ class BrowserTestCase extends OrchestraDuskTestCase
      */
     public function getEnvironmentSetUp($app): void
     {
+        $this->defineRoutes($app['router']);
         $this->getBasementEnvironmentSetUp($app);
 
         Config::set(key: 'auth.providers.users.model', value: User::class);
@@ -54,8 +60,6 @@ class BrowserTestCase extends OrchestraDuskTestCase
             __DIR__ . '/../resources/views',
             __DIR__ . '/Fixtures',
         ]);
-
-        $this->defineRoutes($app['router']);
     }
 
     /**
@@ -65,12 +69,29 @@ class BrowserTestCase extends OrchestraDuskTestCase
      */
     protected function defineRoutes($router): void
     {
-        $this->defineRoutesBasementEnvironment($router);
+        Broadcast::routes();
+
+        $this->defineBasementEnvironmentRoutes($router);
 
         $router
             ->get(uri: '/dashboard', action: static fn (): View => view('dashboard'))
             ->middleware('web')
             ->name('dashboard');
+    }
+
+    /**
+     * Get package providers.
+     *
+     * @param \Illuminate\Foundation\Application $app
+     * @return array<class-string>
+     */
+    protected function getPackageProviders($app): array
+    {
+        return [
+            ...$this->getBasementEnvironmentPackageProviders($app),
+            BladeFontAwesomeServiceProvider::class,
+            BroadcastServiceProvider::class,
+        ];
     }
 
     /**
@@ -81,9 +102,6 @@ class BrowserTestCase extends OrchestraDuskTestCase
         $process = new Process(['npm', 'run', 'build']);
         $process->run();
 
-        $this->artisan(command: 'vendor:publish', parameters: [
-            '--tag' => 'basement-public-dir',
-            '--force' => true,
-        ]);
+        File::copyDirectory(directory: __DIR__ . '/../public', destination: public_path());
     }
 }

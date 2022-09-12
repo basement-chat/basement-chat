@@ -33,7 +33,7 @@ class BasementServiceProvider extends PackageServiceProvider
             ->hasConfigFile()
             ->hasViews()
             ->hasMigration('2022_09_08_020534_create_private_messages_table')
-            ->hasRoute('api')
+            ->hasRoutes(['api', 'channels'])
             ->hasCommand(BasementCommand::class);
     }
 
@@ -69,10 +69,6 @@ class BasementServiceProvider extends PackageServiceProvider
         if ($this->app->runningInConsole() === false) {
             return;
         }
-
-        $this->publishes(paths: [
-            __DIR__ . '/../public' => public_path(),
-        ], groups: 'basement-public-dir');
 
         $this->publishes(paths: [
             __DIR__ . '/../resources/css' => resource_path('vendor/basement/css'),
