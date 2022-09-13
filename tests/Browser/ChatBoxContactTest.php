@@ -7,6 +7,7 @@ use BasementChat\Basement\Tests\BrowserTestCase;
 use BasementChat\Basement\Tests\Fixtures\User;
 use BasementChat\Basement\Tests\WithPrivateMessages;
 use BasementChat\Basement\Tests\WithUsers;
+use Illuminate\Database\Eloquent\Factories\Sequence;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Laravel\Dusk\Browser;
 
@@ -43,6 +44,11 @@ class ChatBoxContactTest extends BrowserTestCase
      */
     public function itShouldBeAbleToSeeAllContactsWithTheirOnlineStatus(): void
     {
+        $this->addPrivateMessages(receiver: $this->receiver, sender: $this->sender1, state: new Sequence([
+            'created_at' => now()->yesterday(),
+        ]));
+        $this->addPrivateMessages(receiver: $this->receiver, sender: $this->sender2);
+
         $this->browse(function (Browser $browserReceiver, Browser $browserSender): void {
             $browserReceiver->loginAs($this->receiver, guard: 'web');
             $browserReceiver->visit('/dashboard');

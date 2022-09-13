@@ -11,7 +11,10 @@ const options = (() => {
     }
   }
 
-  throw new Error('The Laravel Echo broadcast driver could not be found, please specify your own options.')
+  throw new Error(
+    'The Laravel Echo broadcast driver could not be found, please specify your own options. '
+    + 'Currently supported drivers are pusher, ably, laravel-websockets and soketi.',
+  )
 })()
 
 window.Pusher = Pusher

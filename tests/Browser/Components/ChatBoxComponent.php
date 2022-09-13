@@ -23,11 +23,17 @@ class ChatBoxComponent extends BaseComponent
         $browser->assertVisible($this->selector());
     }
 
+    /**
+     * Assert that given names are displayed.
+     */
     public function assertSeeContacts(Browser $browser, string ...$names): void
     {
         collect($names)->each(fn (string $name) => $browser->assertSee($name));
     }
 
+    /**
+     * Assert that given names are in offline status.
+     */
     public function assertContactsIsOffline(Browser $browser, string ...$names): void
     {
         collect($names)->each(fn (string $name) => $browser
@@ -44,6 +50,9 @@ class ChatBoxComponent extends BaseComponent
             ));
     }
 
+    /**
+     * Assert that given names are in online status.
+     */
     public function assertContactsIsOnline(Browser $browser, string ...$names): void
     {
         collect($names)->each(fn (string $name) => $browser
@@ -60,11 +69,17 @@ class ChatBoxComponent extends BaseComponent
             ));
     }
 
+    /**
+     * Maximize the chat box container.
+     */
     public function openChatBox(Browser $browser): void
     {
         $browser->click('@chat-box__button--open');
     }
 
+    /**
+     * Waiting for contact data to display successfully.
+     */
     public function waitUntilContactsVisible(Browser $browser): void
     {
         $browser->waitUntilMissingText('No contacts found');

@@ -11,3 +11,5 @@ vendor
 node_modules
 dump.html
 _ide_helper.php
+.env
+testbench.yaml

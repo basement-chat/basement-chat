@@ -5,11 +5,11 @@
   x-transition:enter.duration.500ms
   class="bm-flex bm-flex-col bm-shadow-lg bm-w-full bm-h-full bm-relative">
   <x-basement::organisms.header class="bm-z-30">
-    <x-slot name="title">
+    <x-slot:title>
       <x-basement::atoms.icons.fas-comments class="bm-w-4 bm-my-1 bm-inline" /> Messaging
     </x-slot>
 
-    <x-slot name="buttons">
+    <x-slot:buttons>
       <x-basement::atoms.buttons.header
         x-show="isNotificationAllowed === true && hasNotificationPermission === true"
         x-on:click="isNotificationAllowed = false"
@@ -44,8 +44,8 @@
     class="bm-flex bm-flex-grow bm-flex-col bm-overflow-auto bm-px-3 bm-text-gray-900 bm-bg-white bm-relative">
 
     <x-basement::molecules.form-group class="bm-col-span-full bm-relative bm-block bm-py-4">
-      <x-slot name="title">Search Contacts</x-slot>
-      <x-slot name="icon">
+      <x-slot:title>Search Contacts</x-slot>
+      <x-slot:icon>
         <x-basement::atoms.icons.fas-search class="bm-text-gray-400 bm-h-[0.9rem]" />
       </x-slot>
 
@@ -58,7 +58,7 @@
         class="bm-grid bm-grid-cols-12 bm-items-center bm-gap-x-2 bm-border-t bm-border-gray-300 bm-py-3 bm-px-2 bm-cursor-pointer hover:bm-bg-gray-100 bm-transition">
 
         <div
-          x-bind:title="`${contact.name} is ${contact.is_online === true ? 'online' : 'offline'}`"
+          x-bind:title="`${contact.name} is ${contact.isOnline === true ? 'online' : 'offline'}`"
           class="bm-col-span-2 bm-relative">
 
           <img
@@ -69,7 +69,7 @@
 
           <span
             dusk="contact__container--online-indicator"
-            x-bind:class="contact.is_online === true ? 'bm-bg-green-400' : 'bm-bg-red-400'"
+            x-bind:class="contact.isOnline === true ? 'bm-bg-green-400' : 'bm-bg-red-400'"
             class="bm-top-0 bm-right-0 bm-absolute bm-w-3 bm-h-3 bm-rounded-full"></span>
 
         </div>
@@ -79,22 +79,22 @@
             <h4 x-text="contact.name" class="bm-text-sm bm-font-bold bm-text-gray-900 bm-col-span-3"></h4>
 
             <p
-              x-text="contact.latest_message_created_at_highlight"
-              x-bind:title="contact.latest_message_created_at_locale"
+              x-text="contact.lastPrivateMessage?.createdAtHighlight"
+              x-bind:title="contact.lastPrivateMessage?.createdAt.format('LLLL')"
               class="bm-col-span-1 bm-font-semibold bm-text-xs bm-text-right"></p>
           </div>
 
           <div class="bm-grid bm-grid-cols-4">
             <p
               class="bm-col-span-3 bm-text-sm bm-break-words bm-flex bm-flex-row bm-space-x-1">
-              <x-basement::atoms.icons.fas-reply x-show="contact.latest_message_sent_to === contact.id" class="bm-h-[0.9rem] bm-my-auto" />
-              <span x-text="contact.latest_message_value_highlight" x-bind:title="contact.latest_message_value"></span>
+              <x-basement::atoms.icons.fas-reply x-show="contact.lastPrivateMessage?.receiverId === contact.id" class="bm-w-6 bm-my-auto" />
+              <span x-text="contact.lastPrivateMessage?.valueHighlight" x-bind:title="contact.lastPrivateMessage?.value"></span>
             </p>
 
             <p class="bm-col-span-1 bm-text-right">
               <span
-                x-show="contact.count_unread_messages > 0"
-                x-text="contact.count_unread_messages"
+                x-show="contact.unreadMessages > 0"
+                x-text="contact.unreadMessages"
                 class="bm-bg-blue-400 bm-text-white bm-font-bold bm-text-xs bm-rounded-md bm-px-1"></span>
             </p>
           </div>

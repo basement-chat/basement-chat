@@ -14,5 +14,6 @@ module.exports = {
   rules: {
     semi: ['error', 'never'],
     'import/prefer-default-export': 'off',
+    'max-len': ['error', { code: 120 }],
   },
 }

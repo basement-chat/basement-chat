@@ -1,16 +1,16 @@
 // @ts-check
 
 import Push from 'push.js'
-import NotificationStatus from './enums/notification-status'
+import NotificationStatus from '../enums/notification-status'
 
 export const LISTENERS = {
   PUSH_NOTIFICATION: 'push-notification',
 }
 
 /**
- * @returns {import('../@types').ChatBoxComponent}
+ * @returns {import('../../@types').Components.ChatBoxComponent}
  */
-export const chatBox = () => ({
+export const chatBoxComponent = () => ({
   isMinimized: true,
   isContactOpened: true,
   isMessageBoxOpened: false,
@@ -19,7 +19,10 @@ export const chatBox = () => ({
 
   init() {
     this.$watch('isNotificationAllowed', (val) => (
-      window.localStorage.setItem('basement.notification', val === true ? NotificationStatus.Allowed : NotificationStatus.Muted)
+      window.localStorage.setItem(
+        'basement.notification',
+        val === true ? NotificationStatus.Allowed : NotificationStatus.Muted,
+      )
     ))
 
     this.$el.addEventListener(LISTENERS.PUSH_NOTIFICATION, this.sendPushNotification)
@@ -39,7 +42,7 @@ export const chatBox = () => ({
       return
     }
 
-    const pushNotificationEvent = /** @type {import('../@types').PushNotificationEvent} */ (event)
+    const pushNotificationEvent = /** @type {import('../../@types').Events.PushNotificationEvent} */ (event)
 
     Push.create(pushNotificationEvent.detail.sender.name, {
       body: pushNotificationEvent.detail.value,

@@ -68,7 +68,7 @@ class PrivateMessageController extends Controller
         UpdatePrivateMessagesRequest $request,
         MarkPrivatesMessagesAsRead $markPrivatesMessagesAsRead,
     ): JsonResponse {
-        $messages = $markPrivatesMessagesAsRead->markAsRead($request->privateMessagesWithMarkAsReadOperation());
+        $messages = $markPrivatesMessagesAsRead->markAsRead($request->markAsReadOperation());
 
         return JsonResource::collection($messages->items())->response();
     }

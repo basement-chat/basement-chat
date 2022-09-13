@@ -21,7 +21,7 @@ class UpdatePrivateMessagesRequest extends FormRequest
     /**
      * Private messages list with mark as read operation.
      */
-    protected DataCollection $privateMessagesWithMarkAsReadOperation;
+    protected DataCollection $markAsReadOperation;
 
     /**
      * Determine if the user is authorized to make this request.
@@ -47,9 +47,9 @@ class UpdatePrivateMessagesRequest extends FormRequest
     /**
      * Get private messages request that need to be marked as read.
      */
-    public function privateMessagesWithMarkAsReadOperation(): DataCollection
+    public function markAsReadOperation(): DataCollection
     {
-        return $this->privateMessagesWithMarkAsReadOperation;
+        return $this->markAsReadOperation;
     }
 
     /**
@@ -74,10 +74,10 @@ class UpdatePrivateMessagesRequest extends FormRequest
             ->pluck('value.id')
             ->all();
 
-        $this->privateMessagesWithMarkAsReadOperation = PrivateMessageData::collectionFromId($messagesId);
+        $this->markAsReadOperation = PrivateMessageData::collectionFromId($messagesId);
 
         /** @var \Illuminate\Support\Collection<int,\BasementChat\Basement\Data\PrivateMessageData> $privateMessages */
-        $privateMessages = $this->privateMessagesWithMarkAsReadOperation->toCollection();
+        $privateMessages = $this->markAsReadOperation->toCollection();
 
         $privateMessages->each(static function (PrivateMessageData $data, int $key) use ($validator): void {
             if ($data->receiver_id === Auth::id()) {
