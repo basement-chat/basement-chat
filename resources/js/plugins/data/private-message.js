@@ -2,9 +2,11 @@
 
 import moment from 'moment-timezone'
 
+const PRIVATE_MESSAGE_HIGHLIGHT_MAX_LENGTH = 45
+
 /**
- * @param {import('../../@types').Api.PrivateMessage} privateMessage
- * @returns {import('../../@types').Data.PrivateMessage}
+ * @param {import('../@types').Api.PrivateMessage} privateMessage
+ * @returns {import('../@types').Data.PrivateMessage}
  */
 export default (privateMessage) => {
   const browserClientTimezone = moment.tz.guess()
@@ -19,10 +21,9 @@ export default (privateMessage) => {
     createdAt: moment(privateMessage.created_at).tz(browserClientTimezone),
 
     get valueHighlight() {
-      const limit = 45
-      const suffix = privateMessage.value.length > limit ? '...' : ''
+      const suffix = privateMessage.value.length > PRIVATE_MESSAGE_HIGHLIGHT_MAX_LENGTH ? '...' : ''
 
-      return `${privateMessage.value.slice(0, limit)} ${suffix}`
+      return `${privateMessage.value.slice(0, PRIVATE_MESSAGE_HIGHLIGHT_MAX_LENGTH)} ${suffix}`
     },
 
     get createdAtHighlight() {

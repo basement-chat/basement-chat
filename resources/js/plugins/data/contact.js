@@ -3,8 +3,8 @@
 import privateMessage from './private-message'
 
 /**
- * @param {import('../../@types').Api.Contact} contact
- * @returns {import('../../@types').Data.Contact}
+ * @param {import('../@types').Api.Contact} contact
+ * @returns {import('../@types').Data.Contact}
  */
 export default (contact) => ({
   id: contact.id,

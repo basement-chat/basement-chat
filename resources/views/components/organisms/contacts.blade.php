@@ -1,4 +1,6 @@
 <div
+  dusk="contact__container--main"
+  x-init="url = '{{ route('api.contacts.index') }}'; mount()"
   x-data="basementContact"
   x-show="isContactOpened === true"
   x-transition.scale.origin.left
@@ -38,7 +40,6 @@
   <x-basement::organisms.offline-state x-show="online === false" />
 
   <section
-    x-data="await mount('{{ route('api.contacts.index') }}')"
     x-show="isContactOpened"
     x-transition=""
     class="bm-flex bm-flex-grow bm-flex-col bm-overflow-auto bm-px-3 bm-text-gray-900 bm-bg-white bm-relative">
@@ -49,7 +50,7 @@
         <x-basement::atoms.icons.fas-search class="bm-text-gray-400 bm-h-[0.9rem]" />
       </x-slot>
 
-      <x-basement::atoms.input x-model="search" class="bm-pl-9" type="text" placeholder="Search Contacts" />
+      <x-basement::atoms.input dusk="contact__input--filter" x-model="search" class="bm-pl-9" type="text" placeholder="Search Contacts" />
     </x-basement::molecules.form-group>
 
     <template x-for="contact in filteredContacts" :key="contact.id">
@@ -86,8 +87,8 @@
 
           <div class="bm-grid bm-grid-cols-4">
             <p
-              class="bm-col-span-3 bm-text-sm bm-break-words bm-flex bm-flex-row bm-space-x-1">
-              <x-basement::atoms.icons.fas-reply x-show="contact.lastPrivateMessage?.receiverId === contact.id" class="bm-w-6 bm-my-auto" />
+              class="bm-col-span-3 bm-text-sm bm-break-words bm-flex bm-flex-row">
+              <x-basement::atoms.icons.fas-reply x-show="contact.lastPrivateMessage?.receiverId === contact.id" class="bm-w-6 bm-my-auto bm-mr-1" />
               <span x-text="contact.lastPrivateMessage?.valueHighlight" x-bind:title="contact.lastPrivateMessage?.value"></span>
             </p>
 

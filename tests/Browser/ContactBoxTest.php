@@ -3,6 +3,7 @@
 namespace BasementChat\Basement\Tests\Browser;
 
 use BasementChat\Basement\Tests\Browser\Components\ChatBoxComponent;
+use BasementChat\Basement\Tests\Browser\Components\ContactComponent;
 use BasementChat\Basement\Tests\BrowserTestCase;
 use BasementChat\Basement\Tests\Fixtures\User;
 use BasementChat\Basement\Tests\WithPrivateMessages;
@@ -11,7 +12,7 @@ use Illuminate\Database\Eloquent\Factories\Sequence;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Laravel\Dusk\Browser;
 
-class ChatBoxContactTest extends BrowserTestCase
+class ContactBoxTest extends BrowserTestCase
 {
     use DatabaseMigrations;
     use WithPrivateMessages;
@@ -56,15 +57,33 @@ class ChatBoxContactTest extends BrowserTestCase
             $browserSender->loginAs($this->sender1, guard: 'web');
             $browserSender->visit('/dashboard');
 
-            $browserReceiver->within(
-                selector: new ChatBoxComponent(),
-                callback: fn (Browser $component) => $component
-                    ->openChatBox()
+            $browserReceiver->within(selector: new ChatBoxComponent(), callback: fn (Browser $chatBox) => $chatBox
+                ->openChatBox()
+                ->within(selector: new ContactComponent(), callback: fn (Browser $contact) => $contact
                     ->waitUntilContactsVisible()
                     ->assertSeeContacts($this->receiver->name, $this->sender1->name, $this->sender2->name)
                     ->assertContactsIsOnline($this->receiver->name, $this->sender1->name)
-                    ->assertContactsIsOffline($this->sender2->name),
-            );
+                    ->assertContactsIsOffline($this->sender2->name)));
+        });
+    }
+
+    /**
+     * @test
+     */
+    public function itShouldBeAbleToFilterContactsByKeyword(): void
+    {
+        $this->browse(function (Browser $browser): void {
+            $browser->loginAs($this->receiver, guard: 'web');
+            $browser->visit('/dashboard');
+
+            $browser->within(selector: new ChatBoxComponent(), callback: fn (Browser $chatBox) => $chatBox
+                ->openChatBox()
+                ->within(selector: new ContactComponent(), callback: fn (Browser $contact) => $contact
+                    ->waitUntilContactsVisible()
+                    ->filterContacts($this->receiver->name)
+                    ->assertSeeContacts($this->receiver->name)
+                    ->filterContacts(' ')
+                    ->assertSeeContacts($this->receiver->name, $this->sender1->name, $this->sender2->name)));
         });
     }
 }

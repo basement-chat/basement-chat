@@ -1,5 +1,5 @@
 <div
-  dusk="chat-box__container"
+  dusk="chat-box__container--main"
   x-ref="basementChatBox"
   x-data="basementChatBox"
   x-bind:class="isMinimized === true ? '' : '!bm-w-[22rem] bm-max-w-[90vw] !bm-h-[32rem]'"
@@ -15,7 +15,6 @@
   </button>
 
   <div x-bind:class="isMinimized === true ? '' : '!bm-block'" class="bm-hidden bm-h-full bm-w-full">
-    {{-- <x-basement::organisms.private-messages /> --}}
     <x-basement::organisms.contacts />
   </div>
 </div>

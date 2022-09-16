@@ -27,6 +27,6 @@ class AllContacts implements AllContactsContract
         $contacts->append('avatar');
         $contacts->load('lastPrivateMessage');
 
-        return ContactData::collection($contacts->values());
+        return ContactData::collection($contacts->sortByDesc('lastPrivateMessage.id')->values());
     }
 }

@@ -8,7 +8,7 @@ export const LISTENERS = {
 }
 
 /**
- * @returns {import('../../@types').Components.ChatBoxComponent}
+ * @returns {import('../@types').Components.ChatBoxComponent}
  */
 export const chatBoxComponent = () => ({
   isMinimized: true,
@@ -16,8 +16,17 @@ export const chatBoxComponent = () => ({
   isMessageBoxOpened: false,
   isNotificationAllowed: window.localStorage.getItem('basement.notification') === NotificationStatus.Allowed,
   hasNotificationPermission: Push.Permission.has(),
+  online: true,
 
   init() {
+    window.addEventListener('online', () => {
+      this.online = true
+    })
+
+    window.addEventListener('offline', () => {
+      this.online = false
+    })
+
     this.$watch('isNotificationAllowed', (val) => (
       window.localStorage.setItem(
         'basement.notification',
@@ -37,16 +46,14 @@ export const chatBoxComponent = () => ({
     })
   },
 
-  sendPushNotification(event) {
+  sendPushNotification(/** @type import('../@types').Events.PushNotificationEvent */ event) {
     if (this.isNotificationAllowed === false) {
       return
     }
 
-    const pushNotificationEvent = /** @type {import('../../@types').Events.PushNotificationEvent} */ (event)
-
-    Push.create(pushNotificationEvent.detail.sender.name, {
-      body: pushNotificationEvent.detail.value,
-      icon: pushNotificationEvent.detail.sender.avatar,
+    Push.create(event.detail.sender.name, {
+      body: event.detail.value,
+      icon: event.detail.sender.avatar,
       timeout: 4000,
       /**
        * @this {Notification}
