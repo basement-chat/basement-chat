@@ -2,7 +2,6 @@
 
 namespace BasementChat\Basement\Tests\Browser;
 
-use BasementChat\Basement\Models\PrivateMessage;
 use BasementChat\Basement\Tests\Browser\Components\ChatBoxComponent;
 use BasementChat\Basement\Tests\Browser\Components\ContactComponent;
 use BasementChat\Basement\Tests\Browser\Components\PrivateMessageComponent;
