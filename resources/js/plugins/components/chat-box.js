@@ -1,16 +1,13 @@
 // @ts-check
 
+import axios from 'axios'
 import Push from 'push.js'
 import NotificationStatus from '../enums/notification-status'
-
-export const LISTENERS = {
-  PUSH_NOTIFICATION: 'push-notification',
-}
 
 /**
  * @returns {import('../@types').Components.ChatBoxComponent}
  */
-export const chatBoxComponent = () => ({
+export default () => ({
   isMinimized: true,
   isContactOpened: true,
   isMessageBoxOpened: false,
@@ -19,6 +16,8 @@ export const chatBoxComponent = () => ({
   online: true,
 
   init() {
+    axios.get('/sanctum/csrf-cookie')
+
     window.addEventListener('online', () => {
       this.online = true
     })
@@ -27,14 +26,13 @@ export const chatBoxComponent = () => ({
       this.online = false
     })
 
-    this.$watch('isNotificationAllowed', (val) => (
-      window.localStorage.setItem(
-        'basement.notification',
-        val === true ? NotificationStatus.Allowed : NotificationStatus.Muted,
-      )
-    ))
+    this.$watch('isNotificationAllowed', (val) => {
+      const status = val === true ? NotificationStatus.Allowed : NotificationStatus.Muted
 
-    this.$el.addEventListener(LISTENERS.PUSH_NOTIFICATION, this.sendPushNotification)
+      window.localStorage.setItem('basement.notification', status)
+    })
+
+    this.$el.addEventListener('send-push-notification', this.sendPushNotification.bind(this))
   },
 
   requestNotificationPermission() {
@@ -51,9 +49,9 @@ export const chatBoxComponent = () => ({
       return
     }
 
-    Push.create(event.detail.sender.name, {
-      body: event.detail.value,
-      icon: event.detail.sender.avatar,
+    Push.create(event.detail.title, {
+      body: event.detail.body,
+      icon: event.detail.icon,
       timeout: 4000,
       /**
        * @this {Notification}

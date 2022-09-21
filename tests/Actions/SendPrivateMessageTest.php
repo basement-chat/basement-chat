@@ -2,19 +2,19 @@
 
 declare(strict_types=1);
 
-namespace BasementChat\Basement\Tests\Feature;
+namespace BasementChat\Basement\Tests\Actions;
 
 use BasementChat\Basement\Contracts\SendPrivateMessage;
 use BasementChat\Basement\Data\PrivateMessageData;
 use BasementChat\Basement\Models\PrivateMessage;
-use BasementChat\Basement\Notifications\PrivateMessageSent;
+use BasementChat\Basement\Events\PrivateMessageSent;
 use BasementChat\Basement\Tests\Fixtures\User;
 use BasementChat\Basement\Tests\TestCase;
 use BasementChat\Basement\Tests\WithPrivateMessages;
 use BasementChat\Basement\Tests\WithUsers;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Carbon;
-use Illuminate\Support\Facades\Notification;
+use Illuminate\Support\Facades\Event;
 
 class SendPrivateMessageTest extends TestCase
 {
@@ -46,7 +46,7 @@ class SendPrivateMessageTest extends TestCase
      */
     public function itShouldBeAbleToSendAPrivateMessage(): void
     {
-        Notification::fake();
+        Event::fake(PrivateMessageSent::class);
 
         /** @var \BasementChat\Basement\Models\PrivateMessage $message */
         $message = PrivateMessage::factory()->make();
@@ -74,8 +74,7 @@ class SendPrivateMessageTest extends TestCase
             'value' => $message->value,
         ]);
 
-        Notification::assertCount(1);
-        Notification::assertSentTo(notifiable: User::find($message->receiver_id), notification: PrivateMessageSent::class);
+        Event::assertDispatchedTimes(event: PrivateMessageSent::class, times: 1);
     }
 
     /**
@@ -83,7 +82,7 @@ class SendPrivateMessageTest extends TestCase
      */
     public function itShouldBeMarkedAsReadIfSendingAMessageToSelf(): void
     {
-        Notification::fake();
+        Event::fake(PrivateMessageSent::class);
 
         $this->addPrivateMessages(receiver: $this->receiver, sender: $this->receiver);
 

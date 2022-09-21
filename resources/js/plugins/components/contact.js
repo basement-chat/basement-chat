@@ -1,33 +1,30 @@
 // @ts-check
 
+import axios from 'axios'
 import contact from '../data/contact'
-import { LISTENERS as PRIVATE_MESSAGE_LISTENERS } from './private-message'
-
-export const LISTENERS = {
-  UPDATE_LAST_PRIVATE_MESSAGE: 'update-last-private-message',
-}
 
 /**
  * @returns {import('../@types').Components.ContactComponent}
  */
-export const contactComponent = () => {
+export default () => {
+  const component = document.querySelector('.contact__container--main')
+  const url = component.getAttribute('data-url')
   const echo = window.Echo.join('basement.contacts')
 
   return {
     contacts: [],
     search: '',
-    url: '',
+    url,
 
     init() {
-      this.$refs.basementChatBox.addEventListener(
-        LISTENERS.UPDATE_LAST_PRIVATE_MESSAGE,
-        this.updateLastPrivateMessage.bind(this),
-      )
+      this.$refs
+        .basementChatBox
+        .addEventListener('update-last-private-message', this.updateLastPrivateMessage.bind(this))
     },
 
     async mount() {
       /** @type import('../@types').Api.GetAllContactsResult */
-      const response = await fetch(this.url).then((result) => result.json())
+      const response = await axios.get(this.url).then(({ data }) => data)
 
       this.contacts = response.data.map((value) => contact(value))
 
@@ -42,15 +39,18 @@ export const contactComponent = () => {
       return this.contacts.filter(({ name }) => name.toLowerCase().includes(this.search.toLowerCase()))
     },
 
+    findSameContact(searchId) {
+      return this.contacts.find(({ id }) => id === searchId)
+    },
+
     onHere(values) {
       values.forEach((value) => {
-        const sameContact = this.contacts.find(({ id }) => id === value.id)
-        sameContact.isOnline = true
+        this.findSameContact(value.id).isOnline = true
       })
     },
 
     onSomeoneJoining(value) {
-      const sameContact = this.contacts.find(({ id }) => id === value.id)
+      const sameContact = this.findSameContact(value.id)
 
       if (sameContact === undefined) {
         const data = contact(value)
@@ -74,16 +74,20 @@ export const contactComponent = () => {
     },
 
     updateLastPrivateMessage(/** @type import('../@types').Events.UpdateLastPrivateMessageEvent */ event) {
-      const sameContactIndex = this.contacts.findIndex(({ id }) => id === event.detail.id)
-      const sameContact = this.contacts.splice(sameContactIndex, 1)[0]
+      const sameContactIndex = this.contacts.findIndex(({ id }) => id === event.detail.senderId)
+      const sameContact = this.contacts.splice(sameContactIndex, 1).at(0)
 
       sameContact.lastPrivateMessage = event.detail
+
+      if (sameContact.id !== event.detail.senderId) {
+        sameContact.unreadMessages += 1
+      }
 
       this.contacts.unshift(sameContact)
     },
 
     updateReceiver(value) {
-      this.$dispatch(PRIVATE_MESSAGE_LISTENERS.UPDATE_RECEIVER, value)
+      this.$dispatch('update-receiver', value)
     },
   }
 }

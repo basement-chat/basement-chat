@@ -17,8 +17,8 @@ use Spatie\TypeScriptTransformer\Attributes\LiteralTypeScriptType;
 use Spatie\TypeScriptTransformer\Attributes\TypeScript;
 
 /**
- * @property Spatie\LaravelData\Lazy $receiver
- * @property Spatie\LaravelData\Lazy $sender
+ * @property \Spatie\LaravelData\Lazy $receiver
+ * @property \Spatie\LaravelData\Lazy $sender
  */
 #[TypeScript]
 class PrivateMessageData extends Data

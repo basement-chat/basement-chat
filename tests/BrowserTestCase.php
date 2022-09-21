@@ -37,7 +37,7 @@ class BrowserTestCase extends OrchestraDuskTestCase
         $this->defineDatabaseMigrations();
         $this->publishAssets();
 
-        Options::withUI();
+        Options::withoutUI();
         Options::addArgument('--no-sandbox');
     }
 
@@ -102,6 +102,8 @@ class BrowserTestCase extends OrchestraDuskTestCase
         $process = new Process(['npm', 'run', 'build']);
         $process->run();
 
+        File::deleteDirectory(public_path('build'));
+        File::delete(public_path('hot'));
         File::copyDirectory(directory: __DIR__ . '/../public', destination: public_path());
     }
 }

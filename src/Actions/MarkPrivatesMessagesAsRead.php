@@ -7,10 +7,9 @@ namespace BasementChat\Basement\Actions;
 use BasementChat\Basement\Contracts\MarkPrivatesMessagesAsRead as MarkPrivatesMessagesAsReadContract;
 use BasementChat\Basement\Data\PrivateMessageData;
 use BasementChat\Basement\Facades\Basement;
-use BasementChat\Basement\Notifications\PrivateMessageRead;
-use Illuminate\Support\Facades\Notification;
+use BasementChat\Basement\Events\PrivateMessageRead;
+use Illuminate\Support\Collection;
 use Spatie\LaravelData\DataCollection;
-use Spatie\LaravelData\Lazy;
 
 class MarkPrivatesMessagesAsRead implements MarkPrivatesMessagesAsReadContract
 {
@@ -19,17 +18,26 @@ class MarkPrivatesMessagesAsRead implements MarkPrivatesMessagesAsReadContract
      */
     public function markAsRead(DataCollection $privateMessages): DataCollection
     {
+        $time = now();
+
         Basement::newPrivateMessageModel()
             ->whereIn('id', $privateMessages->toCollection()->pluck('id'))
             ->whereNull('read_at')
             ->update([
-                'read_at' => now(),
+                'read_at' => $time,
             ]);
+
+        $privateMessages
+            ->toCollection()
+            ->each(static function (PrivateMessageData $data) use ($time): void {
+                $data->read_at = $time;
+            });
 
         $this->notifySenders($privateMessages);
 
         return $privateMessages;
     }
+
     /**
      * Notify the sender that the receiver has read private messages.
      */
@@ -38,18 +46,8 @@ class MarkPrivatesMessagesAsRead implements MarkPrivatesMessagesAsReadContract
         /** @var \Illuminate\Support\Collection<int,\BasementChat\Basement\Data\PrivateMessageData> $collection */
         $collection = $privateMessages->toCollection();
 
-        /** @var \Illuminate\Support\Collection<int,\Spatie\LaravelData\Lazy> $senders */
-        $senders = $collection->unique('sender_id')->pluck('sender');
-
-        $senders->each(static function (Lazy $sender) use ($collection): void {
-            /** @var \Illuminate\Foundation\Auth\User&\BasementChat\Basement\Contracts\User $user */
-            $user = $sender->resolve();
-            $ownedMessages = $collection->filter(static fn (PrivateMessageData $data): bool => $data->id === $user->id);
-
-            Notification::send(
-                notifiables: $user,
-                notification: new PrivateMessageRead(sender: $user, privateMessages: $ownedMessages)
-            );
-        });
+        $collection
+            ->groupBy('sender_id')
+            ->each(static fn (Collection $messages) => broadcast(new PrivateMessageRead($messages)));
     }
 }

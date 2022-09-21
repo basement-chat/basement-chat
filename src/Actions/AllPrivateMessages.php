@@ -13,11 +13,6 @@ use Spatie\LaravelData\DataCollection;
 class AllPrivateMessages implements AllPrivateMessagesContract
 {
     /**
-     * The query string variable used to store the cursor.
-     */
-    protected const CURSOR_NAME = 'basement.page';
-
-    /**
      * The total number of messages displayed per page.
      */
     protected const MESSAGES_PER_PAGE = 50;
@@ -37,7 +32,7 @@ class AllPrivateMessages implements AllPrivateMessagesContract
             ->whereBetweenTwoUsers($receiver, $sender)
             ->whereValueLike($keyword)
             ->orderByDescId()
-            ->cursorPaginate(perPage: self::MESSAGES_PER_PAGE, cursorName: self::CURSOR_NAME);
+            ->cursorPaginate(self::MESSAGES_PER_PAGE);
 
         return PrivateMessageData::collection($messages);
     }

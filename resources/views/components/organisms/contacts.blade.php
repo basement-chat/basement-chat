@@ -1,11 +1,11 @@
 <div
-  dusk="contact__container--main"
-  x-init="url = '{{ route('api.contacts.index') }}'; mount()"
+  x-init="mount"
   x-data="basementContact"
   x-show="isContactOpened === true"
   x-transition.scale.origin.left
   x-transition:enter.duration.500ms
-  class="bm-flex bm-flex-col bm-shadow-lg bm-w-full bm-h-full bm-relative">
+  data-url="{{ route('api.contacts.index') }}"
+  class="contact__container--main bm-flex bm-flex-col bm-shadow-lg bm-w-full bm-h-full bm-relative">
   <x-basement::organisms.header class="bm-z-30">
     <x-slot:title>
       <x-basement::atoms.icons.fas-comments class="bm-w-4 bm-my-1 bm-inline" /> Messaging
@@ -21,7 +21,7 @@
 
       <x-basement::atoms.buttons.header
         x-show="hasNotificationPermission === false"
-        x-on:click="requestNotificationPermission()"
+        x-on:click="requestNotificationPermission"
         title="Please configure your browser to allow notifications">
         <x-basement::atoms.icons.fas-exclamation-triangle class="bm-h-[0.9rem] bm-m-auto" />
       </x-basement::atoms.buttons.header>
@@ -50,13 +50,19 @@
         <x-basement::atoms.icons.fas-search class="bm-text-gray-400 bm-h-[0.9rem]" />
       </x-slot>
 
-      <x-basement::atoms.input dusk="contact__input--filter" x-model="search" class="bm-pl-9" type="text" placeholder="Search Contacts" />
+      <x-basement::atoms.input
+        x-model="search"
+        autocomplete="off"
+        class="contact__input--filter bm-pl-9"
+        type="text"
+        placeholder="Search Contacts" />
     </x-basement::molecules.form-group>
 
     <template x-for="contact in filteredContacts" :key="contact.id">
       <div
+        x-bind:data-id="contact.id"
         x-on:click="updateReceiver(contact); isContactOpened = false; isMessageBoxOpened = true;"
-        class="bm-grid bm-grid-cols-12 bm-items-center bm-gap-x-2 bm-border-t bm-border-gray-300 bm-py-3 bm-px-2 bm-cursor-pointer hover:bm-bg-gray-100 bm-transition">
+        class="contact__container--user-box bm-grid bm-grid-cols-12 bm-items-center bm-gap-x-2 bm-border-t bm-border-gray-300 bm-py-3 bm-px-2 bm-cursor-pointer hover:bm-bg-gray-100 bm-transition">
 
         <div
           x-bind:title="`${contact.name} is ${contact.isOnline === true ? 'online' : 'offline'}`"
@@ -69,15 +75,14 @@
           />
 
           <span
-            dusk="contact__container--online-indicator"
             x-bind:class="contact.isOnline === true ? 'bm-bg-green-400' : 'bm-bg-red-400'"
-            class="bm-top-0 bm-right-0 bm-absolute bm-w-3 bm-h-3 bm-rounded-full"></span>
+            class="contact__container--online-indicator bm-top-0 bm-right-0 bm-absolute bm-w-3 bm-h-3 bm-rounded-full"></span>
 
         </div>
 
         <div class="bm-col-span-10">
           <div class="bm-grid bm-grid-cols-4">
-            <h4 x-text="contact.name" class="bm-text-sm bm-font-bold bm-text-gray-900 bm-col-span-3"></h4>
+            <h4 x-text="contact.name" x-bind:title="contact.name" class="bm-text-sm bm-font-bold bm-text-gray-900 bm-col-span-3 bm-truncate"></h4>
 
             <p
               x-text="contact.lastPrivateMessage?.createdAtHighlight"
@@ -87,15 +92,16 @@
 
           <div class="bm-grid bm-grid-cols-4">
             <p
-              class="bm-col-span-3 bm-text-sm bm-break-words bm-flex bm-flex-row">
-              <x-basement::atoms.icons.fas-reply x-show="contact.lastPrivateMessage?.receiverId === contact.id" class="bm-w-6 bm-my-auto bm-mr-1" />
-              <span x-text="contact.lastPrivateMessage?.valueHighlight" x-bind:title="contact.lastPrivateMessage?.value"></span>
+              class="bm-col-span-3 bm-text-sm bm-truncate">
+              <x-basement::atoms.icons.fas-reply x-show="contact.lastPrivateMessage?.receiverId === contact.id" class="bm-inline bm-w-3" />
+              <span x-text="contact.lastPrivateMessage?.value" x-bind:title="contact.lastPrivateMessage?.value"></span>
             </p>
 
             <p class="bm-col-span-1 bm-text-right">
               <span
                 x-show="contact.unreadMessages > 0"
                 x-text="contact.unreadMessages"
+                x-bind:title="`There are ${contact.unreadMessages} unread messages`"
                 class="bm-bg-blue-400 bm-text-white bm-font-bold bm-text-xs bm-rounded-md bm-px-1"></span>
             </p>
           </div>

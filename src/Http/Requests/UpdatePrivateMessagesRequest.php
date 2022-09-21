@@ -58,6 +58,10 @@ class UpdatePrivateMessagesRequest extends FormRequest
     public function withValidator(Validator $validator): void
     {
         $validator->after(function (Validator $validator): void {
+            if ($this->collect()->count() === 0) {
+                $validator->errors()->add(key: '*', message: "The operation must have at least 1 items.");
+            }
+
             $this->validateMarkAsReadOperation($validator);
         });
     }

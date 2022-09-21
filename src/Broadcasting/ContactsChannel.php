@@ -6,19 +6,15 @@ use BasementChat\Basement\Data\ContactData;
 use BasementChat\Basement\Facades\Basement;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
-class ContactChannel
+class ContactsChannel
 {
     /**
      * Authenticate the user's access to the channel.
      *
      * @param  \Illuminate\Foundation\Auth\User&\BasementChat\Basement\Contracts\User $user
      */
-    public function join(Authenticatable $user, int $id): ?array
+    public function join(Authenticatable $user): array
     {
-        if ($user->id !== $id) {
-            return null;
-        }
-
         $contact = Basement::newUserModel()->make($user->toArray());
         $contact->append('avatar');
 

@@ -13,6 +13,7 @@ use BasementChat\Basement\Http\Requests\StorePrivateMessageRequest;
 use BasementChat\Basement\Http\Requests\UpdatePrivateMessagesRequest;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Auth;
@@ -25,12 +26,18 @@ class PrivateMessageController extends Controller
      *
      * @param  \Illuminate\Foundation\Auth\User&\BasementChat\Basement\Contracts\User  $contact
      */
-    public function index(Authenticatable $contact, AllPrivateMessages $allPrivateMessages): JsonResponse
-    {
+    public function index(
+        Request $request,
+        Authenticatable $contact,
+        AllPrivateMessages $allPrivateMessages,
+    ): JsonResponse {
         /** @var \Illuminate\Foundation\Auth\User&\BasementChat\Basement\Contracts\User $user */
         $user = Auth::user();
 
-        $messages = $allPrivateMessages->allBetweenTwoUsers(receiver: $user, sender: $contact);
+        /** @var string $keyword */
+        $keyword = $request->get('keyword') ?? '';
+
+        $messages = $allPrivateMessages->allBetweenTwoUsers(receiver: $user, sender: $contact, keyword: $keyword);
 
         return JsonResource::collection($messages->items())->response();
     }

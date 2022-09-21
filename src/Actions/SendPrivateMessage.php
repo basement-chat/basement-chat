@@ -7,8 +7,7 @@ namespace BasementChat\Basement\Actions;
 use BasementChat\Basement\Contracts\SendPrivateMessage as SendPrivateMessageContract;
 use BasementChat\Basement\Data\PrivateMessageData;
 use BasementChat\Basement\Facades\Basement;
-use BasementChat\Basement\Notifications\PrivateMessageSent;
-use Illuminate\Support\Facades\Notification;
+use BasementChat\Basement\Events\PrivateMessageSent;
 
 class SendPrivateMessage implements SendPrivateMessageContract
 {
@@ -28,25 +27,8 @@ class SendPrivateMessage implements SendPrivateMessageContract
         $privateMessage->created_at = $createdMessage->created_at;
         $privateMessage->read_at = $createdMessage->read_at;
 
-        $this->notifyReceiver($privateMessage);
+        broadcast(new PrivateMessageSent($privateMessage));
 
         return $privateMessage;
-    }
-
-    /**
-     * Notify receiver that a new message has been sent.
-     */
-    protected function notifyReceiver(PrivateMessageData $privateMessage): void
-    {
-        /** @var \Illuminate\Foundation\Auth\User&\BasementChat\Basement\Contracts\User $receiver */
-        $receiver = $privateMessage->receiver->resolve();
-
-        Notification::send(
-            notifiables: $receiver,
-            notification: new PrivateMessageSent(
-                receiver: $receiver,
-                privateMessage: $privateMessage,
-            ),
-        );
     }
 }

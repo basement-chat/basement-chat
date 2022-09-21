@@ -12,7 +12,7 @@ class ChatBoxComponent extends BaseComponent
      */
     public function selector(): string
     {
-        return '@chat-box__container--main';
+        return '.chat-box__container--main';
     }
 
     /**
@@ -28,6 +28,6 @@ class ChatBoxComponent extends BaseComponent
      */
     public function openChatBox(Browser $browser): void
     {
-        $browser->click('@chat-box__button--open');
+        $browser->click('.chat-box__button--open');
     }
 }

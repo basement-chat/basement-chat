@@ -48,6 +48,11 @@ declare namespace Api {
       prev_cursor: string | null,
     },
   }
+
+  export type SendPrivateMessageResult = {
+    data: PrivateMessage
+  }
+
 }
 
 declare namespace Data {
@@ -69,8 +74,8 @@ declare namespace Data {
     readAt: Moment | null
     createdAt: Moment
 
-    get valueHighlight(): string
     get createdAtHighlight(): string
+    set rawReadAt(time: string)
   }
 }
 
@@ -94,8 +99,9 @@ declare namespace Components {
     url: string
 
     init(this: ContactComponent & AlpineComponent): void
-    async mount(this: ContactComponent & AlpineComponent, url: string): void
+    mount(this: ContactComponent & AlpineComponent, url: string): void
     get filteredContacts(): Data.Contact[]
+    findSameContact(searchId: number): Data.Contact
     onHere(this: ContactComponent & AlpineComponent, values: Api.Contact[]): void
     onSomeoneJoining(this: ContactComponent & AlpineComponent, value: Api.Contact): void
     onSomeoneLeaving(this: ContactComponent & AlpineComponent, value: Api.Contact): void
@@ -105,33 +111,65 @@ declare namespace Components {
   }
 
   export interface PrivateMessageComponent {
-    isDialogOpened: object
     isInfoBoxOpened: boolean
     isLoading: boolean
+    isLoadingShowMore: boolean
+    isLoadingSentMessage: boolean
     isSearchOpened: boolean
+    messageIdWithOpenDialog: number | null
     messages: Data.PrivateMessage[]
     newMessageValue: string
     receiver: Data.Contact | null
+    searchKeyword: string
     selectedMessage: Data.PrivateMessage | null
-    seenMessages: Data.PrivateMessage[]
+    seenMessages: number[]
+    unreadMessageCursor: number | null
     url: string
+    urlTemplate: string
+    urlBatchRequest: string
     urlShowMore: string | null
 
     init(this: PrivateMessageComponent & AlpineComponent): void
-    async mount(this: PrivateMessageComponent & AlpineComponent): void
-    async mountMore(this: PrivateMessageComponent & AlpineComponent): void
+    mount(this: PrivateMessageComponent & AlpineComponent): void
+    mountMore(this: PrivateMessageComponent & AlpineComponent): void
     get groupedMessages(): Data.PrivateMessage[][]
     markSeenMessagesAsRead(this: PrivateMessageComponent & AlpineComponent): void
+    onMessageReceived(this: PrivateMessageComponent & AlpineComponent, event: Events.EchoPrivateMessageSentEvent): void
+    onMessageMarkedAsRead(this: PrivateMessageComponent & AlpineComponent, event: Events.EchoPrivateMessageMarkedAsRead): void
     sendNewMessage(this: PrivateMessageComponent & AlpineComponent): void
-    registerLaravelEchoEventListeners(this: PrivateMessageComponent & AlpineComponent): void
+    registerEchoEventListeners(this: PrivateMessageComponent & AlpineComponent): void
+    scrollTo(this: PrivateMessageComponent & AlpineComponent, id: number | null, options?: ScrollIntoViewOptions): void
+    setUnreadMessagesMarker(this: PrivateMessageComponent & AlpineComponent): void
     updateReceiver(this: PrivateMessageComponent & AlpineComponent, event: Event): void
   }
 }
 
 declare namespace Events {
   export interface PushNotificationEvent extends Event {
-    detail: Data.PrivateMessage & { sender: Data.Contact }
+    detail: {
+      title: string
+      body: string
+      icon: string
+    }
   }
+
+  export interface EchoPrivateMessageSentEvent extends Event {
+    detail: Api.PrivateMessage & {
+      sender: {
+        id: number
+        name: string
+        avatar: string
+      }
+    }
+  }
+
+  export interface EchoPrivateMessageMarkedAsRead extends Event {
+    detail: {
+      receiver: { id: number }
+      messages: Array<{ id: number, read_at: string }>
+    }
+  }
+
 
   export interface UpdateLastPrivateMessageEvent extends Event {
     detail: Data.PrivateMessage

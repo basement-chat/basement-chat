@@ -61,9 +61,9 @@ class ContactBoxTest extends BrowserTestCase
                 ->openChatBox()
                 ->within(selector: new ContactComponent(), callback: fn (Browser $contact) => $contact
                     ->waitUntilContactsVisible()
-                    ->assertSeeContacts($this->receiver->name, $this->sender1->name, $this->sender2->name)
-                    ->assertContactsIsOnline($this->receiver->name, $this->sender1->name)
-                    ->assertContactsIsOffline($this->sender2->name)));
+                    ->assertSeeContacts($this->receiver, $this->sender1, $this->sender2)
+                    ->assertContactsIsOnline($this->receiver, $this->sender1)
+                    ->assertContactsIsOffline($this->sender2)));
         });
     }
 
@@ -80,10 +80,10 @@ class ContactBoxTest extends BrowserTestCase
                 ->openChatBox()
                 ->within(selector: new ContactComponent(), callback: fn (Browser $contact) => $contact
                     ->waitUntilContactsVisible()
-                    ->filterContacts($this->receiver->name)
-                    ->assertSeeContacts($this->receiver->name)
-                    ->filterContacts(' ')
-                    ->assertSeeContacts($this->receiver->name, $this->sender1->name, $this->sender2->name)));
+                    ->filterContactsByKeyword($this->receiver->name)
+                    ->assertSeeContacts($this->receiver)
+                    ->filterContactsByKeyword(' ')
+                    ->assertSeeContacts($this->receiver, $this->sender1, $this->sender2)));
         });
     }
 }

@@ -2,6 +2,8 @@
 
 namespace BasementChat\Basement\Tests\Browser\Components;
 
+use BasementChat\Basement\Tests\Fixtures\User;
+use Illuminate\Support\Str;
 use Laravel\Dusk\Browser;
 use Laravel\Dusk\Component as BaseComponent;
 
@@ -12,7 +14,7 @@ class ContactComponent extends BaseComponent
      */
     public function selector(): string
     {
-        return '@contact__container--main';
+        return '.contact__container--main';
     }
 
     /**
@@ -24,59 +26,75 @@ class ContactComponent extends BaseComponent
     }
 
     /**
-     * Assert that given names are displayed.
+     * Assert that given users are displayed.
      */
-    public function assertSeeContacts(Browser $browser, string ...$names): void
+    public function assertSeeContacts(Browser $browser, User ...$contacts): void
     {
-        collect($names)->each(fn (string $name) => $browser->assertSee($name));
+        collect($contacts)->each(static function (User $contact) use ($browser): void {
+            $firstName = Str::of($contact->name)->explode(' ')->first();
+
+            $browser->assertSee($firstName);
+        });
     }
 
     /**
-     * Assert that given names are in offline status.
+     * Assert that given users are in offline status.
      */
-    public function assertContactsIsOffline(Browser $browser, string ...$names): void
+    public function assertContactsIsOffline(Browser $browser, User ...$contacts): void
     {
-        collect($names)->each(fn (string $name) => $browser
-            ->waitFor("div[title=\"{$name} is offline\"]")
-            ->with(
-                selector: "div[title=\"{$name} is offline\"]",
-                callback: function (Browser $container): void {
+        collect($contacts)->each(function (User $contact) use ($browser): void {
+            $selector = ".contact__container--user-box[data-id=\"{$contact->id}\"]";
+
+            $browser
+                ->waitFor("{$selector} > div[title=\"{$contact->name} is offline\"]")
+                ->with(selector: $selector, callback: function (Browser $container): void {
                     $container->assertAttributeContains(
-                        selector: '@contact__container--online-indicator',
+                        selector: '.contact__container--online-indicator',
                         attribute: 'class',
                         value: 'red',
                     );
-                },
-            ));
+                });
+        });
     }
 
     /**
-     * Assert that given names are in online status.
+     * Assert that given users are in online status.
      */
-    public function assertContactsIsOnline(Browser $browser, string ...$names): void
+    public function assertContactsIsOnline(Browser $browser, User ...$contacts): void
     {
-        collect($names)->each(fn (string $name) => $browser
-            ->waitFor("div[title=\"{$name} is online\"]")
-            ->with(
-                selector: "div[title=\"{$name} is online\"]",
-                callback: function (Browser $container): void {
+        collect($contacts)->each(function (User $contact) use ($browser): void {
+            $selector = ".contact__container--user-box[data-id=\"{$contact->id}\"]";
+
+            $browser
+                ->waitFor("{$selector} > div[title=\"{$contact->name} is online\"]")
+                ->with(selector: $selector, callback: function (Browser $container): void {
                     $container->assertAttributeContains(
-                        selector: '@contact__container--online-indicator',
+                        selector: '.contact__container--online-indicator',
                         attribute: 'class',
                         value: 'green',
                     );
-                },
-            ));
+                });
+        });
     }
 
     /**
      * Type keyword in the search contact input form.
      */
-    public function filterContacts(Browser $browser, string $keyword): void
+    public function filterContactsByKeyword(Browser $browser, string $keyword): void
     {
         $browser
-            ->clear('@contact__input--filter')
-            ->type(field: '@contact__input--filter', value: $keyword);
+            ->clear('.contact__input--filter')
+            ->type(field: '.contact__input--filter', value: $keyword);
+    }
+
+    /**
+     * Open a private message box with the given user.
+     */
+    public function openPrivateChatWith(Browser $browser, User $contact): void
+    {
+        $browser
+            ->click(".contact__container--user-box[data-id=\"{$contact->id}\"]")
+            ->waitUntilMissing($this->selector());
     }
 
     /**
