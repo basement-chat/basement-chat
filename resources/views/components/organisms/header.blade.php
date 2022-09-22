@@ -8,7 +8,7 @@
   </h3>
 
   <div {{ $buttons->attributes->merge([
-    'class' => 'bm-flex bm-flex-row bm-gap-x-3 bm-place-self-end bm-col-span-2',
+    'class' => 'bm-flex bm-flex-row bm-gap-x-3 bm-justify-end bm-col-span-2',
   ]) }}>
     {{ $buttons }}
   </div>

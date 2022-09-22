@@ -10,13 +10,13 @@
   <x-basement::organisms.header class="bm-z-30">
     <x-slot:title
       x-bind:title="`${receiver?.name} is ${receiver?.isOnline === true ? 'online' : 'offline'}`"
-      class="bm-relative bm-grid bm-grid-cols-6">
+      class="bm-relative bm-flex bm-flex-row bm-space-x-2">
       <p
         x-text="receiver?.name"
-        class="bm-overflow-hidden bm-text-ellipsis bm-whitespace-nowrap bm-col-span-5"></p>
+        class="bm-overflow-hidden bm-text-ellipsis bm-whitespace-nowrap bm-max-w-[90%]"></p>
       <x-basement::atoms.icons.fas-circle
         x-bind:class="receiver?.isOnline === true ? 'bm-text-green-400' : 'bm-text-red-400'"
-        class="bm-h-[0.75rem] bm-col-span-1" />
+        class="bm-h-[0.75rem]" />
     </x-slot>
 
     <x-slot:buttons>
