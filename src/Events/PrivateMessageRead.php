@@ -12,11 +12,6 @@ use Illuminate\Support\Collection;
 class PrivateMessageRead implements ShouldBroadcast
 {
     /**
-     * The message sender id.
-     */
-    protected int $senderId;
-
-    /**
      * The value of the private message sent.
      *
      * @var array<string,mixed>
@@ -24,16 +19,24 @@ class PrivateMessageRead implements ShouldBroadcast
     public array $detail;
 
     /**
+     * The message sender id.
+     */
+    protected int $senderId;
+
+    /**
      * Create a new notification instance.
      *
      * @param \Illuminate\Support\Collection<int,\BasementChat\Basement\Data\PrivateMessageData> $messages
      */
-    public function __construct(Collection $messages)
-    {
-        $this->senderId = $messages[0]->sender_id;
+    public function __construct(
+        int $receiverId,
+        int $senderId,
+        Collection $messages,
+    ) {
+        $this->senderId = $senderId;
         $this->detail = [
             'receiver' => [
-                'id' => $messages[0]->receiver_id,
+                'id' => $receiverId,
             ],
             'messages' => $messages->map(static fn (PrivateMessageData $data): array => [
                 'id' => $data->id,

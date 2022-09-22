@@ -75,7 +75,13 @@ class PrivateMessageController extends Controller
         UpdatePrivateMessagesRequest $request,
         MarkPrivatesMessagesAsRead $markPrivatesMessagesAsRead,
     ): JsonResponse {
-        $messages = $markPrivatesMessagesAsRead->markAsRead($request->markAsReadOperation());
+        /** @var \Illuminate\Foundation\Auth\User&\BasementChat\Basement\Contracts\User $user */
+        $user = Auth::user();
+
+        $messages = $markPrivatesMessagesAsRead->markAsRead(
+            readBy: $user,
+            privateMessages: $request->markAsReadOperation(),
+        );
 
         return JsonResource::collection($messages->items())->response();
     }

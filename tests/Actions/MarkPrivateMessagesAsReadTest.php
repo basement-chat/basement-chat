@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace BasementChat\Basement\Tests\Feature;
+namespace BasementChat\Basement\Tests\Actions;
 
 use BasementChat\Basement\Contracts\MarkPrivatesMessagesAsRead;
 use BasementChat\Basement\Data\PrivateMessageData;
@@ -54,7 +54,8 @@ class MarkPrivateMessagesAsReadTest extends TestCase
             /** @var \BasementChat\Basement\Contracts\MarkPrivatesMessagesAsRead $markAsRead */
             $markAsRead = app(MarkPrivatesMessagesAsRead::class);
             $markAsRead->markAsRead(
-                PrivateMessageData::collectionFromId(
+                readBy: $this->receiver,
+                privateMessages: PrivateMessageData::collectionFromId(
                     messagesId: $this->privateMessages->pluck('id')->toArray(),
                     with: ['sender'],
                 ),

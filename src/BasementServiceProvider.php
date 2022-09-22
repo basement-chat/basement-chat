@@ -31,9 +31,9 @@ class BasementServiceProvider extends PackageServiceProvider
         $package
             ->name('basement')
             ->hasConfigFile()
-            ->hasViews()
             ->hasMigration('2022_09_08_020534_create_private_messages_table')
             ->hasRoutes(['api', 'channels'])
+            ->hasViews()
             ->hasCommand(BasementCommand::class);
     }
 
@@ -71,9 +71,8 @@ class BasementServiceProvider extends PackageServiceProvider
         }
 
         $this->publishes(paths: [
-            __DIR__ . '/../resources/css' => resource_path('vendor/basement/css'),
-            __DIR__ . '/../resources/js' => resource_path('vendor/basement/js'),
-            __DIR__ . '/../resources/views' => resource_path('vendor/basement/views'),
+            __DIR__ . '/../resources/css' => resource_path('css/vendor/basement'),
+            __DIR__ . '/../resources/js' => resource_path('js/vendor/basement'),
         ], groups: 'basement-assets');
     }
 
@@ -112,8 +111,6 @@ class BasementServiceProvider extends PackageServiceProvider
      */
     protected function configureBladeComponents(): void
     {
-        $this->loadViewsFrom(__DIR__ . '/../resources/views', 'basement');
-
         Blade::component('basement::chat-box', ChatBox::class);
     }
 }

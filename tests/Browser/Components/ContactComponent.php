@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace BasementChat\Basement\Tests\Browser\Components;
 
 use BasementChat\Basement\Tests\Fixtures\User;
@@ -42,18 +44,17 @@ class ContactComponent extends BaseComponent
      */
     public function assertContactsIsOffline(Browser $browser, User ...$contacts): void
     {
-        collect($contacts)->each(function (User $contact) use ($browser): void {
+        collect($contacts)->each(static function (User $contact) use ($browser): void {
             $selector = ".contact__container--user-box[data-id=\"{$contact->id}\"]";
 
             $browser
                 ->waitFor("{$selector} > div[title=\"{$contact->name} is offline\"]")
-                ->with(selector: $selector, callback: function (Browser $container): void {
-                    $container->assertAttributeContains(
+                ->with(selector: $selector, callback: static fn (Browser $container) => $container
+                    ->assertAttributeContains(
                         selector: '.contact__container--online-indicator',
                         attribute: 'class',
                         value: 'red',
-                    );
-                });
+                    ));
         });
     }
 
@@ -62,18 +63,17 @@ class ContactComponent extends BaseComponent
      */
     public function assertContactsIsOnline(Browser $browser, User ...$contacts): void
     {
-        collect($contacts)->each(function (User $contact) use ($browser): void {
+        collect($contacts)->each(static function (User $contact) use ($browser): void {
             $selector = ".contact__container--user-box[data-id=\"{$contact->id}\"]";
 
             $browser
                 ->waitFor("{$selector} > div[title=\"{$contact->name} is online\"]")
-                ->with(selector: $selector, callback: function (Browser $container): void {
-                    $container->assertAttributeContains(
+                ->with(selector: $selector, callback: static fn (Browser $container) => $container
+                    ->assertAttributeContains(
                         selector: '.contact__container--online-indicator',
                         attribute: 'class',
                         value: 'green',
-                    );
-                });
+                    ));
         });
     }
 

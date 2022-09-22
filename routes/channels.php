@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 use BasementChat\Basement\Broadcasting\ContactChannel;
 use BasementChat\Basement\Broadcasting\ContactsChannel;
 use Illuminate\Support\Facades\Broadcast;

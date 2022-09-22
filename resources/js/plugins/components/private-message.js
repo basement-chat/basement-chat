@@ -37,6 +37,9 @@ export default () => {
     urlBatchRequest,
     urlShowMore: null,
 
+    /**
+     * Hook during the initialization phase of the current Alpine component.
+     */
     init() {
       this.$refs.basementChatBox.addEventListener('update-receiver', this.updateReceiver.bind(this))
 
@@ -53,6 +56,9 @@ export default () => {
       this.registerEchoEventListeners()
     },
 
+    /**
+     * Load initial component data.
+     */
     async mount() {
       this.isLoading = true
 
@@ -75,6 +81,9 @@ export default () => {
       }
     },
 
+    /**
+     * Load more component data.
+     */
     async mountMore() {
       if (this.urlShowMore === null) {
         return
@@ -97,6 +106,9 @@ export default () => {
       this.scrollTo(currentCursor.id)
     },
 
+    /**
+     * Get messages grouped by day of creation.
+     */
     get groupedMessages() {
       const group = [...this.messages].reverse().reduce((
         /** @type Map<string, import('../@types').Data.PrivateMessage[]> */ carry,
@@ -116,6 +128,9 @@ export default () => {
       return [...group.values()]
     },
 
+    /**
+     * Update messages that have been seen to the database.
+     */
     markSeenMessagesAsRead() {
       if (this.seenMessages.length === 0) {
         return
@@ -131,6 +146,9 @@ export default () => {
       this.seenMessages = []
     },
 
+    /**
+     * Send a new message.
+     */
     async sendNewMessage() {
       this.isLoadingSentMessage = true
 
@@ -150,6 +168,9 @@ export default () => {
       this.isLoadingSentMessage = false
     },
 
+    /**
+     * Laravel Echo event listener when a message is received.
+     */
     onMessageReceived(event) {
       const receivedMessage = privateMessage(event.detail)
 
@@ -168,6 +189,9 @@ export default () => {
       }
     },
 
+    /**
+     * Laravel Echo event listener when a message is marked as read.
+     */
     onMessageMarkedAsRead(event) {
       if (this.receiver?.id === event.detail.receiver.id) {
         event.detail.messages.forEach((value) => {
@@ -177,12 +201,18 @@ export default () => {
       }
     },
 
+    /**
+     * Register Laravel Echo event listeners.
+     */
     registerEchoEventListeners() {
       echo
         .listen('.basement.message.sent', this.onMessageReceived.bind(this))
         .listen('.basement.message.marked-as-read', this.onMessageMarkedAsRead.bind(this))
     },
 
+    /**
+     * Scroll component view to given message id.
+     */
     scrollTo(id, options = {}) {
       if (id === null) {
         return
@@ -193,6 +223,9 @@ export default () => {
       })
     },
 
+    /**
+     * Add unread messages marker to the component.
+     */
     setUnreadMessagesMarker() {
       this.messages.some((message) => {
         if (message.readAt !== null) {
@@ -207,6 +240,9 @@ export default () => {
       })
     },
 
+    /**
+     * HTML DOM event listener to update the current receiver.
+     */
     updateReceiver(/** @type import('../@types').Events.UpdateReceiverEvent */ event) {
       this.unreadMessageCursor = null
       this.searchKeyword = ''

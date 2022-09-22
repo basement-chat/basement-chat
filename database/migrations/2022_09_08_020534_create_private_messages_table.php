@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 use App\Models\User;
 use BasementChat\Basement\Enums\MessageType;
 use BasementChat\Basement\Facades\Basement;
@@ -10,12 +12,10 @@ use Illuminate\Support\Facades\Schema;
 return new class () extends Migration {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
     public function up(): void
     {
-        Schema::create('private_messages', function (Blueprint $table): void {
+        Schema::create('private_messages', static function (Blueprint $table): void {
             Basement::useUserModel(config(key: 'basement.user_model', default: User::class));
 
             $user = Basement::newUserModel();
@@ -35,8 +35,6 @@ return new class () extends Migration {
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
     public function down(): void
     {

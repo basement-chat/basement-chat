@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace BasementChat\Basement\Tests\Feature;
+namespace BasementChat\Basement\Tests\Actions;
 
 use BasementChat\Basement\Contracts\AllPrivateMessages;
 use BasementChat\Basement\Models\PrivateMessage;

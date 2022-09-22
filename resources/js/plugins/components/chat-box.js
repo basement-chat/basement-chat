@@ -15,6 +15,9 @@ export default () => ({
   hasNotificationPermission: Push.Permission.has(),
   online: true,
 
+  /**
+   * Hook during the initialization phase of the current Alpine component.
+   */
   init() {
     axios.get('/sanctum/csrf-cookie')
 
@@ -35,6 +38,9 @@ export default () => ({
     this.$el.addEventListener('send-push-notification', this.sendPushNotification.bind(this))
   },
 
+  /**
+   * Request push notification permission to the browser.
+   */
   requestNotificationPermission() {
     Push.Permission.request(() => {
       this.isNotificationAllowed = true
@@ -44,6 +50,9 @@ export default () => ({
     })
   },
 
+  /**
+   * Send push notification permission to the browser if allowed.
+   */
   sendPushNotification(/** @type import('../@types').Events.PushNotificationEvent */ event) {
     if (this.isNotificationAllowed === false) {
       return

@@ -1,8 +1,9 @@
 <?php
 
+declare(strict_types=1);
+
 namespace BasementChat\Basement\Tests\Browser;
 
-use BasementChat\Basement\Models\PrivateMessage;
 use BasementChat\Basement\Tests\Browser\Components\ChatBoxComponent;
 use BasementChat\Basement\Tests\Browser\Components\ContactComponent;
 use BasementChat\Basement\Tests\Browser\Components\PrivateMessageComponent;
@@ -72,7 +73,7 @@ class PrivateMessageBoxTest extends BrowserTestCase
                 ->within(selector: new ContactComponent(), callback: fn (Browser $contact) => $contact
                     ->waitUntilContactsVisible()
                     ->openPrivateChatWith($this->sender))
-                ->within(selector: new PrivateMessageComponent(), callback: fn (Browser $message) => $message
+                ->within(selector: new PrivateMessageComponent(), callback: static fn (Browser $message) => $message
                     ->assertSeeMessages(...$last5Messages)
                     ->assertSeeLoadMoreMessagesButton()
                     ->clickLoadMoreMessagesButton()
@@ -103,12 +104,12 @@ class PrivateMessageBoxTest extends BrowserTestCase
                 ->within(selector: new ContactComponent(), callback: fn (Browser $contact) => $contact
                     ->waitUntilContactsVisible()
                     ->openPrivateChatWith($this->receiver))
-                ->within(selector: new PrivateMessageComponent(), callback: fn (Browser $message) => $message
+                ->within(selector: new PrivateMessageComponent(), callback: static fn (Browser $message) => $message
                     ->sendMessage('Hello World!')
                     ->waitFor('.private-message__text--value')
                     ->assertSee('Hello World!')));
 
-            $browserReceiver->within(selector: new PrivateMessageComponent(), callback: fn (Browser $message) => $message
+            $browserReceiver->within(selector: new PrivateMessageComponent(), callback: static fn (Browser $message) => $message
                 ->waitFor('.private-message__text--value')
                 ->assertSee('Hello World!'));
         });

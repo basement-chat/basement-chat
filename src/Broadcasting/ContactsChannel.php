@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace BasementChat\Basement\Broadcasting;
 
 use BasementChat\Basement\Data\ContactData;
@@ -12,6 +14,8 @@ class ContactsChannel
      * Authenticate the user's access to the channel.
      *
      * @param  \Illuminate\Foundation\Auth\User&\BasementChat\Basement\Contracts\User $user
+     *
+     * @return array<string,mixed>
      */
     public function join(Authenticatable $user): array
     {

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace BasementChat\Basement\View\Components;
 
 use BasementChat\Basement\Enums\ChatBoxPosition;

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace BasementChat\Basement\Tests\Browser;
 
 use BasementChat\Basement\Tests\Browser\Components\ChatBoxComponent;

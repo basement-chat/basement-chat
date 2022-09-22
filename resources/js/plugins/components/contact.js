@@ -16,12 +16,18 @@ export default () => {
     search: '',
     url,
 
+    /**
+     * Hook during the initialization phase of the current Alpine component.
+     */
     init() {
       this.$refs
         .basementChatBox
         .addEventListener('update-last-private-message', this.updateLastPrivateMessage.bind(this))
     },
 
+    /**
+     * Load initial component data.
+     */
     async mount() {
       /** @type import('../@types').Api.GetAllContactsResult */
       const response = await axios.get(this.url).then(({ data }) => data)
@@ -31,6 +37,9 @@ export default () => {
       this.registerEchoEventListeners()
     },
 
+    /**
+     * Get contacts filtered by search keywords.
+     */
     get filteredContacts() {
       if (this.search === '') {
         return this.contacts
@@ -39,16 +48,25 @@ export default () => {
       return this.contacts.filter(({ name }) => name.toLowerCase().includes(this.search.toLowerCase()))
     },
 
+    /**
+     * Find the same contact with the given id in the current component.
+     */
     findSameContact(searchId) {
       return this.contacts.find(({ id }) => id === searchId)
     },
 
+    /**
+     * Laravel Echo event listener to see other contacts that are on the current channel.
+     */
     onHere(values) {
       values.forEach((value) => {
         this.findSameContact(value.id).isOnline = true
       })
     },
 
+    /**
+     * Laravel Echo event listener when someone joins the channel.
+     */
     onSomeoneJoining(value) {
       const sameContact = this.findSameContact(value.id)
 
@@ -61,11 +79,17 @@ export default () => {
       }
     },
 
+    /**
+     * Laravel Echo event listener when someone leaves the channel.
+     */
     onSomeoneLeaving(value) {
       const sameContact = this.contacts.find(({ id }) => id === value.id)
       sameContact.isOnline = false
     },
 
+    /**
+     * Register Laravel Echo event listeners.
+     */
     registerEchoEventListeners() {
       echo
         .here(this.onHere.bind(this))
@@ -73,6 +97,9 @@ export default () => {
         .leaving(this.onSomeoneLeaving.bind(this))
     },
 
+    /**
+     * HTML DOM event listener to update the last private message in the current component.
+     */
     updateLastPrivateMessage(/** @type import('../@types').Events.UpdateLastPrivateMessageEvent */ event) {
       const sameContactIndex = this.contacts.findIndex(({ id }) => id === event.detail.senderId)
       const sameContact = this.contacts.splice(sameContactIndex, 1).at(0)
@@ -86,6 +113,9 @@ export default () => {
       this.contacts.unshift(sameContact)
     },
 
+    /**
+     * Trigger update receiver event to the chat box component.
+     */
     updateReceiver(value) {
       this.$dispatch('update-receiver', value)
     },

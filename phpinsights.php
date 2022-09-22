@@ -62,6 +62,9 @@ return [
 
     'remove' => [
         \SlevomatCodingStandard\Sniffs\Classes\ForbiddenPublicPropertySniff::class,
+        \SlevomatCodingStandard\Sniffs\TypeHints\DisallowMixedTypeHintSniff::class,
+        \SlevomatCodingStandard\Sniffs\TypeHints\PropertyTypeHintSniff::class,
+        \NunoMaduro\PhpInsights\Domain\Insights\ForbiddenDefineFunctions::class,
         \NunoMaduro\PhpInsights\Domain\Insights\ForbiddenNormalClasses::class,
         \NunoMaduro\PhpInsights\Domain\Insights\ForbiddenTraits::class,
     ],

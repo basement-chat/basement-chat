@@ -6,8 +6,8 @@ namespace BasementChat\Basement\Actions;
 
 use BasementChat\Basement\Contracts\SendPrivateMessage as SendPrivateMessageContract;
 use BasementChat\Basement\Data\PrivateMessageData;
-use BasementChat\Basement\Facades\Basement;
 use BasementChat\Basement\Events\PrivateMessageSent;
+use BasementChat\Basement\Facades\Basement;
 
 class SendPrivateMessage implements SendPrivateMessageContract
 {

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace BasementChat\Basement\Tests\Browser\Components;
 
 use BasementChat\Basement\Models\PrivateMessage;
@@ -33,7 +35,7 @@ class PrivateMessageComponent extends BaseComponent
             $selector = ".private-message__text--value[data-id=\"{$message->id}\"]";
             $browser
                 ->waitUntil(<<<JS
-                    document.querySelector('$selector') !== null
+                    document.querySelector('{$selector}') !== null
                 JS)
                 ->scrollIntoView($selector)
                 ->assertSee($message->value);
