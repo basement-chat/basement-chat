@@ -11,9 +11,6 @@ interface Basement
 {
     /**
      * Specify the user model used by the application.
-     *
-     * @throws \TypeError if the given user model is not a subclass of \Illuminate\Foundation\Auth\User
-     *                    or does not implement the \BasementChat\Basement\Contracts\User.
      */
     public static function useUserModel(mixed $class): void;
 
@@ -21,6 +18,9 @@ interface Basement
      * Get the name of the user model used by the application.
      *
      * @return class-string<\Illuminate\Foundation\Auth\User>&class-string<\BasementChat\Basement\Contracts\User>
+     *
+     * @throws \TypeError if the given user model is not a subclass of \Illuminate\Foundation\Auth\User
+     *                    or does not implement the \BasementChat\Basement\Contracts\User.
      */
     public static function userModel(): string;
 
@@ -33,8 +33,6 @@ interface Basement
 
     /**
      * Specify the private message model used by the application.
-     *
-     * @throws \TypeError if the given user model is not a subclass of \BasementChat\Basement\Models\PrivateMessage.
      */
     public static function usePrivateMessageModel(mixed $class): void;
 
@@ -42,6 +40,8 @@ interface Basement
      * Get the name of the private message model used by the application.
      *
      * @return class-string<\BasementChat\Basement\Models\PrivateMessage>
+     *
+     * @throws \TypeError if the given user model is not a subclass of \BasementChat\Basement\Models\PrivateMessage.
      */
     public static function privateMessageModel(): string;
 

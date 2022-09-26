@@ -19,7 +19,7 @@
   ],
   "require": {
     "php": "^8.0",
-    "illuminate/contracts": "^9.0",
+    "laravel/framework": "^9.0",
     "laravel/sanctum": "^3.0",
     "pusher/pusher-php-server": "^7.0",
     "spatie/enum": "^3.13",

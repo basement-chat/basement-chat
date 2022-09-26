@@ -17,38 +17,19 @@ class Basement implements BasementContract
 {
     /**
      * The user model used by the application.
-     *
-     * @phpstan-var class-string<\Illuminate\Foundation\Auth\User>&class-string<\BasementChat\Basement\Contracts\User>
      */
-    protected static string $userModel;
+    protected static mixed $userModel;
 
     /**
      * The private message model used by the application.
-     *
-     * @phpstan-var class-string<\BasementChat\Basement\Models\PrivateMessage>
      */
-    protected static string $privateMessageModel;
+    protected static mixed $privateMessageModel;
 
     /**
      * Specify the user model used by the application.
-     *
-     * @throws \TypeError if the given user model is not a subclass of \Illuminate\Foundation\Auth\User
-     *                    or does not implement the \BasementChat\Basement\Contracts\User.
      */
     public static function useUserModel(mixed $class): void
     {
-        if (
-            is_string($class) === false
-            || class_exists($class) === false
-            || is_subclass_of($class, Authenticatable::class) === false
-            || is_subclass_of($class, UserContract::class) === false
-        ) {
-            throw new \TypeError(
-                'The given user model should be a subclass of ' . Authenticatable::class .
-                ' class and implement the ' . UserContract::class . ' contract.'
-            );
-        }
-
         static::$userModel = $class;
     }
 
@@ -56,9 +37,24 @@ class Basement implements BasementContract
      * Get the name of the user model used by the application.
      *
      * @return class-string<\Illuminate\Foundation\Auth\User>&class-string<\BasementChat\Basement\Contracts\User>
+     *
+     * @throws \TypeError if the given user model is not a subclass of \Illuminate\Foundation\Auth\User
+     *                    or does not implement the \BasementChat\Basement\Contracts\User.
      */
     public static function userModel(): string
     {
+        if (
+            is_string(static::$userModel) === false
+            || class_exists(static::$userModel) === false
+            || is_subclass_of(static::$userModel, Authenticatable::class) === false
+            || is_subclass_of(static::$userModel, UserContract::class) === false
+        ) {
+            throw new \TypeError(
+                'The given user model should be a subclass of ' . Authenticatable::class .
+                ' class and implement the ' . UserContract::class . ' contract.'
+            );
+        }
+
         return static::$userModel;
     }
 
@@ -69,26 +65,14 @@ class Basement implements BasementContract
      */
     public static function newUserModel(): Authenticatable
     {
-        return app(static::$userModel);
+        return app(static::userModel());
     }
 
     /**
      * Specify the private message model used by the application.
-     *
-     * @throws \TypeError if the given user model is not a subclass of \BasementChat\Basement\Models\PrivateMessage.
      */
     public static function usePrivateMessageModel(mixed $class): void
     {
-        if (
-            is_string($class) === false
-            || class_exists($class) === false
-            || (is_subclass_of($class, PrivateMessage::class) === false && $class !== PrivateMessage::class)
-        ) {
-            throw new \TypeError(
-                'The given private message model should be a subclass of ' . PrivateMessage::class . ' class.'
-            );
-        }
-
         static::$privateMessageModel = $class;
     }
 
@@ -96,9 +80,24 @@ class Basement implements BasementContract
      * Get the name of the private message model used by the application.
      *
      * @return class-string<\BasementChat\Basement\Models\PrivateMessage>
+     *
+     * @throws \TypeError if the given user model is not a subclass of \BasementChat\Basement\Models\PrivateMessage.
      */
     public static function privateMessageModel(): string
     {
+        if (
+            is_string(static::$privateMessageModel) === false
+            || class_exists(static::$privateMessageModel) === false
+            || (
+                is_subclass_of(static::$privateMessageModel, PrivateMessage::class) === false
+                && static::$privateMessageModel !== PrivateMessage::class
+            )
+        ) {
+            throw new \TypeError(
+                'The given private message model should be a subclass of ' . PrivateMessage::class . ' class.'
+            );
+        }
+
         return static::$privateMessageModel;
     }
 
@@ -107,7 +106,7 @@ class Basement implements BasementContract
      */
     public static function newPrivateMessageModel(): PrivateMessage
     {
-        return app(static::$privateMessageModel);
+        return app(static::privateMessageModel());
     }
 
     /**

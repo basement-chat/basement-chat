@@ -14,7 +14,6 @@ use Illuminate\Support\Facades\File;
 use Orchestra\Testbench\Dusk\Options;
 use Orchestra\Testbench\Dusk\TestCase as OrchestraDuskTestCase;
 use Orchestra\Testbench\Http\Middleware\VerifyCsrfToken;
-use OwenVoke\BladeFontAwesome\BladeFontAwesomeServiceProvider;
 use Symfony\Component\Process\Process;
 
 class BrowserTestCase extends OrchestraDuskTestCase
@@ -89,7 +88,6 @@ class BrowserTestCase extends OrchestraDuskTestCase
     {
         return [
             ...$this->getBasementEnvironmentPackageProviders($app),
-            BladeFontAwesomeServiceProvider::class,
             BroadcastServiceProvider::class,
         ];
     }
