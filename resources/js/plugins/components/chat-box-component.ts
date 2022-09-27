@@ -1,24 +1,37 @@
-// @ts-check
-
+import { AlpineComponent } from 'alpinejs'
 import axios from 'axios'
 import Push from 'push.js'
 import NotificationStatus from '../enums/notification-status'
+import { PushNotificationEvent } from '../types/event'
 
-/**
- * @returns {import('../@types').Components.ChatBoxComponent}
- */
-export default () => ({
-  isMinimized: true,
-  isContactOpened: true,
-  isMessageBoxOpened: false,
-  isNotificationAllowed: window.localStorage.getItem('basement.notification') === NotificationStatus.Allowed,
-  hasNotificationPermission: Push.Permission.has(),
-  online: true,
+interface ComponentData {
+  isMinimized: boolean
+  isContactOpened: boolean
+  isMessageBoxOpened: boolean
+  isNotificationAllowed: boolean
+  hasNotificationPermission: boolean
+  online: boolean
+}
+
+class ChatBoxComponent extends AlpineComponent<ComponentData> implements ComponentData {
+  public isMinimized = true
+
+  public isContactOpened = true
+
+  public isMessageBoxOpened = false
+
+  public isNotificationAllowed = (
+    window.localStorage.getItem('basement.notification') === NotificationStatus.Allowed
+  )
+
+  public hasNotificationPermission = Push.Permission.has()
+
+  public online = true
 
   /**
    * Hook during the initialization phase of the current Alpine component.
    */
-  init() {
+  public init(): void {
     axios.get('/sanctum/csrf-cookie')
 
     window.addEventListener('online', () => {
@@ -36,39 +49,38 @@ export default () => ({
     })
 
     this.$el.addEventListener('send-push-notification', this.sendPushNotification.bind(this))
-  },
+  }
 
   /**
    * Request push notification permission to the browser.
    */
-  requestNotificationPermission() {
+  public requestNotificationPermission(): void {
     Push.Permission.request(() => {
       this.isNotificationAllowed = true
       this.hasNotificationPermission = true
     }, () => {
       this.hasNotificationPermission = false
     })
-  },
+  }
 
   /**
    * Send push notification permission to the browser if allowed.
    */
-  sendPushNotification(/** @type import('../@types').Events.PushNotificationEvent */ event) {
+  protected sendPushNotification(event: CustomEvent<PushNotificationEvent>): void {
     if (this.isNotificationAllowed === false) {
-      return
+      throw new Error('Notifications are not allowed')
     }
 
     Push.create(event.detail.title, {
       body: event.detail.body,
       icon: event.detail.icon,
       timeout: 4000,
-      /**
-       * @this {Notification}
-       */
-      onClick() {
+      onClick(this: Notification) {
         window.focus()
         this.close()
       },
     })
-  },
-})
+  }
+}
+
+export default (): ChatBoxComponent => new ChatBoxComponent()

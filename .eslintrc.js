@@ -4,16 +4,31 @@ module.exports = {
     es2021: true,
     node: true,
   },
-  extends: 'airbnb-base',
-  overrides: [
+  extends: [
+    'airbnb-base',
+    'airbnb-typescript/base',
+    'plugin:@typescript-eslint/recommended',
   ],
+  overrides: [
+    {
+      files: ['*.ts'],
+      rules: {
+        '@typescript-eslint/explicit-member-accessibility': 'error',
+        '@typescript-eslint/explicit-function-return-type': 'error',
+      },
+    },
+  ],
+  // parser: '@typescript-eslint/parser',
   parserOptions: {
     ecmaVersion: 'latest',
     sourceType: 'module',
+    project: './tsconfig.eslint.json',
   },
+  // plugins: [
+  //   '@typescript-eslint',
+  // ],
   rules: {
     semi: ['error', 'never'],
-    'import/prefer-default-export': 'off',
-    'max-len': ['error', { code: 120 }],
+    '@typescript-eslint/semi': 'off',
   },
 }
