@@ -9,8 +9,14 @@ use Orchestra\Testbench\TestCase as OrchestraTestCase;
 
 class TestCase extends OrchestraTestCase
 {
-    use BasementTestCaseEnvironment {
-        BasementTestCaseEnvironment::getEnvironmentSetUp as getBasementEnvironmentSetUp;
+    /**
+     * Setup the test environment.
+     */
+    public function setUp(): void
+    {
+        parent::setUp();
+
+        BasementTestCaseEnvironment::setFactories();
     }
 
     /**
@@ -20,8 +26,37 @@ class TestCase extends OrchestraTestCase
      */
     public function getEnvironmentSetUp($app): void
     {
-        $this->getBasementEnvironmentSetUp($app);
-
+        BasementTestCaseEnvironment::setConfigurations();
         Config::set(key: 'database.default', value: 'testing');
+    }
+
+    /**
+     * Define database migrations.
+     */
+    protected function defineDatabaseMigrations(): void
+    {
+        $this->loadLaravelMigrations();
+        $this->loadMigrationsFrom(__DIR__ . '/../database/migrations');
+    }
+
+    /**
+     * Define routes setup.
+     *
+     * @param  \Illuminate\Routing\Router  $router
+     */
+    protected function defineRoutes($router): void
+    {
+        BasementTestCaseEnvironment::setRoutes($router);
+    }
+
+    /**
+     * Get package providers.
+     *
+     * @param \Illuminate\Foundation\Application $app
+     * @return array<class-string>
+     */
+    protected function getPackageProviders($app): array
+    {
+        return BasementTestCaseEnvironment::getPackageProviders();
     }
 }

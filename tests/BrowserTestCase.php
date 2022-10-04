@@ -8,23 +8,16 @@ use BasementChat\Basement\Tests\Fixtures\User;
 use Illuminate\Broadcasting\BroadcastServiceProvider;
 use Illuminate\Contracts\View\View;
 use Illuminate\Cookie\Middleware\EncryptCookies;
+use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Broadcast;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\File;
 use Orchestra\Testbench\Dusk\Options;
 use Orchestra\Testbench\Dusk\TestCase as OrchestraDuskTestCase;
 use Orchestra\Testbench\Http\Middleware\VerifyCsrfToken;
-use Symfony\Component\Process\Process;
 
 class BrowserTestCase extends OrchestraDuskTestCase
 {
-    use BasementTestCaseEnvironment {
-        BasementTestCaseEnvironment::setUp as setUpBasementEnvironment;
-        BasementTestCaseEnvironment::getEnvironmentSetUp as getBasementEnvironmentSetUp;
-        BasementTestCaseEnvironment::getPackageProviders as getBasementEnvironmentPackageProviders;
-        BasementTestCaseEnvironment::defineRoutes as defineBasementEnvironmentRoutes;
-    }
-
     /**
      * Setup the test environment.
      */
@@ -32,10 +25,10 @@ class BrowserTestCase extends OrchestraDuskTestCase
     {
         parent::setUp();
 
-        $this->setUpBasementEnvironment();
         $this->defineDatabaseMigrations();
         $this->publishAssets();
 
+        BasementTestCaseEnvironment::setFactories();
         Options::withoutUI();
         Options::addArgument('--no-sandbox');
     }
@@ -48,8 +41,8 @@ class BrowserTestCase extends OrchestraDuskTestCase
     public function getEnvironmentSetUp($app): void
     {
         $this->defineRoutes($app['router']);
-        $this->getBasementEnvironmentSetUp($app);
 
+        BasementTestCaseEnvironment::setConfigurations();
         Config::set(key: 'auth.providers.users.model', value: User::class);
         Config::set(key: 'sanctum.middleware.encrypt_cookies', value: EncryptCookies::class);
         Config::set(key: 'sanctum.middleware.verify_csrf_token', value: VerifyCsrfToken::class);
@@ -62,6 +55,15 @@ class BrowserTestCase extends OrchestraDuskTestCase
     }
 
     /**
+     * Define database migrations.
+     */
+    protected function defineDatabaseMigrations(): void
+    {
+        $this->loadLaravelMigrations();
+        $this->loadMigrationsFrom(__DIR__ . '/../database/migrations');
+    }
+
+    /**
      * Define routes setup.
      *
      * @param  \Illuminate\Routing\Router  $router
@@ -69,8 +71,7 @@ class BrowserTestCase extends OrchestraDuskTestCase
     protected function defineRoutes($router): void
     {
         Broadcast::routes();
-
-        $this->defineBasementEnvironmentRoutes($router);
+        BasementTestCaseEnvironment::setRoutes($router);
 
         $router
             ->get(uri: '/dashboard', action: static fn (): View => view('dashboard'))
@@ -87,7 +88,7 @@ class BrowserTestCase extends OrchestraDuskTestCase
     protected function getPackageProviders($app): array
     {
         return [
-            ...$this->getBasementEnvironmentPackageProviders($app),
+            ...BasementTestCaseEnvironment::getPackageProviders(),
             BroadcastServiceProvider::class,
         ];
     }
@@ -97,11 +98,9 @@ class BrowserTestCase extends OrchestraDuskTestCase
      */
     protected function publishAssets(): void
     {
-        $process = new Process(['npm', 'run', 'build']);
-        $process->run();
-
-        File::deleteDirectory(public_path('build'));
-        File::delete(public_path('hot'));
-        File::copyDirectory(directory: __DIR__ . '/../public', destination: public_path());
+        File::cleanDirectory(public_path('vendor/basement'));
+        Artisan::call(command: 'vendor:publish', parameters: [
+            '--tag' => 'basement-assets',
+        ]);
     }
 }
