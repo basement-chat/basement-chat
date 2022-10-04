@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace BasementChat\Basement\Contracts;
 
+use BasementChat\Basement\Enums\AvatarStyle;
+use BasementChat\Basement\Enums\ChatBoxPosition;
 use BasementChat\Basement\Models\PrivateMessage;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
@@ -63,4 +65,28 @@ interface Basement
      * @param  class-string<\BasementChat\Basement\Contracts\MarkPrivatesMessagesAsRead>   $class
      */
     public static function markPrivateMessagesAsReadUsing(string $class): void;
+
+    /**
+     * Get the avatar style from the basement configuration file.
+     */
+    public static function getAvatarStyle(): AvatarStyle;
+
+    /**
+     * Get the avatar options from the basement configuration file.
+     *
+     * @return array<string,string|int|bool>
+     */
+    public static function getAvatarOptions(): array;
+
+    /**
+     * Get the chat box widget position from the basement configuration file.
+     */
+    public static function getChatBoxWidgetPosition(): ChatBoxPosition;
+
+    /**
+     * Get the Laravel Echo client-side broadcast options from the basement configuration file.
+     *
+     * @return array<string,string|int|bool>
+     */
+    public static function getBroadcastOptions(): array;
 }

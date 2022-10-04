@@ -10,6 +10,32 @@ return [
 
     /*
     |--------------------------------------------------------------------------
+    | Laravel Echo Broadcast Options
+    |--------------------------------------------------------------------------
+    |
+    | Here is the configuration where you can set the options used on client-
+    | side Laravel Echo. For server-side broadcasting options, please refer to
+    | /config/broadcasting.php file. The "default" value below should be
+    | available as an array key inside "connections".
+    |
+    */
+
+    'broadcaster' => [
+        'default' => env('BROADCAST_DRIVER', 'null'),
+        'connections' => [
+            'pusher' => [
+                'broadcaster' => 'pusher',
+                'key' => env('PUSHER_APP_KEY'),
+                'cluster' => env('PUSHER_APP_CLUSTER'),
+                'useTLS' => true,
+            ],
+            'null' => [
+            ],
+        ],
+    ],
+
+    /*
+    |--------------------------------------------------------------------------
     | Chat Box Widget Position
     |--------------------------------------------------------------------------
     |

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace BasementChat\Basement\Traits;
 
-use BasementChat\Basement\Enums\AvatarStyle;
+use BasementChat\Basement\Contracts\User;
 use BasementChat\Basement\Facades\Basement;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
@@ -14,6 +14,10 @@ use Illuminate\Database\Query\Builder as QueryBuilder;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Support\Facades\DB;
 
+/**
+ * @method static Authenticatable&User&static addSelectLastPrivateMessageId(Authenticatable&User $value)
+ * @method static Authenticatable&User&static addSelectUnreadMessages(Authenticatable&User $value)
+ */
 trait HasPrivateMessages
 {
     /**
@@ -21,13 +25,9 @@ trait HasPrivateMessages
      */
     public function getAvatarAttribute(): string
     {
-        /** @var \BasementChat\Basement\Enums\AvatarStyle $style */
-        $style = config(key: 'basement.avatar.style', default: AvatarStyle::adventurer());
-
+        $style = Basement::getAvatarStyle();
+        $options = Basement::getAvatarOptions();
         $hash = md5($this->getNameAttribute());
-
-        /** @var array $options */
-        $options = config(key: 'basement.avatar.options', default: []);
 
         $queryString = collect($options)
             ->map(static fn (string $option, string $key): string => ("{$key}={$option}"))

@@ -10,6 +10,8 @@ use BasementChat\Basement\Contracts\Basement as BasementContract;
 use BasementChat\Basement\Contracts\MarkPrivatesMessagesAsRead;
 use BasementChat\Basement\Contracts\SendPrivateMessage;
 use BasementChat\Basement\Contracts\User as UserContract;
+use BasementChat\Basement\Enums\AvatarStyle;
+use BasementChat\Basement\Enums\ChatBoxPosition;
 use BasementChat\Basement\Models\PrivateMessage;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
@@ -50,7 +52,7 @@ class Basement implements BasementContract
             || is_subclass_of(static::$userModel, UserContract::class) === false
         ) {
             throw new \TypeError(
-                'The given user model should be a subclass of ' . Authenticatable::class .
+                'The given configuration "basement.user_model" should be a subclass of ' . Authenticatable::class .
                 ' class and implement the ' . UserContract::class . ' contract.'
             );
         }
@@ -147,5 +149,79 @@ class Basement implements BasementContract
     public static function sendPrivateMessagesUsing(string $class): void
     {
         app()->bind(abstract: SendPrivateMessage::class, concrete: $class);
+    }
+
+    /**
+     * Get the avatar style from the basement configuration file.
+     */
+    public static function getAvatarStyle(): AvatarStyle
+    {
+        $style = config('basement.avatar.style');
+
+        if ($style instanceof AvatarStyle === false) {
+            throw new \TypeError(
+                'The given configuration "basement.avatar.style" should be instanceof '
+                . AvatarStyle::class . ' class.'
+            );
+        }
+
+        return $style;
+    }
+
+    /**
+     * Get the avatar options from the basement configuration file.
+     *
+     * @return array<string,string|int|bool>
+     */
+    public static function getAvatarOptions(): array
+    {
+        $options = config('basement.avatar.options');
+
+        if (is_array($options) === false) {
+            throw new \TypeError('The given configuration "basement.avatar.options" should be of type array.');
+        }
+
+        return $options;
+    }
+
+    /**
+     * Get the chat box widget position from the basement configuration file.
+     */
+    public static function getChatBoxWidgetPosition(): ChatBoxPosition
+    {
+        $position = config('basement.chat_box_widget_position');
+
+        if ($position instanceof ChatBoxPosition === false) {
+            throw new \TypeError(
+                'The given configuration "basement.chat_box_widget_position" should be instanceof '
+                . ChatBoxPosition::class . ' class.'
+            );
+        }
+
+        return $position;
+    }
+
+    /**
+     * Get the Laravel Echo client-side broadcast options from the basement configuration file.
+     *
+     * @return array<string,string|int|bool>
+     */
+    public static function getBroadcastOptions(): array
+    {
+        $connections = config('basement.broadcaster.connections');
+        $driver = config('basement.broadcaster.default');
+
+        if (
+            is_array($connections) === false
+            || is_string($driver) === false
+            || array_key_exists($driver, $connections) === false
+        ) {
+            throw new \TypeError(
+                'The given configuration "basement.broadcaster.default" should be available as an array key inside '
+                .  'basement.broadcaster.connections ' . ChatBoxPosition::class . ' class.'
+            );
+        }
+
+        return $connections[$driver];
     }
 }

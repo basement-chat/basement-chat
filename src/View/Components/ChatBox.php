@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace BasementChat\Basement\View\Components;
 
-use BasementChat\Basement\Enums\ChatBoxPosition;
+use BasementChat\Basement\Facades\Basement;
 use Illuminate\Contracts\View\View;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\UnauthorizedException;
@@ -29,7 +29,8 @@ class ChatBox extends Component
         $view = 'chat-box';
 
         return view($view, data: [
-            'position' => config(key: 'basement.chat_box_widget_position', default: ChatBoxPosition::bottomRight()),
+            'position' => Basement::getChatBoxWidgetPosition(),
+            'echoOptions' => Basement::getBroadcastOptions(),
         ]);
     }
 

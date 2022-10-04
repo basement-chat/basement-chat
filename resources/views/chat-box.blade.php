@@ -2,6 +2,7 @@
   x-ref="basementChatBox"
   x-data="basementChatBox"
   x-bind:class="isMinimized === true ? '' : '!bm-w-[22rem] bm-max-w-[90vw] !bm-h-[32rem]'"
+  data-echo-options="{{ json_encode($echoOptions) }}"
   @class([
     'chat-box__container--main bm-h-14 bm-w-14 bm-fixed bm-transition-all bm-duration-500 bm-z-10',
     'bm-bottom-3 bm-left-3' => \BasementChat\Basement\Enums\ChatBoxPosition::bottomLeft()->equals($position),
