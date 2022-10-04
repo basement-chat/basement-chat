@@ -29,7 +29,7 @@
   "require-dev": {
     "beyondcode/laravel-dump-server": "^1.8",
     "laravel/pint": "^1.0",
-    "nunomaduro/collision": "^6.3",
+    "nunomaduro/collision": "^6.2",
     "nunomaduro/larastan": "^2.0.1",
     "nunomaduro/phpinsights": "^2.5",
     "orchestra/canvas": "^7.2",

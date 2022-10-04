@@ -8,11 +8,10 @@
 
   <!-- Fonts -->
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap">
-
-  <!-- Scripts -->
-  @vite(['resources/css/app.css', 'resources/js/app.js'])
+  <link rel="stylesheet" href="{{ asset('vendor/basement/basement.bundle.min.css') }}">
 </head>
 <body>
   <x-basement::chat-box />
+  <script src="{{ asset('vendor/basement/basement.bundle.min.js') }}"></script>
 </body>
 </html>

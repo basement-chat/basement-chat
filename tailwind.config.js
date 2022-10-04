@@ -1,6 +1,5 @@
-/** @type {import('tailwindcss').Config} */
 const defaultTheme = require('tailwindcss/defaultTheme')
-const tailwindcssForms = require('@tailwindcss/forms')
+const tailwindCssForms = require('@tailwindcss/forms')
 
 /** @type {import('tailwindcss').Config} */
 module.exports = {
@@ -15,8 +14,7 @@ module.exports = {
       },
     },
   },
-
   plugins: [
-    tailwindcssForms,
+    tailwindCssForms,
   ],
 }
