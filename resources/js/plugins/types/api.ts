@@ -1,8 +1,8 @@
-export type BasementResponse<T> = {
+export type Response<T> = {
   data: T
 }
 
-export type BasementPaginatedResponse<T> = BasementResponse<T> & {
+export type PaginatedResponse<T> = Response<T> & {
   links: {
     first: string | null
     last: string | null

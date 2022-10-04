@@ -1,38 +1,22 @@
-import { AlpineComponent } from 'alpinejs'
-import axios from 'axios'
 import Push from 'push.js'
 import NotificationStatus from '../enums/notification-status'
-import { PushNotificationEvent } from '../types/event'
+import type * as Alpine from '../types/alpine'
+import type { ChatBoxComponent, ChatBoxComponentData } from '../types/components'
+import type { PushNotificationEvent } from '../types/events'
 
-interface ComponentData {
-  isMinimized: boolean
-  isContactOpened: boolean
-  isMessageBoxOpened: boolean
-  isNotificationAllowed: boolean
-  hasNotificationPermission: boolean
-  online: boolean
-}
-
-class ChatBoxComponent extends AlpineComponent<ComponentData> implements ComponentData {
-  public isMinimized = true
-
-  public isContactOpened = true
-
-  public isMessageBoxOpened = false
-
-  public isNotificationAllowed = (
-    window.localStorage.getItem('basement.notification') === NotificationStatus.Allowed
-  )
-
-  public hasNotificationPermission = Push.Permission.has()
-
-  public online = true
+export default (): Alpine.Component & ChatBoxComponent => ({
+  isMinimized: true,
+  isContactOpened: true,
+  isMessageBoxOpened: false,
+  isNotificationAllowed: window.localStorage.getItem('basement.notification') === NotificationStatus.Allowed,
+  hasNotificationPermission: Push.Permission.has(),
+  online: true,
 
   /**
    * Hook during the initialization phase of the current Alpine component.
    */
-  public init(): void {
-    axios.get('/sanctum/csrf-cookie')
+  init(): void {
+    window.axios.get('/sanctum/csrf-cookie')
 
     window.addEventListener('online', () => {
       this.online = true
@@ -40,33 +24,33 @@ class ChatBoxComponent extends AlpineComponent<ComponentData> implements Compone
 
     window.addEventListener('offline', () => {
       this.online = false
-    })
+    });
 
-    this.$watch('isNotificationAllowed', (val) => {
+    (this.$watch as Alpine.Watch<ChatBoxComponentData>)('isNotificationAllowed', (val) => {
       const status = val === true ? NotificationStatus.Allowed : NotificationStatus.Muted
 
       window.localStorage.setItem('basement.notification', status)
-    })
+    });
 
-    this.$el.addEventListener('send-push-notification', this.sendPushNotification.bind(this))
-  }
+    (this.$el as Alpine.Element).addEventListener('send-push-notification', this.sendPushNotification.bind(this))
+  },
 
   /**
    * Request push notification permission to the browser.
    */
-  public requestNotificationPermission(): void {
+  requestNotificationPermission(): void {
     Push.Permission.request(() => {
       this.isNotificationAllowed = true
       this.hasNotificationPermission = true
     }, () => {
       this.hasNotificationPermission = false
     })
-  }
+  },
 
   /**
    * Send push notification permission to the browser if allowed.
    */
-  protected sendPushNotification(event: CustomEvent<PushNotificationEvent>): void {
+  sendPushNotification(event: CustomEvent<PushNotificationEvent>): void {
     if (this.isNotificationAllowed === false) {
       throw new Error('Notifications are not allowed')
     }
@@ -80,7 +64,5 @@ class ChatBoxComponent extends AlpineComponent<ComponentData> implements Compone
         this.close()
       },
     })
-  }
-}
-
-export default (): ChatBoxComponent => new ChatBoxComponent()
+  },
+})

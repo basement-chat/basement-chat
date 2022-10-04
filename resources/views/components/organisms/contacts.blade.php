@@ -86,7 +86,7 @@
 
             <p
               x-text="contact.lastPrivateMessage?.createdAtHighlight"
-              x-bind:title="contact.lastPrivateMessage?.createdAt.format('LLLL')"
+              x-bind:title="contact.lastPrivateMessage?.createdAtFullDate"
               class="bm-col-span-1 bm-font-semibold bm-text-xs bm-text-right"></p>
           </div>
 

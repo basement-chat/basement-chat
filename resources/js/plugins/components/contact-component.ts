@@ -1,142 +1,142 @@
-import { AlpineComponent } from 'alpinejs'
-import axios from 'axios'
 import ContactData from '../data/contact-data'
-import { BasementResponse, Contact } from '../types/api'
-import { UpdateLastPrivateMessageEvent } from '../types/event'
+import type * as Alpine from '../types/alpine'
+import type { Response, Contact } from '../types/api'
+import type { ContactComponent } from '../types/components'
+import type { UpdateLastPrivateMessageEvent } from '../types/events'
 
-const container = document.querySelector('.contact__container--main') as HTMLDivElement
-const url = container.getAttribute('data-url') as string
-const echo = window.Echo.join('basement.contacts')
+export default (): Alpine.Component & ContactComponent => {
+  const container = document.querySelector('.contact__container--main')!
+  const url = container.getAttribute('data-url') as string
 
-interface ComponentData {
-  contacts: ContactData[]
-  search: string
-  url: string
-}
+  return {
+    contacts: [],
+    search: '',
+    url,
 
-class ContactComponent extends AlpineComponent<ComponentData> implements ComponentData {
-  public contacts: ContactData[] = []
+    /**
+     * Hook during the initialization phase of the current Alpine component.
+     */
+    init(): void {
+      (this.$refs as Alpine.Refs)
+        .basementChatBox
+        .addEventListener('update-last-private-message', this.updateLastPrivateMessage.bind(this))
+    },
 
-  public search = ''
+    /**
+     * Load initial component data.
+     */
+    async mount(): Promise<void> {
+      const response = await window.axios
+        .get(this.url)
+        .then(({ data }) => data) as Response<Contact[]>
 
-  public url = url
+      this.contacts = response.data.map((contact) => ContactData.from(contact))
 
-  /**
-   * Hook during the initialization phase of the current Alpine component.
-   */
-  public init(): void {
-    this.$refs
-      .basementChatBox
-      .addEventListener('update-last-private-message', this.updateLastPrivateMessage.bind(this))
-  }
+      this.registerEchoEventListeners()
+    },
 
-  /**
-   * Load initial component data.
-   */
-  public async mount(): Promise<void> {
-    const response = await axios
-      .get(this.url)
-      .then(({ data }) => data) as BasementResponse<Contact[]>
+    /**
+     * Get contacts filtered by search keywords.
+     */
+    get filteredContacts(): ContactData[] {
+      if (this.search === '') {
+        return this.contacts
+      }
 
-    this.contacts = response.data.map((contact) => ContactData.from(contact))
+      return this
+        .contacts
+        .filter(({ name }) => name.toLowerCase().includes(this.search.toLowerCase()))
+    },
 
-    this.registerEchoEventListeners()
-  }
+    /**
+     * Trigger update receiver event to the chat box component.
+     */
+    updateReceiver(contact: ContactData): void {
+      (this.$dispatch as Alpine.Dispatch)('update-receiver', contact)
+    },
 
-  /**
-   * Get contacts filtered by search keywords.
-   */
-  public get filteredContacts(): ContactData[] {
-    if (this.search === '') {
-      return this.contacts
-    }
+    /**
+     * Find the same contact with the given id in the current component.
+     */
+    findSameContact(searchId: number): { index: number | null, contact: ContactData | null } {
+      const sameContactIndex = this.contacts.findIndex(({ id }) => id === searchId)
 
-    return this
-      .contacts
-      .filter(({ name }) => name.toLowerCase().includes(this.search.toLowerCase()))
-  }
+      if (sameContactIndex === -1) {
+        return { index: null, contact: null }
+      }
 
-  /**
-   * Trigger update receiver event to the chat box component.
-   */
-  public updateReceiver(contact: ContactData): void {
-    this.$dispatch('update-receiver', contact)
-  }
+      return { index: sameContactIndex, contact: this.contacts.at(sameContactIndex)! }
+    },
 
-  /**
-   * Find the same contact with the given id in the current component.
-   */
-  protected findSameContact(searchId: number): { index: number, contact: ContactData | null } {
-    const sameContactIndex = this.contacts.findIndex(({ id }) => id === searchId)
+    /**
+     * Laravel Echo event listener to see other contacts that are on the current channel.
+     */
+    onHere(contacts: Contact[]): void {
+      contacts.forEach((contact) => {
+        const sameContact = this.findSameContact(contact.id).contact
 
-    return { index: sameContactIndex, contact: this.contacts[sameContactIndex] ?? null }
-  }
+        if (sameContact !== null) {
+          sameContact.isOnline = true
+        }
+      })
+    },
 
-  /**
-   * Laravel Echo event listener to see other contacts that are on the current channel.
-   */
-  protected onHere(contacts: Contact[]): void {
-    contacts.forEach((contact) => {
+    /**
+     * Laravel Echo event listener when someone joins the channel.
+     */
+    onSomeoneJoining(contact: Contact): void {
       const sameContact = this.findSameContact(contact.id).contact
 
       if (sameContact !== null) {
         sameContact.isOnline = true
+      } else {
+        const newContact = ContactData.from(contact)
+
+        newContact.isOnline = true
+        this.contacts.push(newContact)
       }
-    })
-  }
+    },
 
-  /**
-   * Laravel Echo event listener when someone joins the channel.
-   */
-  protected onSomeoneJoining(contact: Contact): void {
-    const sameContact = this.findSameContact(contact.id).contact
+    /**
+     * Laravel Echo event listener when someone leaves the channel.
+     */
+    onSomeoneLeaving(contact: Contact): void {
+      const sameContact = this.findSameContact(contact.id).contact
 
-    if (sameContact !== null) {
-      sameContact.isOnline = true
-    } else {
-      const newContact = ContactData.from(contact)
+      if (sameContact !== null) {
+        sameContact.isOnline = false
+      }
+    },
 
-      newContact.isOnline = true
-      this.contacts.push(newContact)
-    }
-  }
+    /**
+     * Register Laravel Echo event listeners.
+     */
+    registerEchoEventListeners(): void {
+      window.Echo.join('basement.contacts')
+        .here(this.onHere.bind(this))
+        .joining(this.onSomeoneJoining.bind(this))
+        .leaving(this.onSomeoneLeaving.bind(this))
+    },
 
-  /**
-   * Laravel Echo event listener when someone leaves the channel.
-   */
-  protected onSomeoneLeaving(contact: Contact): void {
-    const sameContact = this.findSameContact(contact.id).contact
+    /**
+     * HTML DOM event listener to update the last private message in the current component.
+     */
+    updateLastPrivateMessage(event: CustomEvent<UpdateLastPrivateMessageEvent>): void {
+      const sameContactIndex = this.findSameContact(event.detail.senderId).index
 
-    if (sameContact !== null) {
-      sameContact.isOnline = false
-    }
-  }
+      if (sameContactIndex === null) {
+        return
+      }
 
-  /**
-   * Register Laravel Echo event listeners.
-   */
-  protected registerEchoEventListeners(): void {
-    echo
-      .here(this.onHere.bind(this))
-      .joining(this.onSomeoneJoining.bind(this))
-      .leaving(this.onSomeoneLeaving.bind(this))
-  }
+      const sameContact = this.contacts.splice(sameContactIndex, 1).at(0)!
 
-  /**
-   * HTML DOM event listener to update the last private message in the current component.
-   */
-  protected updateLastPrivateMessage(event: CustomEvent<UpdateLastPrivateMessageEvent>): void {
-    const sameContactIndex = this.findSameContact(event.detail.senderId).index
-    const sameContact = this.contacts.splice(sameContactIndex, 1)[0]
+      sameContact.lastPrivateMessage = event.detail
 
-    sameContact.lastPrivateMessage = event.detail
+      if (sameContact.id !== event.detail.senderId) {
+        sameContact.unreadMessages += 1
+      }
 
-    if (sameContact.id !== event.detail.senderId) {
-      sameContact.unreadMessages += 1
-    }
-
-    this.contacts.unshift(sameContact)
+      this.contacts.unshift(sameContact)
+    },
   }
 }
-
-export default (): ContactComponent => new ContactComponent()

@@ -50,14 +50,14 @@
         <p class="bm-font-semibold">
           <x-basement::atoms.icons.fas-check-double class="bm-text-blue-500 bm-w-[0.9rem] bm-inline" /> Read
         </p>
-        <p x-text="selectedMessage?.readAt !== null ? `${selectedMessage?.readAt.format('LLLL')}` : '-'" class="bm-text-gray-700"></p>
+        <p x-text="selectedMessage?.readAt !== null ? `${selectedMessage?.readAtFullDate}` : '-'" class="bm-text-gray-700"></p>
       </div>
       <hr>
       <div class="bm-px-2 bm-flex bm-flex-col bm-gap-y-1">
         <p class="bm-font-semibold">
           <x-basement::atoms.icons.fas-check-double class="bm-text-gray-500 bm-w-[0.9rem] bm-inline" /> Delivered
         </p>
-        <p x-text="`${selectedMessage?.createdAt.format('LLLL')}`" class="bm-text-gray-700"></p>
+        <p x-text="`${selectedMessage?.createdAtFullDate}`" class="bm-text-gray-700"></p>
       </div>
     </div>
   </div>
@@ -110,7 +110,7 @@
         <template x-for="messages in groupedMessages">
           <div class="bm-flex bm-flex-col bm-gap-y-3">
             <div class="bm-grid bm-grid-cols-5 bm-mt-2">
-              <p x-text="messages[0].createdAt.format('LL')" class="bm-col-span-3 bm-col-start-2 bm-bg-yellow-100 bm-text-yellow-900 bm-text-sm bm-text-center bm-font-bold bm-py-1 bm-px-2 bm-rounded-lg"></p>
+              <p x-text="messages[0].createdAtDate" class="bm-col-span-3 bm-col-start-2 bm-bg-yellow-100 bm-text-yellow-900 bm-text-sm bm-text-center bm-font-bold bm-py-1 bm-px-2 bm-rounded-lg"></p>
             </div>
             <template x-for="message in messages">
               <div class="bm-flex bm-flex-col">
@@ -130,7 +130,7 @@
 
                     <span
                       class="bm-bg-white bm-text-xs bm-font-bold bm-py-1 bm-px-2 bm-absolute bm-rounded-b-lg bm-shadow-md"
-                      x-bind:title="`Sent at ${message.createdAt.format('LLL')}`"
+                      x-bind:title="`Sent at ${message.createdAtDateTime}`"
                       x-bind:class="message.receiverId === receiver.id ? 'bm-right-0' : 'bm-left-0'">
                       <template x-if="message.receiverId === receiver.id && message.readAt">
                         <x-basement::atoms.icons.fas-check-double class="bm-text-blue-500 bm-w-3 bm-inline" />
@@ -138,7 +138,7 @@
                       <template x-if="message.receiverId === receiver.id && !message.readAt">
                         <x-basement::atoms.icons.fas-check-double class="bm-text-gray-500 bm-w-3 bm-inline" />
                       </template>
-                      <span x-text="message.createdAt.format('LT')"></span>
+                      <span x-text="message.createdAt.createdAtTime"></span>
                     </span>
                   </div>
 

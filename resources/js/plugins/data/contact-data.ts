@@ -1,4 +1,4 @@
-import { Contact } from '../types/api'
+import type { Contact } from '../types/api'
 import PrivateMessageData from './private-message-data'
 
 class ContactData {

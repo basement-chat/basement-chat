@@ -1,8 +1,14 @@
-import moment, { Moment } from 'moment-timezone'
+import { differenceInDays, intlFormat } from 'date-fns'
+import { utcToZonedTime } from 'date-fns-tz'
 import MessageType from '../enums/message-type'
-import { PrivateMessage } from '../types/api'
+import type { PrivateMessage } from '../types/api'
+import type { FormatOptions } from '../types/date-fns'
 
-const clientTimezone: string = moment.tz.guess()
+const clientTimezone = Intl.DateTimeFormat().resolvedOptions().timeZone
+const simpleDateFormat: FormatOptions = { day: 'numeric', month: 'long', year: 'numeric' }
+const simpleTimeFormat: FormatOptions = { hour: 'numeric', hour12: true, minute: 'numeric' }
+const dateTimeFormat: FormatOptions = { ...simpleDateFormat, ...simpleTimeFormat }
+const fullDateFormat: FormatOptions = { weekday: 'long', ...simpleDateFormat, ...simpleTimeFormat }
 
 class PrivateMessageData {
   public constructor(
@@ -11,23 +17,51 @@ class PrivateMessageData {
     public readonly senderId: number,
     public readonly type: MessageType,
     public readonly value: string,
-    public readonly createdAt: Moment,
-    public readAt: Moment | null,
+    public readonly createdAt: Date,
+    public readAt: Date | null,
   ) {
   }
 
   public get createdAtHighlight(): string {
-    const isToday: boolean = this.createdAt.diff(moment.now(), 'days') === 0
+    const diffInDays = differenceInDays(this.createdAt, new Date())
 
-    if (isToday === true) {
-      return this.createdAt.format('LT')
+    if (diffInDays === 0) {
+      return intlFormat(this.createdAt, { hour: 'numeric', hour12: true, minute: 'numeric' })
     }
 
-    return this.createdAt.format('L')
+    if (diffInDays === -1) {
+      return 'Yesterday'
+    }
+
+    return intlFormat(this.createdAt, { day: 'numeric', month: 'numeric', year: '2-digit' })
+  }
+
+  public get createdAtDate(): string {
+    return intlFormat(this.createdAt, simpleDateFormat)
+  }
+
+  public get createdAtDateTime(): string {
+    return intlFormat(this.createdAt, dateTimeFormat)
+  }
+
+  public get createdAtTime(): string {
+    return intlFormat(this.createdAt, simpleTimeFormat)
+  }
+
+  public get createdAtFullDate(): string {
+    return intlFormat(this.createdAt, fullDateFormat)
+  }
+
+  public get readAtFullDate(): string {
+    if (this.readAt === null) {
+      return ''
+    }
+
+    return intlFormat(this.readAt, fullDateFormat)
   }
 
   public set readAtTime(time: string) {
-    this.readAt = moment(time).tz(clientTimezone)
+    this.readAt = utcToZonedTime(time, clientTimezone)
   }
 
   public static from(message: PrivateMessage): PrivateMessageData {
@@ -40,8 +74,8 @@ class PrivateMessageData {
         TEXT: 'Text',
       }[message.type] as keyof typeof MessageType],
       message.value,
-      moment(message.created_at).tz(clientTimezone),
-      message.read_at !== null ? moment(message.read_at).tz(clientTimezone) : null,
+      utcToZonedTime(message.created_at, clientTimezone),
+      message.read_at !== null ? utcToZonedTime(message.read_at, clientTimezone) : null,
     )
   }
 }

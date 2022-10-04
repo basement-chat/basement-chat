@@ -1,6 +1,6 @@
-import ContactData from '../data/contact-data'
-import PrivateMessageData from '../data/private-message-data'
-import { PrivateMessage } from './api'
+import type ContactData from '../data/contact-data'
+import type PrivateMessageData from '../data/private-message-data'
+import type { PrivateMessage } from './api'
 
 export type PushNotificationEvent = {
   title: string,
