@@ -1,4 +1,4 @@
-export type Response<T> = {
+export interface Response<T> {
   data: T
 }
 
@@ -17,7 +17,7 @@ export type PaginatedResponse<T> = Response<T> & {
   }
 }
 
-export type Contact = {
+export interface Contact {
   id: number
   name: string
   avatar: string
@@ -25,12 +25,12 @@ export type Contact = {
   unread_messages: number
 }
 
-export type PrivateMessage = {
+export interface PrivateMessage {
   id: number
   receiver_id: number
   sender_id: number
   type: 'DOCUMENT' | 'TEXT'
   value: string
-  read_at: string
+  read_at: string | null
   created_at: string
 }

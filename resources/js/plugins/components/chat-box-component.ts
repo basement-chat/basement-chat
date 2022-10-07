@@ -16,18 +16,19 @@ export default (): Alpine.Component & ChatBoxComponent => ({
    * Hook during the initialization phase of the current Alpine component.
    */
   init(): void {
-    window.axios.get('/sanctum/csrf-cookie')
+    void window.axios.get('/sanctum/csrf-cookie')
 
-    window.addEventListener('online', () => {
+    window.addEventListener('online', (): void => {
       this.online = true
     })
 
-    window.addEventListener('offline', () => {
+    window.addEventListener('offline', (): void => {
       this.online = false
     });
 
-    (this.$watch as Alpine.Watch<ChatBoxComponentData>)('isNotificationAllowed', (val) => {
-      const status = val === true ? NotificationStatus.Allowed : NotificationStatus.Muted
+    (this.$watch as Alpine.Watch<ChatBoxComponentData>)('isNotificationAllowed', (val: boolean): void => {
+      const status: NotificationStatus = val === true ? NotificationStatus.Allowed
+        : NotificationStatus.Muted
 
       window.localStorage.setItem('basement.notification', status)
     });
@@ -39,10 +40,10 @@ export default (): Alpine.Component & ChatBoxComponent => ({
    * Request push notification permission to the browser.
    */
   requestNotificationPermission(): void {
-    Push.Permission.request(() => {
+    Push.Permission.request((): void => {
       this.isNotificationAllowed = true
       this.hasNotificationPermission = true
-    }, () => {
+    }, (): void => {
       this.hasNotificationPermission = false
     })
   },
@@ -52,14 +53,14 @@ export default (): Alpine.Component & ChatBoxComponent => ({
    */
   sendPushNotification(event: CustomEvent<PushNotificationEvent>): void {
     if (this.isNotificationAllowed === false) {
-      throw new Error('Notifications are not allowed')
+      return
     }
 
-    Push.create(event.detail.title, {
+    void Push.create(event.detail.title, {
       body: event.detail.body,
       icon: event.detail.icon,
       timeout: 4000,
-      onClick(this: Notification) {
+      onClick(this: Notification): void {
         window.focus()
         this.close()
       },

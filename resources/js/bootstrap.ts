@@ -3,8 +3,8 @@ import axios from 'axios'
 import Echo from 'laravel-echo'
 import Pusher from 'pusher-js'
 
-const container = document.querySelector('.chat-box__container--main')!
-const options = JSON.parse(container.getAttribute('data-echo-options') as string)
+const container: HTMLDivElement = document.querySelector('.chat-box__container--main')!
+const options: object = JSON.parse(container.getAttribute('data-echo-options')!)
 
 window.Alpine = Alpine
 

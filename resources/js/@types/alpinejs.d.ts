@@ -1,4 +1,4 @@
 declare module '@alpinejs/intersect' {
-  const intersect: (alpine) => void
+  const intersect: (alpine: any) => void
   export default intersect
 }

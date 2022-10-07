@@ -1,6 +1,4 @@
-export type Component = {
-  [name: string]: unknown
-}
+export type Component = Record<string, unknown>
 
 export type Dispatch = <
   K extends keyof HTMLElementEventMap,
@@ -11,9 +9,7 @@ export type Element = HTMLElement
 
 export type NextTick = (callback: () => void) => void
 
-export type Refs = {
-  [name: string]: HTMLElement
-}
+export type Refs = Record<string, HTMLElement>;
 
 export type Watch<T> = <K extends keyof T>(
   property: K,

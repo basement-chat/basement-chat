@@ -5,8 +5,8 @@ import type { ContactComponent } from '../types/components'
 import type { UpdateLastPrivateMessageEvent } from '../types/events'
 
 export default (): Alpine.Component & ContactComponent => {
-  const container = document.querySelector('.contact__container--main')!
-  const url = container.getAttribute('data-url') as string
+  const container: HTMLDivElement = document.querySelector('.contact__container--main')!
+  const url: string = container.getAttribute('data-url')!
 
   return {
     contacts: [],
@@ -26,11 +26,13 @@ export default (): Alpine.Component & ContactComponent => {
      * Load initial component data.
      */
     async mount(): Promise<void> {
-      const response = await window.axios
+      const response: Response<Contact[]> = await window.axios
         .get(this.url)
-        .then(({ data }) => data) as Response<Contact[]>
+        .then(({ data }: any): any => data)
 
-      this.contacts = response.data.map((contact) => ContactData.from(contact))
+      this.contacts = response
+        .data
+        .map((contact: Contact): ContactData => ContactData.from(contact))
 
       this.registerEchoEventListeners()
     },
@@ -45,7 +47,11 @@ export default (): Alpine.Component & ContactComponent => {
 
       return this
         .contacts
-        .filter(({ name }) => name.toLowerCase().includes(this.search.toLowerCase()))
+        .filter(({ name }: ContactData): boolean => (
+          name
+            .toLowerCase()
+            .includes(this.search.toLowerCase())
+        ))
     },
 
     /**
@@ -59,7 +65,9 @@ export default (): Alpine.Component & ContactComponent => {
      * Find the same contact with the given id in the current component.
      */
     findSameContact(searchId: number): { index: number | null, contact: ContactData | null } {
-      const sameContactIndex = this.contacts.findIndex(({ id }) => id === searchId)
+      const sameContactIndex: number = this
+        .contacts
+        .findIndex(({ id }: ContactData): boolean => id === searchId)
 
       if (sameContactIndex === -1) {
         return { index: null, contact: null }
@@ -72,8 +80,8 @@ export default (): Alpine.Component & ContactComponent => {
      * Laravel Echo event listener to see other contacts that are on the current channel.
      */
     onHere(contacts: Contact[]): void {
-      contacts.forEach((contact) => {
-        const sameContact = this.findSameContact(contact.id).contact
+      contacts.forEach((contact: Contact): void => {
+        const sameContact: ContactData | null = this.findSameContact(contact.id).contact
 
         if (sameContact !== null) {
           sameContact.isOnline = true
@@ -85,12 +93,12 @@ export default (): Alpine.Component & ContactComponent => {
      * Laravel Echo event listener when someone joins the channel.
      */
     onSomeoneJoining(contact: Contact): void {
-      const sameContact = this.findSameContact(contact.id).contact
+      const sameContact: ContactData | null = this.findSameContact(contact.id).contact
 
       if (sameContact !== null) {
         sameContact.isOnline = true
       } else {
-        const newContact = ContactData.from(contact)
+        const newContact: ContactData = ContactData.from(contact)
 
         newContact.isOnline = true
         this.contacts.push(newContact)
@@ -101,7 +109,7 @@ export default (): Alpine.Component & ContactComponent => {
      * Laravel Echo event listener when someone leaves the channel.
      */
     onSomeoneLeaving(contact: Contact): void {
-      const sameContact = this.findSameContact(contact.id).contact
+      const sameContact: ContactData | null = this.findSameContact(contact.id).contact
 
       if (sameContact !== null) {
         sameContact.isOnline = false
@@ -122,17 +130,17 @@ export default (): Alpine.Component & ContactComponent => {
      * HTML DOM event listener to update the last private message in the current component.
      */
     updateLastPrivateMessage(event: CustomEvent<UpdateLastPrivateMessageEvent>): void {
-      const sameContactIndex = this.findSameContact(event.detail.senderId).index
+      const sameContactIndex: number | null = this.findSameContact(event.detail.senderId).index
 
       if (sameContactIndex === null) {
         return
       }
 
-      const sameContact = this.contacts.splice(sameContactIndex, 1).at(0)!
+      const sameContact: ContactData = this.contacts.splice(sameContactIndex, 1).at(0)!
 
       sameContact.lastPrivateMessage = event.detail
 
-      if (sameContact.id !== event.detail.senderId) {
+      if (sameContact.id !== event.detail.receiverId) {
         sameContact.unreadMessages += 1
       }
 

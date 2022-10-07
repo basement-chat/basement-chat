@@ -6,12 +6,12 @@ import type { PrivateMessageComponent, PrivateMessageComponentData } from '../ty
 import type { PrivateMessageMarkedAsReadEvent, PrivateMessageSentEvent, UpdateReceiverEvent } from '../types/events'
 
 export default (): Alpine.Component & PrivateMessageComponent => {
-  const intervalInSecondsToMarkMessagesAsRead = 3
-  const container = document.querySelector('.private-message__container--main')!
-  const urlTemplate = container.getAttribute('data-url') as string
-  const urlBatchRequest = container.getAttribute('data-batch-request-url') as string
-  const userId = Number(container.getAttribute('data-user-id') as string)
-  const highlighter = new Mark('.private-message__text--value')
+  const container: HTMLDivElement = document.querySelector('.private-message__container--main')!
+  const highlighter: Mark = new Mark('.private-message__text--value')
+  const intervalInSecondsToMarkMessagesAsRead: number = 3
+  const urlTemplate: string = container.getAttribute('data-url')!
+  const urlBatchRequest: string = container.getAttribute('data-batch-request-url')!
+  const userId: number = Number(container.getAttribute('data-user-id')!)
 
   return {
     isInfoBoxOpened: false,
@@ -24,8 +24,8 @@ export default (): Alpine.Component & PrivateMessageComponent => {
     newMessageValue: '',
     receiver: null,
     searchKeyword: '',
-    selectedMessage: null,
     seenMessages: [],
+    selectedMessage: null,
     unreadMessageCursor: null,
     url: '',
     urlTemplate,
@@ -43,7 +43,7 @@ export default (): Alpine.Component & PrivateMessageComponent => {
         intervalInSecondsToMarkMessagesAsRead * 1000,
       );
 
-      (this.$watch as Alpine.Watch<PrivateMessageComponentData>)('messages', () => {
+      (this.$watch as Alpine.Watch<PrivateMessageComponentData>)('messages', (): void => {
         if (this.searchKeyword.trim() === '') {
           highlighter.unmark()
         } else {
@@ -60,17 +60,20 @@ export default (): Alpine.Component & PrivateMessageComponent => {
     async mount(): Promise<void> {
       this.isLoading = true
 
-      const response = await window.axios
+      const response: PaginatedResponse<PrivateMessage[]> = await window.axios
         .get(this.url, { params: { keyword: this.searchKeyword.trim() } })
-        .then(({ data }) => data) as PaginatedResponse<PrivateMessage[]>
+        .then(({ data }: any): any => data)
 
       this.urlShowMore = response.links.next
-      this.messages = response.data.map((message) => PrivateMessageData.from(message))
+      this.messages = response
+        .data
+        .map((message: PrivateMessage): PrivateMessageData => PrivateMessageData.from(message))
+
       this.isLoading = false
 
       if (this.messages.length > 0) {
         this.setUnreadMessagesMarker()
-        this.scrollTo(this.unreadMessageCursor, {
+        this.scrollTo(this.unreadMessageCursor ?? this.messages.at(1)!.id, {
           block: 'center',
         })
       }
@@ -86,12 +89,15 @@ export default (): Alpine.Component & PrivateMessageComponent => {
 
       this.isLoadingShowMore = true
 
-      const response = await window.axios
+      const response: PaginatedResponse<PrivateMessage[]> = await window.axios
         .get(this.urlShowMore, { params: { keyword: this.searchKeyword.trim() } })
-        .then(({ data }) => data) as PaginatedResponse<PrivateMessage[]>
+        .then(({ data }: any): any => data)
 
-      const messages = response.data.map((message) => PrivateMessageData.from(message))
-      const currentCursor = this.messages.at(-1)
+      const messages: PrivateMessageData[] = response
+        .data
+        .map((message: PrivateMessage): PrivateMessageData => PrivateMessageData.from(message))
+
+      const currentCursor: PrivateMessageData | undefined = this.messages.at(-1)
 
       this.messages.push(...messages)
       this.urlShowMore = response.links.next
@@ -106,10 +112,10 @@ export default (): Alpine.Component & PrivateMessageComponent => {
      * Get messages grouped by day of creation.
      */
     get groupedMessages(): PrivateMessageData[][] {
-      const messages = new Map<string, PrivateMessageData[]>()
+      const messages: Map<string, PrivateMessageData[]> = new Map<string, PrivateMessageData[]>();
 
-      Array.from(this.messages).reverse().forEach((message) => {
-        const date = message.createdAtDate
+      [...this.messages].reverse().forEach((message: PrivateMessageData): void => {
+        const date: string = message.createdAt.toDateFormat()
 
         if (messages.has(date) === false) {
           messages.set(date, [])
@@ -131,10 +137,10 @@ export default (): Alpine.Component & PrivateMessageComponent => {
 
       this.isLoadingSentMessage = true
 
-      const response = await window.axios
+      const response: Response<PrivateMessage> = await window.axios
         .post(this.url, { value: this.newMessageValue })
-        .then(({ data }) => data) as Response<PrivateMessage>
-      const message = PrivateMessageData.from(response.data)
+        .then(({ data }: any): any => data)
+      const message: PrivateMessageData = PrivateMessageData.from(response.data)
 
       if (this.receiver.id !== userId) {
         this.messages.unshift(message)
@@ -160,10 +166,12 @@ export default (): Alpine.Component & PrivateMessageComponent => {
         throw new Error('Receiver cannot be empty')
       }
 
-      window.axios.patch(this.urlBatchRequest, this.seenMessages.map((value) => ({
-        operation: 'mark as read',
-        value: { id: value },
-      })))
+      void window
+        .axios
+        .patch(this.urlBatchRequest, this.seenMessages.map((value: number): object => ({
+          operation: 'mark as read',
+          value: { id: value },
+        })))
 
       this.receiver.unreadMessages -= this.seenMessages.length
 
@@ -174,7 +182,7 @@ export default (): Alpine.Component & PrivateMessageComponent => {
      * Laravel Echo event listener when a message is received.
      */
     onMessageReceived(event: CustomEvent<PrivateMessageSentEvent>): void {
-      const receivedMessage = PrivateMessageData.from(event.detail)
+      const receivedMessage: PrivateMessageData = PrivateMessageData.from(event.detail)
 
       if (
         event.detail.sender_id === this.receiver?.id
@@ -199,11 +207,13 @@ export default (): Alpine.Component & PrivateMessageComponent => {
      */
     onMessageMarkedAsRead(event: CustomEvent<PrivateMessageMarkedAsReadEvent>): void {
       if (this.receiver?.id === event.detail.receiver.id) {
-        event.detail.messages.forEach((value) => {
-          const sameMessage = this.messages.find(({ id }) => id === value.id)
+        event.detail.messages.forEach((value: { id: number, read_at: string }): void => {
+          const sameMessage: PrivateMessageData | undefined = this
+            .messages
+            .find(({ id }: PrivateMessageData): boolean => id === value.id)
 
           if (sameMessage !== undefined) {
-            sameMessage.readAtTime = value.read_at
+            sameMessage.setReadAtTime(value.read_at)
           }
         })
       }
@@ -226,7 +236,7 @@ export default (): Alpine.Component & PrivateMessageComponent => {
         return
       }
 
-      (this.$nextTick as Alpine.NextTick)(() => {
+      (this.$nextTick as Alpine.NextTick)((): void => {
         document.querySelector(`.private-message__text--value[data-id="${id}"]`)?.scrollIntoView(options)
       })
     },
@@ -235,8 +245,8 @@ export default (): Alpine.Component & PrivateMessageComponent => {
      * Add unread messages marker to the component.
      */
     setUnreadMessagesMarker(): void {
-      this.messages.some((message) => {
-        if (message.readAt !== null) {
+      this.messages.some((message: PrivateMessageData): boolean => {
+        if (message.readAt.date !== null) {
           return true
         }
 
@@ -256,7 +266,7 @@ export default (): Alpine.Component & PrivateMessageComponent => {
       this.searchKeyword = ''
       this.receiver = event.detail
       this.url = this.urlTemplate.replace(':contact', String(event.detail.id))
-      this.mount()
+      void this.mount()
     },
   }
 }

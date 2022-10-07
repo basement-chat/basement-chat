@@ -9,7 +9,7 @@ import type {
   UpdateReceiverEvent,
 } from './events'
 
-export type ChatBoxComponentData = {
+export interface ChatBoxComponentData {
   isMinimized: boolean
   isContactOpened: boolean
   isMessageBoxOpened: boolean
@@ -24,7 +24,7 @@ export type ChatBoxComponent = ChatBoxComponentData & {
   sendPushNotification(event: CustomEvent<PushNotificationEvent>): void
 }
 
-export type ContactComponentData = {
+export interface ContactComponentData {
   contacts: ContactData[]
   search: string
   url: string
@@ -43,7 +43,7 @@ export type ContactComponent = ContactComponentData & {
   updateLastPrivateMessage(event: CustomEvent<UpdateLastPrivateMessageEvent>): void
 }
 
-export type PrivateMessageComponentData = {
+export interface PrivateMessageComponentData {
   isInfoBoxOpened: boolean
   isLoading: boolean
   isLoadingShowMore: boolean
