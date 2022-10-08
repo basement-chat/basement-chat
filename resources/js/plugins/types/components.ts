@@ -16,17 +16,21 @@ export interface ChatBoxComponentData {
   isNotificationAllowed: boolean
   hasNotificationPermission: boolean
   online: boolean
+  totalUnreadMessages: number
 }
 
 export type ChatBoxComponent = ChatBoxComponentData & {
   init(): void
   requestNotificationPermission(): void
   sendPushNotification(event: CustomEvent<PushNotificationEvent>): void
+  registerTippy(): void
+  watchNotificationStatus(newValue: boolean, oldValue: boolean): void
 }
 
 export interface ContactComponentData {
   contacts: ContactData[]
   search: string
+  unreadMessages: number
   url: string
 }
 
@@ -41,6 +45,7 @@ export type ContactComponent = ContactComponentData & {
   onSomeoneLeaving(contact: Contact): void
   registerEchoEventListeners(): void
   updateLastPrivateMessage(event: CustomEvent<UpdateLastPrivateMessageEvent>): void
+  watchContacts(newValue: ContactData[], oldValue: ContactData[]): void
 }
 
 export interface PrivateMessageComponentData {

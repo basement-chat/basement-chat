@@ -1,7 +1,7 @@
 import ContactData from '../data/contact-data'
 import type * as Alpine from '../types/alpine'
 import type { Response, Contact } from '../types/api'
-import type { ContactComponent } from '../types/components'
+import type { ContactComponent, ContactComponentData } from '../types/components'
 import type { UpdateLastPrivateMessageEvent } from '../types/events'
 
 export default (): Alpine.Component & ContactComponent => {
@@ -11,12 +11,14 @@ export default (): Alpine.Component & ContactComponent => {
   return {
     contacts: [],
     search: '',
+    unreadMessages: 0,
     url,
 
     /**
      * Hook during the initialization phase of the current Alpine component.
      */
     init(): void {
+      (this.$watch as Alpine.Watch<ContactComponentData>)('contacts', this.watchContacts.bind(this));
       (this.$refs as Alpine.Refs)
         .basementChatBox
         .addEventListener('update-last-private-message', this.updateLastPrivateMessage.bind(this))
@@ -52,13 +54,6 @@ export default (): Alpine.Component & ContactComponent => {
             .toLowerCase()
             .includes(this.search.toLowerCase())
         ))
-    },
-
-    /**
-     * Trigger update receiver event to the chat box component.
-     */
-    updateReceiver(contact: ContactData): void {
-      (this.$dispatch as Alpine.Dispatch)('update-receiver', contact)
     },
 
     /**
@@ -145,6 +140,22 @@ export default (): Alpine.Component & ContactComponent => {
       }
 
       this.contacts.unshift(sameContact)
+    },
+
+    /**
+     * Trigger update receiver event to the chat box component.
+     */
+    updateReceiver(contact: ContactData): void {
+      (this.$dispatch as Alpine.Dispatch)('update-receiver', contact)
+    },
+
+    /**
+     * Watch when the contacts changes.
+     */
+    watchContacts(newValue: ContactData[]): void {
+      this.unreadMessages = newValue.reduce((total: number, contact: ContactData): number => (
+        total + contact.unreadMessages
+      ), 0)
     },
   }
 }

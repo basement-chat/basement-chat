@@ -36,7 +36,7 @@ class DateFormatter {
   ) {
   }
 
-  public toDiffDateFormat(): string {
+  public get withinDifferenceDateFormat(): string {
     if (this.date === null) {
       return ''
     }
@@ -54,19 +54,19 @@ class DateFormatter {
     return intlFormat(this.date, this.shortDateFormat)
   }
 
-  public toDateFormat(): string {
+  public get withinDateFormat(): string {
     return this.date === null ? '' : intlFormat(this.date, this.dateFormat)
   }
 
-  public toTimeFormat(): string {
+  public get withinTimeFormat(): string {
     return this.date === null ? '' : intlFormat(this.date, this.timeFormat)
   }
 
-  public toDateTimeFormat(): string {
+  public get withinDateTimeFormat(): string {
     return this.date === null ? '' : intlFormat(this.date, this.dateTimeFormat)
   }
 
-  public toDayDateTimeFormat(): string {
+  public get withinDayDateTimeFormat(): string {
     return this.date === null ? '' : intlFormat(this.date, this.dayDateTimeFormat)
   }
 }

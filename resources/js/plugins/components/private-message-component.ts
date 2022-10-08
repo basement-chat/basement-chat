@@ -115,7 +115,7 @@ export default (): Alpine.Component & PrivateMessageComponent => {
       const messages: Map<string, PrivateMessageData[]> = new Map<string, PrivateMessageData[]>();
 
       [...this.messages].reverse().forEach((message: PrivateMessageData): void => {
-        const date: string = message.createdAt.toDateFormat()
+        const date: string = message.createdAt.withinDateFormat
 
         if (messages.has(date) === false) {
           messages.set(date, [])
@@ -125,33 +125,6 @@ export default (): Alpine.Component & PrivateMessageComponent => {
       })
 
       return [...messages.values()]
-    },
-
-    /**
-     * Send a new message.
-     */
-    async sendNewMessage(): Promise<void> {
-      if (this.receiver === null) {
-        throw new Error('Receiver cannot be empty')
-      }
-
-      this.isLoadingSentMessage = true
-
-      const response: Response<PrivateMessage> = await window.axios
-        .post(this.url, { value: this.newMessageValue })
-        .then(({ data }: any): any => data)
-      const message: PrivateMessageData = PrivateMessageData.from(response.data)
-
-      if (this.receiver.id !== userId) {
-        this.messages.unshift(message)
-        this.scrollTo(message.id, {
-          behavior: 'smooth',
-        })
-      }
-
-      this.receiver.lastPrivateMessage = message
-      this.newMessageValue = ''
-      this.isLoadingSentMessage = false
     },
 
     /**
@@ -239,6 +212,33 @@ export default (): Alpine.Component & PrivateMessageComponent => {
       (this.$nextTick as Alpine.NextTick)((): void => {
         document.querySelector(`.private-message__text--value[data-id="${id}"]`)?.scrollIntoView(options)
       })
+    },
+
+    /**
+     * Send a new message.
+     */
+    async sendNewMessage(): Promise<void> {
+      if (this.receiver === null) {
+        throw new Error('Receiver cannot be empty')
+      }
+
+      this.isLoadingSentMessage = true
+
+      const response: Response<PrivateMessage> = await window.axios
+        .post(this.url, { value: this.newMessageValue })
+        .then(({ data }: any): any => data)
+      const message: PrivateMessageData = PrivateMessageData.from(response.data)
+
+      if (this.receiver.id !== userId) {
+        this.messages.unshift(message)
+        this.scrollTo(message.id, {
+          behavior: 'smooth',
+        })
+      }
+
+      this.receiver.lastPrivateMessage = message
+      this.newMessageValue = ''
+      this.isLoadingSentMessage = false
     },
 
     /**

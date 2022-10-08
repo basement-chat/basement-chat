@@ -8,11 +8,10 @@
   data-user-id="{{ \Illuminate\Support\Facades\Auth::id() }}"
   class="private-message__container--main bm-flex bm-flex-col bm-shadow-lg bm-w-full bm-h-full bm-relative">
   <x-basement::organisms.header class="bm-z-30">
-    <x-slot:title
-      x-bind:title="`${receiver?.name} is ${receiver?.isOnline === true ? 'online' : 'offline'}`"
-      class="bm-relative bm-flex bm-flex-row bm-space-x-2">
+    <x-slot:title class="bm-relative bm-flex bm-flex-row bm-space-x-2">
       <p
         x-text="receiver?.name"
+        x-bind:data-title="`${receiver?.name} is ${receiver?.isOnline === true ? 'online' : 'offline'}`"
         class="bm-overflow-hidden bm-text-ellipsis bm-whitespace-nowrap bm-max-w-[90%]"></p>
       <x-basement::atoms.icons.fas-circle
         x-bind:class="receiver?.isOnline === true ? 'bm-text-green-400' : 'bm-text-red-400'"
@@ -23,7 +22,7 @@
       <x-basement::atoms.buttons.header
         x-show="isMessageBoxOpened"
         x-on:click="isSearchOpened = !isSearchOpened"
-        title="Search messages">
+        data-title="Search messages">
         <x-basement::atoms.icons.fas-search class="bm-h-[0.9rem] bm-m-auto" />
       </x-basement::atoms.buttons.header>
 
@@ -31,7 +30,7 @@
 
       <x-basement::atoms.buttons.header
         x-on:click="isContactOpened = true; isMessageBoxOpened = false"
-        title="Back to contact list">
+        data-title="Back to contact list">
         <x-basement::atoms.icons.fas-angle-left class="bm-h-[0.9rem] bm-m-auto" />
       </x-basement::atoms.buttons.header>
     </x-slot>
@@ -50,14 +49,14 @@
         <p class="bm-font-semibold">
           <x-basement::atoms.icons.fas-check-double class="bm-text-blue-500 bm-w-[0.9rem] bm-inline" /> Read
         </p>
-        <p x-text="selectedMessage?.readAt !== null ? `${selectedMessage?.readAtFullDate}` : '-'" class="bm-text-gray-700"></p>
+        <p x-text="selectedMessage?.readAt?.date !== null ? `${selectedMessage?.readAt?.withinDayDateTimeFormat}` : '-'" class="bm-text-gray-700"></p>
       </div>
       <hr>
       <div class="bm-px-2 bm-flex bm-flex-col bm-gap-y-1">
         <p class="bm-font-semibold">
           <x-basement::atoms.icons.fas-check-double class="bm-text-gray-500 bm-w-[0.9rem] bm-inline" /> Delivered
         </p>
-        <p x-text="`${selectedMessage?.createdAtFullDate}`" class="bm-text-gray-700"></p>
+        <p x-text="`${selectedMessage?.createdAt?.withinDayDateTimeFormat}`" class="bm-text-gray-700"></p>
       </div>
     </div>
   </div>
@@ -110,7 +109,7 @@
         <template x-for="messages in groupedMessages">
           <div class="bm-flex bm-flex-col bm-gap-y-3">
             <div class="bm-grid bm-grid-cols-5 bm-mt-2">
-              <p x-text="messages[0].createdAtDate" class="bm-col-span-3 bm-col-start-2 bm-bg-yellow-100 bm-text-yellow-900 bm-text-sm bm-text-center bm-font-bold bm-py-1 bm-px-2 bm-rounded-lg"></p>
+              <p x-text="messages[0].createdAt.withinDateFormat" class="bm-col-span-3 bm-col-start-2 bm-bg-yellow-100 bm-text-yellow-900 bm-text-sm bm-text-center bm-font-bold bm-py-1 bm-px-2 bm-rounded-lg"></p>
             </div>
             <template x-for="message in messages">
               <div class="bm-flex bm-flex-col">
@@ -119,34 +118,32 @@
                   class="bm-bg-gray-50 bm-text-center bm-font-semibold bm-text-blue-500 bm-border-b bm-rounded-b-lg bm-border-gray-300 bm--mx-3 bm-py-1 bm-mb-3 bm-mt-1">
                   Unread Messages
                 </div>
-                <div x-bind:class="message.receiverId === receiver.id ? 'bm-flex-row-reverse' : 'bm-flex-row'" class="bm-flex bm-group bm-relative bm-mb-5">
+                <div x-bind:class="message.receiverId === receiver.id ? 'bm-flex-row-reverse bm-mb-5' : 'bm-flex-row'" class="bm-flex bm-group bm-relative">
                   <div class="bm-max-w-[90%]">
                     <p
-                      x-intersect.once="if (message.senderId === receiver.id && message.readAt === null) seenMessages.push(message.id)"
+                      x-intersect.once="if (message.senderId === receiver.id && message.readAt.date === null) seenMessages.push(message.id)"
                       x-text="message.value"
-                      x-bind:class="message.receiverId === receiver.id ? 'bm-bg-blue-100' : 'bm-bg-gray-100'"
+                      x-bind:class="message.receiverId === receiver.id ? 'bm-bg-blue-100 bm-rounded-l-lg' : 'bm-bg-gray-100 bm-rounded-r-lg'"
                       x-bind:data-id="message.id"
                       class="private-message__text--value bm-rounded-t-lg bm-py-1 bm-px-2 bm-break-words"></p>
 
-                    <span
-                      class="bm-bg-white bm-text-xs bm-font-bold bm-py-1 bm-px-2 bm-absolute bm-rounded-b-lg bm-shadow-md"
-                      x-bind:title="`Sent at ${message.createdAtDateTime}`"
-                      x-bind:class="message.receiverId === receiver.id ? 'bm-right-0' : 'bm-left-0'">
-                      <template x-if="message.receiverId === receiver.id && message.readAt">
-                        <x-basement::atoms.icons.fas-check-double class="bm-text-blue-500 bm-w-3 bm-inline" />
-                      </template>
-                      <template x-if="message.receiverId === receiver.id && !message.readAt">
-                        <x-basement::atoms.icons.fas-check-double class="bm-text-gray-500 bm-w-3 bm-inline" />
-                      </template>
-                      <span x-text="message.createdAt.createdAtTime"></span>
-                    </span>
+                    <template x-if="message.receiverId === receiver.id">
+                      <span
+                        x-bind:data-title="`Sent at ${message.createdAt.withinDateTimeFormat}`"
+                        data-tippy-placement="left"
+                        class="bm-bg-white bm-text-xs bm-font-bold bm-py-1 bm-px-2 bm-absolute bm-rounded-b-lg bm-shadow-md bm-right-0">
+                        <x-basement::atoms.icons.fas-check-double
+                          x-bind:class="message.readAt.date !== null ? 'bm-text-blue-500' : 'bm-text-gray-500'"
+                          class="bm-w-3 bm-inline" />
+                      </span>
+                    </template>
                   </div>
 
                   <template x-if="message.receiverId === receiver.id">
                     <div class="bm-w-[10%]">
                       <x-basement::atoms.buttons.secondary
                         x-on:click.debounce.10ms="messageIdWithOpenDialog = message.id"
-                        title="Manage this message"
+                        data-title="Manage this message"
                         class="bm-w-full bm-h-full bm-text-gray-400 bm-hidden group-hover:bm-block">
                         <x-basement::atoms.icons.fas-ellipsis-v class="bm-inline bm-h-3" />
                       </x-basement::atoms.buttons.secondary>
@@ -160,7 +157,7 @@
                           <li class="bm-border-gray-300">
                             <x-basement::atoms.buttons.secondary
                               x-on:click="isInfoBoxOpened = true; selectedMessage = message"
-                              title="Information about this message"
+                              data-title="Information about this message"
                               class="bm-py-1 bm-px-2 bm-w-full bm-text-center">
                               Info
                             </x-basement::atoms.buttons.secondary>
@@ -204,7 +201,7 @@
       <x-basement::atoms.buttons.primary
         x-bind:disabled="isLoadingSentMessage === true"
         type="submit"
-        title="Send message"
+        data-title="Send message"
         class="private-message__button--send bm-col-span-1 bm-w-8 bm-h-full">
         <x-basement::atoms.icons.fas-paper-plane class="bm-text-blue-500 bm-h-4 bm-m-auto" />
       </x-basement::atoms.buttons.primary>
