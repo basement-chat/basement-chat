@@ -9,7 +9,7 @@ use BasementChat\Basement\Actions\AllContacts;
 use BasementChat\Basement\Actions\AllPrivateMessages;
 use BasementChat\Basement\Actions\MarkPrivatesMessagesAsRead;
 use BasementChat\Basement\Actions\SendPrivateMessage;
-use BasementChat\Basement\Commands\BasementCommand;
+use BasementChat\Basement\Console\InstallCommand;
 use BasementChat\Basement\Contracts\Basement as BasementContract;
 use BasementChat\Basement\Models\PrivateMessage;
 use BasementChat\Basement\Observers\PrivateMessageObserver;
@@ -23,18 +23,13 @@ class BasementServiceProvider extends PackageServiceProvider
 {
     public function configurePackage(Package $package): void
     {
-        /*
-         * This class is a Package Service Provider
-         *
-         * More info: https://github.com/spatie/laravel-package-tools
-         */
         $package
             ->name('basement')
             ->hasConfigFile()
             ->hasMigration('2022_09_08_020534_create_private_messages_table')
             ->hasRoutes(['api', 'channels'])
             ->hasViews()
-            ->hasCommand(BasementCommand::class);
+            ->hasCommand(InstallCommand::class);
     }
 
     /**
@@ -71,8 +66,11 @@ class BasementServiceProvider extends PackageServiceProvider
         }
 
         $this->publishes(paths: [
-            __DIR__ . '/../resources/css' => resource_path('css/vendor/basement'),
-            __DIR__ . '/../resources/js' => resource_path('js/vendor/basement'),
+            __DIR__ . '/../dist/basement.bundle.min.css' => public_path('basement.bundle.min.css'),
+            __DIR__ . '/../dist/basement.bundle.min.js' => public_path('basement.bundle.min.js'),
+            __DIR__ . '/../dist/basement.bundle.min.js.map' => public_path('basement.bundle.min.js.map'),
+            __DIR__ . '/../dist/basement.slim.min.js' => public_path('basement.slim.min.js'),
+            __DIR__ . '/../dist/basement.slim.min.js.map' => public_path('basement.slim.min.js.map'),
         ], groups: 'basement-assets');
     }
 

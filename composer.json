@@ -21,7 +21,6 @@
     "php": "^8.0",
     "laravel/framework": "^9.0",
     "laravel/sanctum": "^3.0",
-    "pusher/pusher-php-server": "^7.0",
     "spatie/enum": "^3.13",
     "spatie/laravel-data": "^1.5",
     "spatie/laravel-package-tools": "^1.9.2"
@@ -38,6 +37,7 @@
     "phpstan/phpstan-deprecation-rules": "^1.0",
     "phpstan/phpstan-phpunit": "^1.0",
     "phpunit/phpunit": "^9.5",
+    "pusher/pusher-php-server": "^7.0",
     "squizlabs/php_codesniffer": "^3.7"
   },
   "autoload": {

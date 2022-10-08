@@ -26,7 +26,7 @@ class ChatBox extends Component
     public function render(): View
     {
         /** @var view-string $view */
-        $view = 'chat-box';
+        $view = 'basement::chat-box';
 
         return view($view, data: [
             'position' => Basement::getChatBoxWidgetPosition(),
