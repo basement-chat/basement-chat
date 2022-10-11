@@ -50,6 +50,7 @@ export type ContactComponent = ContactComponentData & {
 
 export interface PrivateMessageComponentData {
   isInfoBoxOpened: boolean
+  isLastMessageShown: boolean
   isLoading: boolean
   isLoadingShowMore: boolean
   isLoadingSentMessage: boolean
@@ -74,11 +75,16 @@ export type PrivateMessageComponent = PrivateMessageComponentData & {
   mountMore(): Promise<void>
   get groupedMessages(): PrivateMessageData[][]
   sendNewMessage(): Promise<void>
+  lastMessageObserver(entries: IntersectionObserverEntry[]): void
   markSeenMessagesAsRead(): void
+  observeLastMessage(): void
   onMessageReceived(event: CustomEvent<PrivateMessageSentEvent>): void
   onMessageMarkedAsRead(event: CustomEvent<PrivateMessageMarkedAsReadEvent>): void
   registerEchoEventListeners(): void
   scrollTo(id: number | null, options?: ScrollIntoViewOptions): void
+  scrollToLastMessage(): void
+  seeMessage(message: PrivateMessageData): void
   setUnreadMessagesMarker(): void
   updateReceiver(event: CustomEvent<UpdateReceiverEvent>): void
+  watchMessages(newValue: PrivateMessageData[], oldValue: PrivateMessageData[]): void
 }

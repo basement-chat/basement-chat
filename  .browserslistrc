@@ -1,4 +1,6 @@
 # Browsers & Node.js versions that we support
-# Please see https://browsersl.ist/#q=cover+95%25%2C+maintained+node+versions for more details
-cover 95%
+# Please see https://browsersl.ist/#q=chrome+%3E%3D+80%2C+edge+%3E%3D+80%2C+firefox+%3E%3D+74%2C+maintained+node+versions for more details
+chrome >= 80
+edge >= 80
+firefox >= 74
 maintained node versions

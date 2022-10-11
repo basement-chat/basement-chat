@@ -8,13 +8,14 @@ import type { PrivateMessageMarkedAsReadEvent, PrivateMessageSentEvent, UpdateRe
 export default (): Alpine.Component & PrivateMessageComponent => {
   const container: HTMLDivElement = document.querySelector('.private-message__container--main')!
   const highlighter: Mark = new Mark('.private-message__text--value')
-  const intervalInSecondsToMarkMessagesAsRead: number = 3
+  let lastMessageObserver: IntersectionObserver
   const urlTemplate: string = container.getAttribute('data-url')!
   const urlBatchRequest: string = container.getAttribute('data-batch-request-url')!
   const userId: number = Number(container.getAttribute('data-user-id')!)
 
   return {
     isInfoBoxOpened: false,
+    isLastMessageShown: false,
     isLoading: true,
     isLoadingShowMore: false,
     isLoadingSentMessage: false,
@@ -36,22 +37,16 @@ export default (): Alpine.Component & PrivateMessageComponent => {
      * Hook during the initialization phase of the current Alpine component.
      */
     init(): void {
-      (this.$refs as Alpine.Refs).basementChatBox.addEventListener('update-receiver', this.updateReceiver.bind(this))
+      (this.$refs as Alpine.Refs).basementChatBox.addEventListener('update-receiver', this.updateReceiver.bind(this));
+      (this.$watch as Alpine.Watch<PrivateMessageComponentData>)('messages', this.watchMessages.bind(this))
 
-      setInterval(
-        this.markSeenMessagesAsRead.bind(this),
-        intervalInSecondsToMarkMessagesAsRead * 1000,
-      );
-
-      (this.$watch as Alpine.Watch<PrivateMessageComponentData>)('messages', (): void => {
-        if (this.searchKeyword.trim() === '') {
-          highlighter.unmark()
-        } else {
-          highlighter.mark(this.searchKeyword.trim())
-        }
-      })
-
+      setInterval(this.markSeenMessagesAsRead.bind(this), 3000)
       this.registerEchoEventListeners()
+
+      lastMessageObserver = new IntersectionObserver(this.lastMessageObserver.bind(this), {
+        root: this.$el as Alpine.Element,
+        threshold: [0, 1],
+      })
     },
 
     /**
@@ -73,7 +68,7 @@ export default (): Alpine.Component & PrivateMessageComponent => {
 
       if (this.messages.length > 0) {
         this.setUnreadMessagesMarker()
-        this.scrollTo(this.unreadMessageCursor ?? this.messages.at(1)!.id, {
+        this.scrollTo(this.unreadMessageCursor ?? this.messages.at(0)!.id, {
           block: 'center',
         })
       }
@@ -128,6 +123,19 @@ export default (): Alpine.Component & PrivateMessageComponent => {
     },
 
     /**
+     * Action when the last message is hidden or shown.
+     */
+    lastMessageObserver(entries: IntersectionObserverEntry[]): void {
+      const { intersectionRatio }: IntersectionObserverEntry = entries.at(0)!
+
+      if (intersectionRatio > 0.5) {
+        this.isLastMessageShown = false
+      } else {
+        this.isLastMessageShown = true
+      }
+    },
+
+    /**
      * Update messages that have been seen to the database.
      */
     markSeenMessagesAsRead(): void {
@@ -146,9 +154,25 @@ export default (): Alpine.Component & PrivateMessageComponent => {
           value: { id: value },
         })))
 
-      this.receiver.unreadMessages -= this.seenMessages.length
-
       this.seenMessages = []
+    },
+
+    /**
+     * Assign observer for the last message.
+     */
+    observeLastMessage(): void {
+      const lastMessage: PrivateMessageData | undefined = this.messages.at(0)
+
+      if (lastMessage === undefined) {
+        return
+      }
+
+      (this.$nextTick as Alpine.NextTick)((): void => {
+        const lastMessageElement: HTMLParagraphElement = document.querySelector(`.private-message__text--value[data-id="${lastMessage.id}"]`)!
+
+        lastMessageObserver.disconnect()
+        lastMessageObserver.observe(lastMessageElement)
+      })
     },
 
     /**
@@ -215,6 +239,31 @@ export default (): Alpine.Component & PrivateMessageComponent => {
     },
 
     /**
+     * Scroll component view to the last message.
+     */
+    scrollToLastMessage(): void {
+      const lastMessage: PrivateMessageData | undefined = this.messages.at(0)
+
+      this.scrollTo(lastMessage?.id ?? null)
+    },
+
+    /**
+     * Action when a given message is visible.
+     */
+    seeMessage(message: PrivateMessageData): void {
+      if (
+        this.receiver === null
+        || message.receiverId === this.receiver.id
+        || message.readAt.date !== null
+      ) {
+        return
+      }
+
+      this.seenMessages.push(message.id)
+      this.receiver.unreadMessages -= 1
+    },
+
+    /**
      * Send a new message.
      */
     async sendNewMessage(): Promise<void> {
@@ -267,6 +316,19 @@ export default (): Alpine.Component & PrivateMessageComponent => {
       this.receiver = event.detail
       this.url = this.urlTemplate.replace(':contact', String(event.detail.id))
       void this.mount()
+    },
+
+    /**
+     * Watch when the messages changes.
+     */
+    watchMessages(): void {
+      if (this.searchKeyword.trim() === '') {
+        highlighter.unmark()
+      } else {
+        highlighter.mark(this.searchKeyword.trim())
+      }
+
+      this.observeLastMessage()
     },
   }
 }

@@ -121,7 +121,7 @@
                 <div x-bind:class="message.receiverId === receiver.id ? 'bm-flex-row-reverse bm-mb-5' : 'bm-flex-row'" class="bm-flex bm-group bm-relative">
                   <div class="bm-max-w-[90%]">
                     <p
-                      x-intersect.once="if (message.senderId === receiver.id && message.readAt.date === null) seenMessages.push(message.id)"
+                      x-intersect.once="seeMessage(message)"
                       x-text="message.value"
                       x-bind:class="message.receiverId === receiver.id ? 'bm-bg-blue-100 bm-rounded-l-lg' : 'bm-bg-gray-100 bm-rounded-r-lg'"
                       x-bind:data-id="message.id"
@@ -173,6 +173,29 @@
         </template>
       </div>
     </div>
+
+    <div
+      x-show="isLastMessageShown === true"
+      x-transition=""
+      class="bm-absolute bm-bottom-[4.5rem] bm-right-6">
+      <button
+        x-on:click="scrollToLastMessage"
+        class="bm-rounded-full bm-text-blue-500 bm-border bm-bg-white bm-p-2 bm-relative hover:bm-brightness-90 bm-transition bm-duration-500">
+        <x-basement::atoms.icons.fas-angle-down
+          data-title="Go to the last message"
+          class="bm-h-5 bm-w-5" />
+
+        <div class="bm-absolute bm-bottom-7 bm-left-0 bm-right-0 bm-text-center">
+          <span
+            x-show="receiver?.unreadMessages > 0"
+            x-bind:data-title="`There are ${receiver?.unreadMessages} unread messages`"
+            x-text="receiver?.unreadMessages"
+            class="bm-rounded-xl bm-text-white bm-border bm-bg-blue-500 bm-font-bold bm-text-sm bm-px-1">
+          </span>
+        </div>
+      </button>
+    </div>
+
     <form
       x-show="searchKeyword.trim() === ''"
       x-on:submit.prevent="sendNewMessage"
