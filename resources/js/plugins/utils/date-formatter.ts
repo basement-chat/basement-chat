@@ -2,29 +2,44 @@ import { differenceInDays, intlFormat } from 'date-fns'
 import { FormatOptions } from '../types/date-fns'
 
 class DateFormatter {
+  /**
+   * @example December 31, 2022
+   */
   protected readonly dateFormat: FormatOptions = {
     day: 'numeric',
     month: 'long',
     year: 'numeric',
   }
 
+  /**
+   * @example 12/31/22
+   */
   protected readonly shortDateFormat: FormatOptions = {
     day: 'numeric',
     month: 'numeric',
     year: '2-digit',
   }
 
+  /**
+   * @example 12:15 PM
+   */
   protected readonly timeFormat: FormatOptions = {
     hour: 'numeric',
     hour12: true,
     minute: 'numeric',
   }
 
+  /**
+   * @example December 31, 2022 at 12:15 PM
+   */
   protected readonly dateTimeFormat: FormatOptions = {
     ...this.dateFormat,
     ...this.timeFormat,
   }
 
+  /**
+   * @example Saturday, December 31, 2022 at 12:15 PM
+   */
   protected readonly dayDateTimeFormat: FormatOptions = {
     weekday: 'long',
     ...this.dateFormat,
