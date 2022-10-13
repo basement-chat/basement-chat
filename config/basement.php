@@ -21,13 +21,40 @@ return [
     */
 
     'broadcaster' => [
-        'default' => env('BROADCAST_DRIVER', 'null'),
+        'default' => env('BASEMENT_BROADCAST_DRIVER', 'null'),
         'connections' => [
             'pusher' => [
                 'broadcaster' => 'pusher',
                 'key' => env('PUSHER_APP_KEY'),
                 'cluster' => env('PUSHER_APP_CLUSTER'),
                 'useTLS' => true,
+            ],
+            'ably' => [
+                'broadcaster' => 'pusher',
+                'key' => env('ABLY_PUBLIC_KEY'),
+                'wsHost' => 'realtime-pusher.ably.io',
+                'wsPort' => 443,
+                'disableStats' => true,
+                'encrypted' => true,
+            ],
+            'laravel-websockets' => [
+                'broadcaster' => 'pusher',
+                'key' => env('PUSHER_APP_KEY'),
+                'wsHost' => '127.0.0.1',
+                'wsPort' => 6001,
+                'forceTLS' => false,
+                'disableStats' => true,
+            ],
+            'soketi' => [
+                'broadcaster' => 'pusher',
+                'key' => env('PUSHER_APP_KEY'),
+                'wsHost' => env('PUSHER_HOST'),
+                'wsPort' => env('PUSHER_PORT'),
+                'wssPort' => env('PUSHER_PORT'),
+                'forceTLS' => false,
+                'encrypted' => true,
+                'disableStats' => true,
+                'enabledTransports' => ['ws', 'wss'],
             ],
             'null' => [
             ],

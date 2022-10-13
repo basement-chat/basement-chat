@@ -22,10 +22,17 @@ class InstallBroadcastDriver
      * @var array<string,array>
      */
     protected array $drivers = [
-        'pusher' => ['pusher/pusher-php-server:^7.0'],
-        'ably' => [],
-        'laravel-websockets' => [],
-        'soketi' => [],
+        'pusher' => ['pusher/pusher-php-server'],
+        'ably' => ['ably/ably-php'],
+        'laravel-websockets' => [
+            'beyondcode/laravel-websockets',
+            /**
+             * Locked to pusher/pusher-php-server:7.0.2, due to having problems with newer versions.
+             *
+             * @see https://github.com/beyondcode/laravel-websockets/issues/1041
+             */
+            'pusher/pusher-php-server:7.0.2'
+        ],
         'other' => [],
     ];
 

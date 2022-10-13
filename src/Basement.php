@@ -52,8 +52,8 @@ class Basement implements BasementContract
             || is_subclass_of(static::$userModel, UserContract::class) === false
         ) {
             throw new \TypeError(
-                'The given configuration "basement.user_model" should be a subclass of ' . Authenticatable::class .
-                ' class and implement the ' . UserContract::class . ' contract.'
+                'The given configuration user_model should be a subclass of ' . Authenticatable::class .
+                ' class and implement the ' . UserContract::class . ' interface.',
             );
         }
 
@@ -96,7 +96,7 @@ class Basement implements BasementContract
             )
         ) {
             throw new \TypeError(
-                'The given private message model should be a subclass of ' . PrivateMessage::class . ' class.'
+                'The given private message model should be a subclass of ' . PrivateMessage::class . ' class.',
             );
         }
 
@@ -160,8 +160,8 @@ class Basement implements BasementContract
 
         if ($style instanceof AvatarStyle === false) {
             throw new \TypeError(
-                'The given configuration "basement.avatar.style" should be instanceof '
-                . AvatarStyle::class . ' class.'
+                'The given configuration basement.avatar.style should be instanceof '
+                . AvatarStyle::class . ' class.',
             );
         }
 
@@ -178,7 +178,9 @@ class Basement implements BasementContract
         $options = config('basement.avatar.options');
 
         if (is_array($options) === false) {
-            throw new \TypeError('The given configuration "basement.avatar.options" should be of type array.');
+            throw new \TypeError(
+                'The given configuration avatar.options inside config/basement.php should be of type array',
+            );
         }
 
         return $options;
@@ -193,8 +195,8 @@ class Basement implements BasementContract
 
         if ($position instanceof ChatBoxPosition === false) {
             throw new \TypeError(
-                'The given configuration "basement.chat_box_widget_position" should be instanceof '
-                . ChatBoxPosition::class . ' class.'
+                'The given configuration chat_box_widget_position inside config/basement.php should be instanceof '
+                . ChatBoxPosition::class . ' class.',
             );
         }
 
@@ -217,8 +219,8 @@ class Basement implements BasementContract
             || array_key_exists($driver, $connections) === false
         ) {
             throw new \TypeError(
-                'The given configuration "basement.broadcaster.default" should be available as an array key inside '
-                .  'basement.broadcaster.connections ' . ChatBoxPosition::class . ' class.'
+                'The given configuration broadcaster.default inside config/basement.php should be'
+                .  ' available as an array key inside basement.broadcaster.connections.',
             );
         }
 

@@ -19,11 +19,9 @@ class PublishFiles
     public function __invoke(InstallCommand $request, \Closure $next): mixed
     {
         $request
-            ->startWith(static function (InstallCommand $command): void {
-                $command->comment('Publishing assets...');
-                $command->callSilently(command: 'vendor:publish', arguments: [
-                    '--tag' => 'basement-assets',
-                ]);
+            ->startWith(function (InstallCommand $command): void {
+                $this->publishBasement($command);
+                $this->publishLaravelWebsocket($command);
             })
             ->publishConfigFile()
             ->copyAndRegisterServiceProviderInApp()
@@ -34,5 +32,37 @@ class PublishFiles
         $request->publish();
 
         return $next($request);
+    }
+
+    /**
+     * Publish all Basement asset files.
+     */
+    protected function publishBasement(InstallCommand $command): void
+    {
+        $command->comment('Publishing assets...');
+
+        $command->callSilently(command: 'vendor:publish', arguments: [
+            '--tag' => 'basement-assets',
+        ]);
+    }
+
+    /**
+     * Publish Laravel Websockets config & migrations files.
+     */
+    protected function publishLaravelWebsocket(InstallCommand $command): void
+    {
+        if ($command->option('driver') === 'laravel-websockets') {
+            $command->comment('Publishing Laravel Websockets config...');
+            $command->callSilently(command: 'vendor:publish', arguments: [
+                '--provider' => 'BeyondCode\LaravelWebSockets\WebSocketsServiceProvider',
+                '--tag' => 'config',
+            ]);
+
+            $command->comment('Publishing Laravel Websockets migrations...');
+            $command->callSilently(command: 'vendor:publish', arguments: [
+                '--provider' => 'BeyondCode\LaravelWebSockets\WebSocketsServiceProvider',
+                '--tag' => 'migrations',
+            ]);
+        }
     }
 }

@@ -5,6 +5,7 @@ env:
   - APP_KEY=base64:IDrlmrVwu65iBhbUpPq3fsv7kybcnfUFZmY1wk+mamE=
   - DB_CONNECTION=sqlite
   - BROADCAST_DRIVER=pusher
+  - BASEMENT_BROADCAST_DRIVER=pusher
   - SESSION_DRIVER=cookie
   - SANCTUM_STATEFUL_DOMAINS=127.0.0.1:8001
   - PUSHER_APP_ID=

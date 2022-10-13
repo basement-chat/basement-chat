@@ -25,7 +25,7 @@ class InstallCommand extends LaravelPackageToolsInstallCommand
         [
             'name' => 'driver',
             'mode' => InputOption::VALUE_REQUIRED,
-            'description' => 'The server-side broadcasting driver that should be installed ([pusher], [ably], [laravel-websockets], [soketi], or [other])',
+            'description' => 'The server-side broadcasting driver that should be installed ([pusher], [ably], [laravel-websockets], or [other])',
             'default' => 'pusher',
         ],
         [
