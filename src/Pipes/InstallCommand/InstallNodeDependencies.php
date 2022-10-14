@@ -54,12 +54,17 @@ class InstallNodeDependencies
     protected function addDependencies(array $newDependencies): void
     {
         $path = base_path('package.json');
-        $packages = collect(match (File::exists(base_path('package.json'))) {
+
+        /** @var array<string,mixed> $file */
+        $file = match (File::exists(base_path('package.json'))) {
             true => json_decode(json: File::get($path), associative: true),
             default => [],
-        });
+        };
+        $packages = collect($file);
 
-        $mergedDependencies = collect($packages->get('devDependencies'))
+        /** @var array<string,string> $devDependencies */
+        $devDependencies = $packages->get('devDependencies');
+        $mergedDependencies = collect($devDependencies)
             ->merge($newDependencies)
             ->sortKeys();
 
@@ -71,6 +76,9 @@ class InstallNodeDependencies
         ) . PHP_EOL);
     }
 
+    /**
+     * Ask user if want to install dependencies.
+     */
     protected function askToInstallDependencies(): bool
     {
         $confirm = $this->command->confirm('Would you like to install node module dependencies now?');

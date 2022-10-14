@@ -19,7 +19,7 @@ class ContactsChannel
      */
     public function join(Authenticatable $user): array
     {
-        $contact = Basement::newUserModel()->find($user->id);
+        $contact = Basement::newUserModel()->findOrFail($user->id);
         $contact->append('avatar');
 
         return ContactData::from($contact)->all();

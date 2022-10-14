@@ -25,7 +25,7 @@ class PrivateMessageFactory extends Factory
     /**
      * Define the model's default state.
      *
-     * @return array<model-property<\BasementChat\Basement\Models\PrivateMessage>, mixed>
+     * @return array<model-property<\BasementChat\Basement\Models\PrivateMessage>,mixed>
      */
     public function definition(): array
     {

@@ -43,6 +43,7 @@ class InstallBroadcastDriver
     {
         $this->command = $request;
 
+        /** @var string $driver */
         $driver = $this->command->option('driver');
         $availableDrivers = collect($this->drivers)->keys();
 
@@ -66,7 +67,7 @@ class InstallBroadcastDriver
     /**
      * Install composer dependencies.
      *
-     * @param array<int,string> $packages
+     * @param array<int,string> $newDependencies
      */
     protected function installDependencies(array $newDependencies): void
     {

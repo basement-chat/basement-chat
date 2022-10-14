@@ -23,7 +23,7 @@ class UserFactory extends Factory
     /**
      * Define the model's default state.
      *
-     * @return array<model-property<\BasementChat\Basement\Tests\Fixtures\User>, mixed>
+     * @return array<model-property<\BasementChat\Basement\Tests\Fixtures\User>,mixed>
      */
     public function definition(): array
     {

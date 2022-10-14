@@ -14,8 +14,11 @@ return new class () extends Migration {
     public function up(): void
     {
         Schema::create('private_messages', static function (Blueprint $table): void {
+            /** @var string */
+            $model = config('basement.user_model');
             /** @var \Illuminate\Database\Eloquent\Model $user */
-            $user = app(config('basement.user_model'));
+            $user = app($model);
+
             $primaryKey = $user->getKeyName();
             $tableName = $user->getTable();
 
