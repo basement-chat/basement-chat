@@ -105,7 +105,7 @@
                 x-show="contact.unreadMessages > 0"
                 x-text="contact.unreadMessages"
                 x-bind:data-title="`There are ${contact.unreadMessages} unread messages`"
-                class="bm-bg-blue-400 bm-text-white bm-font-bold bm-text-xs bm-rounded-md bm-px-1"></span>
+                class="user-box__container--unread-messages-count bm-bg-blue-400 bm-text-white bm-font-bold bm-text-xs bm-rounded-md bm-px-1"></span>
             </p>
           </div>
         </div>

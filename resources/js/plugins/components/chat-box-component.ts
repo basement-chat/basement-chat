@@ -4,7 +4,6 @@ import NotificationStatus from '../enums/notification-status'
 import type * as Alpine from '../types/alpine'
 import type { ChatBoxComponent, ChatBoxComponentData } from '../types/components'
 import type { PushNotificationEvent } from '../types/events'
-import 'tippy.js/dist/tippy.css'
 
 export default (): Alpine.Component & ChatBoxComponent => ({
   isMinimized: true,
