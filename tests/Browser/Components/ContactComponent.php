@@ -78,6 +78,16 @@ class ContactComponent extends BaseComponent
     }
 
     /**
+     * Assert that the given contact has the number of unread messages.
+     */
+    public function assertSeeUnreadMessagesCount(Browser $browser, User $contact, int $count): void
+    {
+        $selector = ".contact__container--user-box[data-id=\"{$contact->id}\"]";
+
+        $browser->assertSeeIn(selector: "{$selector} .user-box__container--unread-messages-count", text: $count);
+    }
+
+    /**
      * Type keyword in the search contact input form.
      */
     public function filterContactsByKeyword(Browser $browser, string $keyword): void

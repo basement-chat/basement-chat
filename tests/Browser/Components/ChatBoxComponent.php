@@ -26,6 +26,14 @@ class ChatBoxComponent extends BaseComponent
     }
 
     /**
+     * Assert that the browser page contains the number of unread messages.
+     */
+    public function assertSeeUnreadMessagesCount(Browser $browser, int $count): void
+    {
+        $browser->assertSee($count);
+    }
+
+    /**
      * Maximize the chat box container.
      */
     public function openChatBox(Browser $browser): void

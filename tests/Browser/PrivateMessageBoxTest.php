@@ -114,4 +114,24 @@ class PrivateMessageBoxTest extends BrowserTestCase
                 ->assertSee('Hello World!'));
         });
     }
+
+    /**
+     * @test
+     */
+    public function itShouldBeAbleToShowTheNumberOfUnreadMessages(): void
+    {
+        $this->addPrivateMessages(receiver: $this->receiver, sender: $this->sender, count: 10);
+
+        $this->browse(function (Browser $browser): void {
+            $browser->loginAs($this->receiver, guard: 'web');
+            $browser->visit('/dashboard');
+
+            $browser->within(selector: new ChatBoxComponent(), callback: fn (Browser $chatBox) => $chatBox
+                ->assertSeeUnreadMessagesCount(10)
+                ->openChatBox()
+                ->within(selector: new ContactComponent(), callback: fn (Browser $contact) => $contact
+                    ->waitUntilContactsVisible()
+                    ->assertSeeUnreadMessagesCount($this->sender, 10)));
+        });
+    }
 }
