@@ -90,10 +90,8 @@ class Basement implements BasementContract
         if (
             is_string(static::$privateMessageModel) === false
             || class_exists(static::$privateMessageModel) === false
-            || (
-                is_subclass_of(static::$privateMessageModel, PrivateMessage::class) === false
-                && static::$privateMessageModel !== PrivateMessage::class
-            )
+            || (is_subclass_of(static::$privateMessageModel, PrivateMessage::class) === false
+                && static::$privateMessageModel !== PrivateMessage::class)
         ) {
             throw new \TypeError(
                 'The given private message model should be a subclass of ' . PrivateMessage::class . ' class.',

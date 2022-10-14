@@ -94,7 +94,7 @@ class InstallNodeDependencies
         ]);
 
         $dependencies = collect($this->dependencies)
-            ->map(fn (string $version, string $dependency): string => "{$dependency}:{$version}");
+            ->map(static fn (string $version, string $dependency): string => "{$dependency}:{$version}");
 
         (new Process([$packageManager, 'install', '-D', ...$dependencies]))
             ->setTimeout(null)

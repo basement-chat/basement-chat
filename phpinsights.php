@@ -74,7 +74,7 @@ return [
             'lineLimit' => 120,
             'absoluteLineLimit' => 120,
             'ignoreComments' => false,
-        ]
+        ],
     ],
 
     /*

@@ -31,7 +31,7 @@ class InstallBroadcastDriver
              *
              * @see https://github.com/beyondcode/laravel-websockets/issues/1041
              */
-            'pusher/pusher-php-server:7.0.2'
+            'pusher/pusher-php-server:7.0.2',
         ],
         'other' => [],
     ];
@@ -49,7 +49,7 @@ class InstallBroadcastDriver
 
         if ($availableDrivers->contains($driver) === false) {
             $choices = $availableDrivers
-                ->map(fn (string $availableDriver): string => "[{$availableDriver}]")
+                ->map(static fn (string $availableDriver): string => "[{$availableDriver}]")
                 ->join(', ');
 
             $this->command->error("Your choice of driver must be one of the following: {$choices}");

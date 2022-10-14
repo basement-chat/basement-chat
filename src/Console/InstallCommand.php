@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace BasementChat\Basement\Console;
 
 use BasementChat\Basement\Pipes\InstallCommand\InstallBroadcastDriver;
