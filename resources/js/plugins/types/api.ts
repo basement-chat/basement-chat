@@ -2,7 +2,7 @@ export interface Response<T> {
   data: T
 }
 
-export type PaginatedResponse<T> = Response<T> & {
+export interface PaginatedResponse<T> extends Response<T> {
   links: {
     first: string | null
     last: string | null

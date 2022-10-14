@@ -12,7 +12,7 @@ export type UpdateLastPrivateMessageEvent = PrivateMessageData
 
 export type UpdateReceiverEvent = ContactData
 
-export type PrivateMessageSentEvent = PrivateMessage & {
+export interface PrivateMessageSentEvent extends PrivateMessage {
   sender: {
     id: number
     name: string

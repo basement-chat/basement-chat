@@ -19,7 +19,7 @@ export interface ChatBoxComponentData {
   totalUnreadMessages: number
 }
 
-export type ChatBoxComponent = ChatBoxComponentData & {
+export interface ChatBoxComponent extends ChatBoxComponentData {
   init(): void
   requestNotificationPermission(): void
   sendPushNotification(event: CustomEvent<PushNotificationEvent>): void
@@ -34,7 +34,7 @@ export interface ContactComponentData {
   url: string
 }
 
-export type ContactComponent = ContactComponentData & {
+export interface ContactComponent extends ContactComponentData {
   init(): void
   mount(): Promise<void>
   get filteredContacts(): ContactData[]
@@ -69,7 +69,7 @@ export interface PrivateMessageComponentData {
   urlShowMore: string | null
 }
 
-export type PrivateMessageComponent = PrivateMessageComponentData & {
+export interface PrivateMessageComponent extends PrivateMessageComponentData {
   init(): void
   mount(): Promise<void>
   mountMore(): Promise<void>
