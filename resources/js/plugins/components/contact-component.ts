@@ -1,10 +1,9 @@
 import ContactData from '../data/contact-data'
-import type * as Alpine from '../types/alpine'
 import type { Response, Contact } from '../types/api'
-import type { ContactComponent, ContactComponentData } from '../types/components'
+import type { AlpineContactComponent } from '../types/components'
 import type { UpdateLastPrivateMessageEvent } from '../types/events'
 
-export default (): Alpine.Component & ContactComponent => {
+export default (): AlpineContactComponent => {
   const container: HTMLDivElement = document.querySelector('.contact__container--main')!
   const url: string = container.getAttribute('data-url')!
 
@@ -18,10 +17,8 @@ export default (): Alpine.Component & ContactComponent => {
      * Hook during the initialization phase of the current Alpine component.
      */
     init(): void {
-      (this.$watch as Alpine.Watch<ContactComponentData>)('contacts', this.watchContacts.bind(this));
-      (this.$refs as Alpine.Refs)
-        .basementChatBox
-        .addEventListener('update-last-private-message', this.updateLastPrivateMessage.bind(this))
+      this.$watch('contacts', this.watchContacts.bind(this))
+      this.$refs.basementChatBox.addEventListener('update-last-private-message', this.updateLastPrivateMessage.bind(this))
     },
 
     /**
@@ -146,7 +143,7 @@ export default (): Alpine.Component & ContactComponent => {
      * Trigger update receiver event to the chat box component.
      */
     updateReceiver(contact: ContactData): void {
-      (this.$dispatch as Alpine.Dispatch)('update-receiver', contact)
+      this.$dispatch('update-receiver', contact)
     },
 
     /**

@@ -1,11 +1,10 @@
 import Push from 'push.js'
 import { delegate, type Instance } from 'tippy.js'
 import NotificationStatus from '../enums/notification-status'
-import type * as Alpine from '../types/alpine'
-import type { ChatBoxComponent, ChatBoxComponentData } from '../types/components'
+import type { AlpineChatBoxComponent } from '../types/components'
 import type { PushNotificationEvent } from '../types/events'
 
-export default (): Alpine.Component & ChatBoxComponent => ({
+export default (): AlpineChatBoxComponent => ({
   isMinimized: true,
   isContactOpened: true,
   isMessageBoxOpened: false,
@@ -26,10 +25,10 @@ export default (): Alpine.Component & ChatBoxComponent => ({
 
     window.addEventListener('offline', (): void => {
       this.online = false
-    });
+    })
 
-    (this.$watch as Alpine.Watch<ChatBoxComponentData>)('isNotificationAllowed', this.watchNotificationStatus.bind(this));
-    (this.$el as Alpine.Element).addEventListener('send-push-notification', this.sendPushNotification.bind(this))
+    this.$watch('isNotificationAllowed', this.watchNotificationStatus.bind(this))
+    this.$el.addEventListener('send-push-notification', this.sendPushNotification.bind(this))
 
     this.registerTippy()
   },
@@ -69,7 +68,7 @@ export default (): Alpine.Component & ChatBoxComponent => ({
    * Register tippy.js instance creation for child elements.
    */
   registerTippy(): void {
-    delegate((this.$el as Alpine.Element), {
+    delegate(this.$el, {
       animation: 'fade',
       arrow: true,
       target: '[data-title]',

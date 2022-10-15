@@ -1,11 +1,10 @@
 import Mark from 'mark.js'
 import PrivateMessageData from '../data/private-message-data'
-import type * as Alpine from '../types/alpine'
 import type { Response, PaginatedResponse, PrivateMessage } from '../types/api'
-import type { PrivateMessageComponent, PrivateMessageComponentData } from '../types/components'
+import type { AlpinePrivateMessageComponent } from '../types/components'
 import type { PrivateMessageMarkedAsReadEvent, PrivateMessageSentEvent, UpdateReceiverEvent } from '../types/events'
 
-export default (): Alpine.Component & PrivateMessageComponent => {
+export default (): AlpinePrivateMessageComponent => {
   const container: HTMLDivElement = document.querySelector('.private-message__container--main')!
   const highlighter: Mark = new Mark('.private-message__text--value')
   let lastMessageObserver: IntersectionObserver
@@ -37,14 +36,14 @@ export default (): Alpine.Component & PrivateMessageComponent => {
      * Hook during the initialization phase of the current Alpine component.
      */
     init(): void {
-      (this.$refs as Alpine.Refs).basementChatBox.addEventListener('update-receiver', this.updateReceiver.bind(this));
-      (this.$watch as Alpine.Watch<PrivateMessageComponentData>)('messages', this.watchMessages.bind(this))
+      this.$refs.basementChatBox.addEventListener('update-receiver', this.updateReceiver.bind(this))
+      this.$watch('messages', this.watchMessages.bind(this))
 
       setInterval(this.markSeenMessagesAsRead.bind(this), 3000)
       this.registerEchoEventListeners()
 
       lastMessageObserver = new IntersectionObserver(this.lastMessageObserver.bind(this), {
-        root: this.$el as Alpine.Element,
+        root: this.$el,
         threshold: [0, 1],
       })
     },
@@ -167,7 +166,7 @@ export default (): Alpine.Component & PrivateMessageComponent => {
         return
       }
 
-      (this.$nextTick as Alpine.NextTick)((): void => {
+      this.$nextTick((): void => {
         const lastMessageElement: HTMLParagraphElement = document.querySelector(`.private-message__text--value[data-id="${lastMessage.id}"]`)!
 
         lastMessageObserver.disconnect()
@@ -188,10 +187,10 @@ export default (): Alpine.Component & PrivateMessageComponent => {
         this.messages.unshift(receivedMessage)
       }
 
-      (this.$dispatch as Alpine.Dispatch)('update-last-private-message', receivedMessage)
+      this.$dispatch('update-last-private-message', receivedMessage)
 
       if (userId !== event.detail.sender_id) {
-        (this.$dispatch as Alpine.Dispatch)('send-push-notification', {
+        this.$dispatch('send-push-notification', {
           title: event.detail.sender.name,
           body: event.detail.value,
           icon: event.detail.sender.avatar,
@@ -233,7 +232,7 @@ export default (): Alpine.Component & PrivateMessageComponent => {
         return
       }
 
-      (this.$nextTick as Alpine.NextTick)((): void => {
+      this.$nextTick((): void => {
         document.querySelector(`.private-message__text--value[data-id="${id}"]`)?.scrollIntoView(options)
       })
     },

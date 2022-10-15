@@ -1,3 +1,4 @@
+import type { AlpineComponent } from 'alpinejs'
 import type ContactData from '../data/contact-data'
 import type PrivateMessageData from '../data/private-message-data'
 import type { Contact } from './api'
@@ -9,7 +10,7 @@ import type {
   UpdateReceiverEvent,
 } from './events'
 
-export interface ChatBoxComponentData {
+interface ChatBoxComponentData {
   isMinimized: boolean
   isContactOpened: boolean
   isMessageBoxOpened: boolean
@@ -19,7 +20,7 @@ export interface ChatBoxComponentData {
   totalUnreadMessages: number
 }
 
-export interface ChatBoxComponent extends ChatBoxComponentData {
+interface ChatBoxComponent extends ChatBoxComponentData {
   init(): void
   requestNotificationPermission(): void
   sendPushNotification(event: CustomEvent<PushNotificationEvent>): void
@@ -27,14 +28,19 @@ export interface ChatBoxComponent extends ChatBoxComponentData {
   watchNotificationStatus(newValue: boolean, oldValue: boolean): void
 }
 
-export interface ContactComponentData {
+export type AlpineChatBoxComponent = ChatBoxComponent & ThisType<
+// eslint-disable-next-line @typescript-eslint/indent
+  AlpineComponent<ChatBoxComponentData> & ChatBoxComponent
+>
+
+interface ContactComponentData {
   contacts: ContactData[]
   search: string
   unreadMessages: number
   url: string
 }
 
-export interface ContactComponent extends ContactComponentData {
+interface ContactComponent extends ContactComponentData {
   init(): void
   mount(): Promise<void>
   get filteredContacts(): ContactData[]
@@ -48,7 +54,12 @@ export interface ContactComponent extends ContactComponentData {
   watchContacts(newValue: ContactData[], oldValue: ContactData[]): void
 }
 
-export interface PrivateMessageComponentData {
+export type AlpineContactComponent = ContactComponent & ThisType<
+// eslint-disable-next-line @typescript-eslint/indent
+  AlpineComponent<ContactComponentData> & ContactComponent
+>
+
+interface PrivateMessageComponentData {
   isInfoBoxOpened: boolean
   isLastMessageShown: boolean
   isLoading: boolean
@@ -69,7 +80,7 @@ export interface PrivateMessageComponentData {
   urlShowMore: string | null
 }
 
-export interface PrivateMessageComponent extends PrivateMessageComponentData {
+interface PrivateMessageComponent extends PrivateMessageComponentData {
   init(): void
   mount(): Promise<void>
   mountMore(): Promise<void>
@@ -88,3 +99,8 @@ export interface PrivateMessageComponent extends PrivateMessageComponentData {
   updateReceiver(event: CustomEvent<UpdateReceiverEvent>): void
   watchMessages(newValue: PrivateMessageData[], oldValue: PrivateMessageData[]): void
 }
+
+export type AlpinePrivateMessageComponent = PrivateMessageComponent & ThisType<
+// eslint-disable-next-line @typescript-eslint/indent
+  AlpineComponent<PrivateMessageComponentData> & PrivateMessageComponent
+>
