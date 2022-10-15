@@ -6,7 +6,7 @@ export default defineConfig({
   plugins: [
     laravel({
       input: [
-        'resources/js/app.bundle.ts',
+        'resources/js/app.ts',
       ],
       refresh: true,
     }),

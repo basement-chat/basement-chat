@@ -69,8 +69,6 @@ class BasementServiceProvider extends PackageServiceProvider
             __DIR__ . '/../dist/basement.bundle.min.css' => public_path('vendor/basement/basement.bundle.min.css'),
             __DIR__ . '/../dist/basement.bundle.min.js' => public_path('vendor/basement/basement.bundle.min.js'),
             __DIR__ . '/../dist/basement.bundle.min.js.map' => public_path('vendor/basement/basement.bundle.min.js.map'),
-            __DIR__ . '/../dist/basement.slim.min.js' => public_path('vendor/basement/basement.slim.min.js'),
-            __DIR__ . '/../dist/basement.slim.min.js.map' => public_path('vendor/basement/basement.slim.min.js.map'),
         ], groups: 'basement-assets');
     }
 

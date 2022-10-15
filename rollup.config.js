@@ -9,84 +9,95 @@ import postcss from 'rollup-plugin-postcss'
 import { terser } from 'rollup-plugin-terser'
 import typescript from 'rollup-plugin-typescript2'
 
-const plugins = {
-  resolve: resolve({
-    browser: true,
-  }),
-  commonjs: commonjs(),
-  json: json(),
-  nodePolyfills: nodePolyfills(),
-  postcss: postcss({
-    extract: true,
-    minimize: true,
-  }),
-  terser: terser(),
-  typescript: typescript(),
-  babel: babel({
-    babelHelpers: 'bundled',
-    exclude: 'node_modules/**',
-    extensions: ['.ts'],
-    include: ['./resources/js/**/*.ts'],
-    presets: [
-      [
-        '@babel/preset-env',
-        {
-          useBuiltIns: 'usage',
-          corejs: '3.25',
-        },
-      ],
+const babelPlugin = babel({
+  babelHelpers: 'bundled',
+  exclude: 'node_modules/**',
+  extensions: ['.ts'],
+  include: ['./resources/js/**/*.ts'],
+  presets: [
+    [
+      '@babel/preset-env',
+      {
+        useBuiltIns: 'usage',
+        corejs: '3.25',
+      },
     ],
-  }),
-  filesize: filesize(),
-}
+  ],
+})
 
 export default defineConfig([
   {
-    input: './resources/js/app.bundle.ts',
+    input: './resources/js/app.ts',
     output: {
       sourcemap: true,
       name: 'Basement Bundle',
       file: './dist/basement.bundle.min.js',
       format: 'umd',
     },
-    plugins: Object.values(plugins),
-  },
-  {
-    input: './resources/js/app.slim.ts',
-    output: {
-      sourcemap: true,
-      name: 'Basement Slim',
-      file: './dist/basement.slim.min.js',
-      format: 'umd',
-    },
     plugins: [
-      plugins.resolve,
-      plugins.commonjs,
-      plugins.json,
-      plugins.nodePolyfills,
-      plugins.terser,
-      plugins.typescript,
-      plugins.babel,
-      plugins.filesize,
+      resolve({
+        browser: true,
+      }),
+      commonjs(),
+      json(),
+      nodePolyfills(),
+      postcss({
+        extract: true,
+        minimize: true,
+      }),
+      terser(),
+      typescript(),
+      babelPlugin,
+      filesize(),
     ],
   },
   {
     input: './resources/js/plugins/basement.ts',
     output: [
-      { file: './dist/basement.plugin.esm.js', format: 'esm' },
-      { file: './dist/basement.plugin.common.js', format: 'cjs', exports: 'default' },
+      {
+        sourcemap: true,
+        file: './dist/basement.plugin.esm.js',
+        format: 'esm',
+      },
+      {
+        sourcemap: true,
+        file: './dist/basement.plugin.common.js',
+        format: 'cjs',
+        exports: 'default',
+      },
     ],
     plugins: [
       resolve(),
-      plugins.commonjs,
+      commonjs(),
       typescript({
         exclude: [
           './resources/js/*.ts',
           './resources/js/@types/*.ts',
         ],
       }),
-      plugins.babel,
-      plugins.filesize,
+      babelPlugin,
+      filesize(),
+    ],
+  },
+  {
+    input: './resources/js/plugins/echo-options.ts',
+    output: [
+      {
+        sourcemap: true,
+        file: './dist/basement.echo-options.esm.js',
+        format: 'esm',
+      },
+      {
+        sourcemap: true,
+        file: './dist/basement.echo-options.common.js',
+        format: 'cjs',
+        exports: 'default',
+      },
+    ],
+    plugins: [
+      typescript(),
+      babelPlugin,
+      filesize(),
     ],
   },
 ])

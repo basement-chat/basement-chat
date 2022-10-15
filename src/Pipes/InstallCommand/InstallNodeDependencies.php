@@ -25,6 +25,7 @@ class InstallNodeDependencies
         'alpinejs' => '^3.10.3',
         'axios' => '^0.27.2',
         'laravel-echo' => '^1.14.0',
+        'postcss-import' => '^15.0.0',
         'pusher-js' => '^7.4.0',
     ];
 
@@ -94,7 +95,7 @@ class InstallNodeDependencies
         ]);
 
         $dependencies = collect($this->dependencies)
-            ->map(static fn (string $version, string $dependency): string => "{$dependency}:{$version}");
+            ->map(static fn (string $version, string $dependency): string => "{$dependency}@{$version}");
 
         (new Process([$packageManager, 'install', '-D', ...$dependencies]))
             ->setTimeout(null)
