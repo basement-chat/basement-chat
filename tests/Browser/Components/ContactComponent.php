@@ -48,7 +48,7 @@ class ContactComponent extends BaseComponent
             $selector = ".contact__container--user-box[data-id=\"{$contact->id}\"]";
 
             $browser
-                ->waitFor("{$selector} > div[title=\"{$contact->name} is offline\"]")
+                ->waitFor("{$selector} > div[data-title=\"{$contact->name} is offline\"]")
                 ->with(selector: $selector, callback: static fn (Browser $container) => $container
                     ->assertAttributeContains(
                         selector: '.contact__container--online-indicator',
@@ -67,7 +67,7 @@ class ContactComponent extends BaseComponent
             $selector = ".contact__container--user-box[data-id=\"{$contact->id}\"]";
 
             $browser
-                ->waitFor("{$selector} > div[title=\"{$contact->name} is online\"]")
+                ->waitFor("{$selector} > div[data-title=\"{$contact->name} is online\"]")
                 ->with(selector: $selector, callback: static fn (Browser $container) => $container
                     ->assertAttributeContains(
                         selector: '.contact__container--online-indicator',
