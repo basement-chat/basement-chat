@@ -1,10 +1,11 @@
+import type { AlpineComponent } from 'alpinejs'
 import Push from 'push.js'
 import { delegate, type Instance } from 'tippy.js'
 import NotificationStatus from '../enums/notification-status'
-import type { AlpineChatBoxComponent } from '../types/components'
+import type { ChatBoxComponent } from '../types/components'
 import type { PushNotificationEvent } from '../types/events'
 
-export default (): AlpineChatBoxComponent => ({
+export default (): AlpineComponent<ChatBoxComponent> => ({
   isMinimized: true,
   isContactOpened: true,
   isMessageBoxOpened: false,

@@ -1,9 +1,10 @@
+import type { AlpineComponent } from 'alpinejs'
 import ContactData from '../data/contact-data'
 import type { Response, Contact } from '../types/api'
-import type { AlpineContactComponent } from '../types/components'
+import type { ContactComponent } from '../types/components'
 import type { UpdateLastPrivateMessageEvent } from '../types/events'
 
-export default (): AlpineContactComponent => {
+export default (): AlpineComponent<ContactComponent> => {
   const container: HTMLDivElement = document.querySelector('.contact__container--main')!
   const url: string = container.getAttribute('data-url')!
 

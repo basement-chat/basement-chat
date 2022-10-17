@@ -1,10 +1,11 @@
+import type { AlpineComponent } from 'alpinejs'
 import Mark from 'mark.js'
 import PrivateMessageData from '../data/private-message-data'
 import type { Response, PaginatedResponse, PrivateMessage } from '../types/api'
-import type { AlpinePrivateMessageComponent } from '../types/components'
+import type { PrivateMessageComponent } from '../types/components'
 import type { PrivateMessageMarkedAsReadEvent, PrivateMessageSentEvent, UpdateReceiverEvent } from '../types/events'
 
-export default (): AlpinePrivateMessageComponent => {
+export default (): AlpineComponent<PrivateMessageComponent> => {
   const container: HTMLDivElement = document.querySelector('.private-message__container--main')!
   const highlighter: Mark = new Mark('.private-message__text--value')
   let lastMessageObserver: IntersectionObserver
@@ -166,7 +167,7 @@ export default (): AlpinePrivateMessageComponent => {
         return
       }
 
-      this.$nextTick((): void => {
+      void this.$nextTick((): void => {
         const lastMessageElement: HTMLParagraphElement = document.querySelector(`.private-message__text--value[data-id="${lastMessage.id}"]`)!
 
         lastMessageObserver.disconnect()
@@ -232,7 +233,7 @@ export default (): AlpinePrivateMessageComponent => {
         return
       }
 
-      this.$nextTick((): void => {
+      void this.$nextTick((): void => {
         document.querySelector(`.private-message__text--value[data-id="${id}"]`)?.scrollIntoView(options)
       })
     },
