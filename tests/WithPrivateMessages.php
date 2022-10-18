@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace BasementChat\Basement\Tests;
 
 use BasementChat\Basement\Models\PrivateMessage;
-use BasementChat\Basement\Tests\Fixtures\User;
+use BasementChat\Basement\Tests\Fixtures\Models\User;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\Sequence;
 

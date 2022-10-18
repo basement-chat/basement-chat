@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace BasementChat\Basement\Tests;
 
 use BasementChat\Basement\BasementServiceProvider;
-use BasementChat\Basement\Tests\Fixtures\User;
+use BasementChat\Basement\Tests\Fixtures\Models\User;
 use BeyondCode\DumpServer\DumpServerServiceProvider;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Http\Response;

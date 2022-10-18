@@ -8,7 +8,7 @@ use BasementChat\Basement\Contracts\AllContacts;
 use BasementChat\Basement\Data\ContactData;
 use BasementChat\Basement\Data\PrivateMessageData;
 use BasementChat\Basement\Enums\AvatarStyle;
-use BasementChat\Basement\Tests\Fixtures\User;
+use BasementChat\Basement\Tests\Fixtures\Models\User;
 use BasementChat\Basement\Tests\TestCase;
 use BasementChat\Basement\Tests\WithPrivateMessages;
 use BasementChat\Basement\Tests\WithUsers;

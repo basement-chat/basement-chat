@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace BasementChat\Basement\Tests;
 
-use BasementChat\Basement\Tests\Fixtures\User;
+use BasementChat\Basement\Tests\Fixtures\Models\User;
 use Illuminate\Broadcasting\BroadcastServiceProvider;
 use Illuminate\Contracts\View\View;
 use Illuminate\Cookie\Middleware\EncryptCookies;
@@ -50,7 +50,7 @@ class BrowserTestCase extends OrchestraDuskTestCase
         Config::set(key: 'view.paths', value: [
             resource_path('views'),
             __DIR__ . '/../resources/views',
-            __DIR__ . '/Fixtures',
+            __DIR__ . '/Fixtures/Views',
         ]);
     }
 

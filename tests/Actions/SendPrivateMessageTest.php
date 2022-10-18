@@ -8,7 +8,7 @@ use BasementChat\Basement\Contracts\SendPrivateMessage;
 use BasementChat\Basement\Data\PrivateMessageData;
 use BasementChat\Basement\Events\PrivateMessageSent;
 use BasementChat\Basement\Models\PrivateMessage;
-use BasementChat\Basement\Tests\Fixtures\User;
+use BasementChat\Basement\Tests\Fixtures\Models\User;
 use BasementChat\Basement\Tests\TestCase;
 use BasementChat\Basement\Tests\WithPrivateMessages;
 use BasementChat\Basement\Tests\WithUsers;

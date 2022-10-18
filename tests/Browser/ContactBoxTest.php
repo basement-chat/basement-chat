@@ -7,7 +7,7 @@ namespace BasementChat\Basement\Tests\Browser;
 use BasementChat\Basement\Tests\Browser\Components\ChatBoxComponent;
 use BasementChat\Basement\Tests\Browser\Components\ContactComponent;
 use BasementChat\Basement\Tests\BrowserTestCase;
-use BasementChat\Basement\Tests\Fixtures\User;
+use BasementChat\Basement\Tests\Fixtures\Models\User;
 use BasementChat\Basement\Tests\WithPrivateMessages;
 use BasementChat\Basement\Tests\WithUsers;
 use Illuminate\Database\Eloquent\Factories\Sequence;

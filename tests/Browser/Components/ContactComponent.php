@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace BasementChat\Basement\Tests\Browser\Components;
 
-use BasementChat\Basement\Tests\Fixtures\User;
+use BasementChat\Basement\Tests\Fixtures\Models\User;
 use Illuminate\Support\Str;
 use Laravel\Dusk\Browser;
 use Laravel\Dusk\Component as BaseComponent;

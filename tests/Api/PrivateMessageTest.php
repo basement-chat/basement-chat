@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace BasementChat\Basement\Tests\Api;
 
 use BasementChat\Basement\Tests\ApiJsonStructure;
-use BasementChat\Basement\Tests\Fixtures\User;
+use BasementChat\Basement\Tests\Fixtures\Models\User;
 use BasementChat\Basement\Tests\TestCase;
 use BasementChat\Basement\Tests\WithPrivateMessages;
 use BasementChat\Basement\Tests\WithUsers;
@@ -136,6 +136,21 @@ class PrivateMessageTest extends TestCase
                 '*' => $this->privateMessageStructure,
             ],
         ]);
+    }
+
+    /**
+     * @test
+     */
+    public function itShouldGetResponseStatusCodeUnprocessableIfUpdateMessagesWhenDataEmpty(): void
+    {
+        $this->actingAs($this->sender);
+
+        $response = $this->patch(uri: '/api/private-messages', data: [], headers: [
+            'Accept' => 'application/json',
+        ]);
+
+        $response->assertUnprocessable();
+        $response->assertJsonStructure(['message', 'errors' => ['*']]);
     }
 
     /**

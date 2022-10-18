@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace BasementChat\Basement\Tests\Fixtures;
+namespace BasementChat\Basement\Tests\Fixtures\Models;
 
 use BasementChat\Basement\Contracts\User as BasementUserContract;
 use BasementChat\Basement\Traits\HasPrivateMessages;

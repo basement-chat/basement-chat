@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace BasementChat\Basement\Tests;
 
-use BasementChat\Basement\Tests\Fixtures\User;
+use BasementChat\Basement\Tests\Fixtures\Models\User;
 use Illuminate\Database\Eloquent\Collection;
 
 trait WithUsers
 {
     /**
-     * @var \Illuminate\Database\Eloquent\Collection<int,\BasementChat\Basement\Tests\Fixtures\User>
+     * @var \Illuminate\Database\Eloquent\Collection<int,\BasementChat\Basement\Tests\Fixtures\Models\User>
      */
     protected Collection $users;
 

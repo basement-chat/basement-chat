@@ -6,7 +6,7 @@ namespace BasementChat\Basement\Tests\Actions;
 
 use BasementChat\Basement\Contracts\AllPrivateMessages;
 use BasementChat\Basement\Models\PrivateMessage;
-use BasementChat\Basement\Tests\Fixtures\User;
+use BasementChat\Basement\Tests\Fixtures\Models\User;
 use BasementChat\Basement\Tests\TestCase;
 use BasementChat\Basement\Tests\WithPrivateMessages;
 use BasementChat\Basement\Tests\WithUsers;

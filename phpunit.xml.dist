@@ -28,6 +28,12 @@
         <testsuite name="Browser">
             <directory>tests/Browser</directory>
         </testsuite>
+        <testsuite name="Console">
+            <directory>tests/Console</directory>
+        </testsuite>
+        <testsuite name="Unit">
+            <directory>tests/Unit</directory>
+        </testsuite>
     </testsuites>
     <coverage>
         <include>
