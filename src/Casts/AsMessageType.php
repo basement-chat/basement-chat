@@ -6,27 +6,9 @@ namespace BasementChat\Basement\Casts;
 
 use BasementChat\Basement\Enums\MessageType;
 use Illuminate\Contracts\Database\Eloquent\CastsAttributes;
-use Spatie\LaravelData\Casts\Cast;
-use Spatie\LaravelData\Support\DataProperty;
 
-class AsMessageType implements Cast, CastsAttributes
+class AsMessageType implements CastsAttributes
 {
-    /**
-     * Cast the given value to message type enum.
-     */
-    public function cast(DataProperty $property, mixed $value): MessageType
-    {
-        if ($value instanceof MessageType) {
-            return $value;
-        }
-
-        if (is_string($value) || is_int($value)) {
-            return MessageType::from($value);
-        }
-
-        return MessageType::text();
-    }
-
     /**
      * Transform the attribute from the underlying model values.
      *

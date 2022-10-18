@@ -4,12 +4,10 @@ declare(strict_types=1);
 
 namespace BasementChat\Basement\Data;
 
-use BasementChat\Basement\Casts\AsMessageType;
 use BasementChat\Basement\Enums\MessageType;
 use BasementChat\Basement\Facades\Basement;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Support\Carbon;
-use Spatie\LaravelData\Attributes\WithCast;
 use Spatie\LaravelData\Data;
 use Spatie\LaravelData\DataCollection;
 use Spatie\LaravelData\Lazy;
@@ -29,7 +27,6 @@ class PrivateMessageData extends Data
     public function __construct(
         public int $receiver_id,
         public int $sender_id,
-        #[WithCast(AsMessageType::class)]
         public MessageType $type,
         public string $value,
         public ?int $id = null,
