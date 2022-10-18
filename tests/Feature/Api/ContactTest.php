@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace BasementChat\Basement\Tests\Api;
+namespace BasementChat\Basement\Tests\Feature\Api;
 
 use BasementChat\Basement\Tests\ApiJsonStructure;
 use BasementChat\Basement\Tests\Fixtures\Models\User;

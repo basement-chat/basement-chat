@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace BasementChat\Basement\Tests\Actions;
+namespace BasementChat\Basement\Tests\Feature\Actions;
 
 use BasementChat\Basement\Contracts\AllContacts;
 use BasementChat\Basement\Data\ContactData;

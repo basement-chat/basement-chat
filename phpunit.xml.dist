@@ -19,17 +19,11 @@
     verbose="true"
 >
     <testsuites>
-        <testsuite name="Actions">
-            <directory>tests/Actions</directory>
-        </testsuite>
-        <testsuite name="Api">
-            <directory>tests/Api</directory>
+        <testsuite name="Feature">
+            <directory>tests/Feature</directory>
         </testsuite>
         <testsuite name="Browser">
             <directory>tests/Browser</directory>
-        </testsuite>
-        <testsuite name="Console">
-            <directory>tests/Console</directory>
         </testsuite>
         <testsuite name="Unit">
             <directory>tests/Unit</directory>

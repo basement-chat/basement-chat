@@ -1,6 +1,6 @@
 <?php
 
-namespace BasementChat\Basement\Tests\Console;
+namespace BasementChat\Basement\Tests\Feature\Console;
 
 use BasementChat\Basement\Factories\SymfonyProcessFactory;
 use BasementChat\Basement\Tests\Fixtures\Factories\FakeSymfonyProcessFactory;

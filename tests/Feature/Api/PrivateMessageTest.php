@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace BasementChat\Basement\Tests\Api;
+namespace BasementChat\Basement\Tests\Feature\Api;
 
 use BasementChat\Basement\Tests\ApiJsonStructure;
 use BasementChat\Basement\Tests\Fixtures\Models\User;
@@ -156,7 +156,7 @@ class PrivateMessageTest extends TestCase
     /**
      * @test
      */
-    public function itShouldGetResponseStatusCodeUnprocessableIfMarkMessageAsReachWhichIsNotReceived(): void
+    public function itShouldGetResponseStatusCodeUnprocessableIfMarkMessageAsReadWhichIsNotReceived(): void
     {
         $this->addPrivateMessages(receiver: $this->receiver, sender: $this->sender, count: 10);
 
