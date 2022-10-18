@@ -4,53 +4,68 @@ declare(strict_types=1);
 
 namespace BasementChat\Basement\Console;
 
-use BasementChat\Basement\Pipes\InstallCommand\InstallBroadcastDriver;
-use BasementChat\Basement\Pipes\InstallCommand\InstallNodeDependencies;
-use BasementChat\Basement\Pipes\InstallCommand\PublishFiles;
+use BasementChat\Basement\Support\InstallComposerDependency;
+use BasementChat\Basement\Support\InstallNodeDependency;
+use BeyondCode\LaravelWebSockets\WebSocketsServiceProvider;
 use Illuminate\Console\Command;
-use Illuminate\Pipeline\Pipeline;
-use Spatie\LaravelPackageTools\Commands\InstallCommand as LaravelPackageToolsInstallCommand;
-use Spatie\LaravelPackageTools\Package;
-use Symfony\Component\Console\Input\InputOption;
 
-class InstallCommand extends LaravelPackageToolsInstallCommand
+class InstallCommand extends Command
 {
     /**
-     * The console command description.
+     * The name and signature of the console command.
+     *
+     * @var string
      */
-    protected string $consoleDescription = 'Install the Basement package';
+    protected $signature = 'basement:install
+        {type=app : The installation type (app, driver, frontend_deps)}';
 
     /**
-     * The console command options.
+     * The console command description.
+     *
+     * @var string
      */
-    protected array $consoleOptions = [
-        [
-            'name' => 'driver',
-            'mode' => InputOption::VALUE_REQUIRED,
-            'description' => 'The server-side broadcasting driver that should be installed ([pusher], [ably], [laravel-websockets], or [other])',
-            'default' => 'pusher',
-        ],
-        [
-            'name' => 'with-node-deps',
-            'description' => "Add node module dependencies to package.json devDependencies. This will be helpful if the app doesn't use the available basement asset bundle.",
-        ],
-        [
-            'name' => 'composer',
-            'mode' => InputOption::VALUE_REQUIRED,
-            'description' => 'Absolute path to the Composer binary which should be used to install packages',
-            'default' => 'global',
-        ],
+    protected $description = 'Install the Basement package';
+
+    /**
+     * The supported installation types.
+     *
+     * @var array<int, string>
+     */
+    protected array $types = [
+        'app',
+        'driver',
+        'frontend_deps',
+    ];
+
+    /**
+     * List of supported broadcast drivers.
+     *
+     * @var array<int,string>
+     */
+    protected array $drivers = [
+        'pusher',
+        'ably',
+        'laravel-websockets',
+        'soketi',
+    ];
+
+    /**
+     * List of console styles.
+     *
+     * @var array<string,string>
+     */
+    protected array $styles = [
+        'code' => '<options=bold>%s</>',
     ];
 
     /**
      * Create a new console command instance.
      */
-    public function __construct()
-    {
-        $package = (new Package())->name('basement');
-
-        parent::__construct($package);
-        $this->setSignature();
+    public function __construct(
+        protected InstallComposerDependency $composerDependency,
+        protected InstallNodeDependency $nodeDependency,
+    ) {
+        parent::__construct();
     }
 
     /**
@@ -58,43 +73,116 @@ class InstallCommand extends LaravelPackageToolsInstallCommand
      */
     public function handle(): int
     {
-        /** @var \Illuminate\Pipeline\Pipeline $pipeline */
-        $pipeline = app(Pipeline::class);
+        $type = $this->argument('type');
+        $types = collect($this->types);
 
-        /** @var int|self $result */
-        $result = $pipeline
-            ->send($this)
-            ->through([
-                InstallBroadcastDriver::class,
-                InstallNodeDependencies::class,
-                PublishFiles::class,
-            ])
-            ->thenReturn();
+        if ($types->contains($type) === false) {
+            $this->error("The installation type should be one of following options ({$types->implode(', ')})");
 
-        return $result instanceof self ? Command::SUCCESS : $result;
+            return Command::INVALID;
+        }
+
+        return match ($type) {
+            'app' => $this->installApp(),
+            'driver' => $this->installDriver(),
+            'frontend_deps' => $this->installFrontendDependencies(),
+        };
     }
 
     /**
-     * Run handle function on parent class to publish files.
+     * Execute command to publish files, ask to run migrations and install broadcast driver.
      */
-    public function publish(): void
+    protected function installApp(): int
     {
-        parent::handle();
+        $this->call(command: 'vendor:publish', arguments: ['--tag' => 'basement-config']);
+        $this->call(command: 'vendor:publish', arguments: ['--tag' => 'basement-migrations']);
+        $this->call(command: 'vendor:publish', arguments: ['--tag' => 'basement-assets']);
+
+        if ($this->confirm('Would you like to run the migrations now?')) {
+            $this->call('migrate');
+        }
+
+        $this->info('Basement Chat Application has been installed!');
+
+        if ($this->confirm('Do you want to install the broadcast driver? You can also do this later by calling ' . sprintf($this->styles['code'], 'basement:install --tag=driver') . '.')) {
+            return $this->installDriver();
+        }
+
+        return Command::SUCCESS;
     }
 
     /**
-     * Set console command signature.
+     * Execute command to install broadcast driver.
      */
-    protected function setSignature(): void
+    protected function installDriver(): int
     {
-        $this->setDescription($this->consoleDescription);
+        $driver = $this->choice(
+            question: 'Please choose the broadcast driver you want to use',
+            choices: $this->drivers,
+        );
 
-        collect($this->consoleOptions)->each(fn (array $option) => $this->addOption(
-            name: $option['name'],
-            shortcut: $option['shortcut'] ?? null,
-            mode: $option['mode'] ?? null,
-            description: $option['description'] ?? '',
-            default: $option['default'] ?? null,
-        ));
+        $installationStatus = match ($driver) {
+            'pusher' => $this->composerDependency->install(
+                command: $this,
+                dependencies: ['pusher/pusher-php-server'],
+            ),
+            'ably' => $this->composerDependency->install(
+                command: $this,
+                dependencies: ['ably/ably-php'],
+            ),
+            'laravel-websockets' => $this->composerDependency->install(
+                command: $this,
+                dependencies: ['beyondcode/laravel-websockets', 'pusher/pusher-php-server:7.0.2'],
+            ),
+            'soketi' => $this->nodeDependency->install(
+                command: $this,
+                dependencies: ['@soketi/soketi'],
+            ),
+        };
+
+        if ($installationStatus !== Command::SUCCESS) {
+            return $installationStatus;
+        }
+
+        if ($driver === 'laravel-websockets') {
+            $this->call(command: 'vendor:publish', arguments: [
+                '--provider' => WebSocketsServiceProvider::class,
+                '--tag' => 'config',
+            ]);
+            $this->call(command: 'vendor:publish', arguments: [
+                '--provider' => WebSocketsServiceProvider::class,
+                '--tag' => 'migrations',
+            ]);
+        }
+
+        $this->info("Broadcast driver {$driver} has been installed! Don't forget to configure your application environment.");
+
+        return Command::SUCCESS;
+    }
+
+    /**
+     * Execute command to install frontend node module dependencies.
+     */
+    public function installFrontendDependencies(): int
+    {
+        $installationStatus = $this->nodeDependency->install(
+            command: $this,
+            dependencies: [
+                '@alpinejs/intersect@^3',
+                'alpinejs@^3',
+                'axios@^1',
+                'laravel-echo@^1',
+                'pusher-js@^7',
+            ],
+            dev: true
+        );
+
+        if ($installationStatus !== Command::SUCCESS) {
+            return $installationStatus;
+        }
+
+        $this->info('Frontend dependencies has been installed!');
+
+        return Command::SUCCESS;
     }
 }

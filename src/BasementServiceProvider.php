@@ -26,7 +26,7 @@ class BasementServiceProvider extends PackageServiceProvider
         $package
             ->name('basement')
             ->hasConfigFile()
-            ->hasMigration('2022_09_08_020534_create_private_messages_table')
+            ->hasMigration('create_private_messages_table')
             ->hasRoutes(['api', 'channels'])
             ->hasViews()
             ->hasCommand(InstallCommand::class);
