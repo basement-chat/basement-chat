@@ -31,6 +31,6 @@ class InstallComposerDependency
                 ...$dependencies,
             ], $dev === true ? ['--dev'] : []))
             ->setTimeout(null)
-            ->run(fn (string $type, string $data) => $command->getOutput()->write($data));
+            ->run(static fn (string $type, string $data) => $command->getOutput()->write($data));
     }
 }

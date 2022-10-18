@@ -6,7 +6,6 @@ namespace BasementChat\Basement\Console;
 
 use BasementChat\Basement\Support\InstallComposerDependency;
 use BasementChat\Basement\Support\InstallNodeDependency;
-use BeyondCode\LaravelWebSockets\WebSocketsServiceProvider;
 use Illuminate\Console\Command;
 
 class InstallCommand extends Command
@@ -73,6 +72,7 @@ class InstallCommand extends Command
      */
     public function handle(): int
     {
+        /** @var string $type */
         $type = $this->argument('type');
         $types = collect($this->types);
 
@@ -86,6 +86,7 @@ class InstallCommand extends Command
             'app' => $this->installApp(),
             'driver' => $this->installDriver(),
             'frontend_deps' => $this->installFrontendDependencies(),
+            default => Command::INVALID,
         };
     }
 
@@ -116,28 +117,21 @@ class InstallCommand extends Command
      */
     protected function installDriver(): int
     {
+        /** @var string $driver */
         $driver = $this->choice(
             question: 'Please choose the broadcast driver you want to use',
             choices: $this->drivers,
         );
 
         $installationStatus = match ($driver) {
-            'pusher' => $this->composerDependency->install(
-                command: $this,
-                dependencies: ['pusher/pusher-php-server'],
-            ),
-            'ably' => $this->composerDependency->install(
-                command: $this,
-                dependencies: ['ably/ably-php'],
-            ),
-            'laravel-websockets' => $this->composerDependency->install(
-                command: $this,
-                dependencies: ['beyondcode/laravel-websockets', 'pusher/pusher-php-server:7.0.2'],
-            ),
-            'soketi' => $this->nodeDependency->install(
-                command: $this,
-                dependencies: ['@soketi/soketi'],
-            ),
+            'pusher' => $this->composerDependency->install(command: $this, dependencies: ['pusher/pusher-php-server']),
+            'ably' => $this->composerDependency->install(command: $this, dependencies: ['ably/ably-php']),
+            'laravel-websockets' => $this->composerDependency->install(command: $this, dependencies: [
+                'beyondcode/laravel-websockets',
+                'pusher/pusher-php-server:7.0.2'
+            ]),
+            'soketi' => $this->nodeDependency->install(command: $this, dependencies: ['@soketi/soketi']),
+            default => Command::INVALID,
         };
 
         if ($installationStatus !== Command::SUCCESS) {
@@ -146,11 +140,11 @@ class InstallCommand extends Command
 
         if ($driver === 'laravel-websockets') {
             $this->call(command: 'vendor:publish', arguments: [
-                '--provider' => WebSocketsServiceProvider::class,
+                '--provider' => 'BeyondCode\LaravelWebSockets\WebSocketsServiceProvider',
                 '--tag' => 'config',
             ]);
             $this->call(command: 'vendor:publish', arguments: [
-                '--provider' => WebSocketsServiceProvider::class,
+                '--provider' => 'BeyondCode\LaravelWebSockets\WebSocketsServiceProvider',
                 '--tag' => 'migrations',
             ]);
         }
@@ -163,7 +157,7 @@ class InstallCommand extends Command
     /**
      * Execute command to install frontend node module dependencies.
      */
-    public function installFrontendDependencies(): int
+    protected function installFrontendDependencies(): int
     {
         $installationStatus = $this->nodeDependency->install(
             command: $this,

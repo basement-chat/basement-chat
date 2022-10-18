@@ -217,8 +217,7 @@ class Basement implements BasementContract
             || array_key_exists($driver, $connections) === false
         ) {
             throw new \TypeError(
-                'The given configuration broadcaster.default inside config/basement.php should be'
-                .  ' available as an array key inside basement.broadcaster.connections.',
+                'The given configuration broadcaster.default inside config/basement.php should be available as an array key inside basement.broadcaster.connections.',
             );
         }
 

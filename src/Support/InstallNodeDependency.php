@@ -24,6 +24,7 @@ class InstallNodeDependency
      */
     public function install(Command $command, array $dependencies, bool $dev = false): int
     {
+        /** @var string $packageManager */
         $packageManager = $command->choice(question: 'Which package manager do you want to use?', choices: [
             'npm',
             'yarn',
@@ -37,6 +38,6 @@ class InstallNodeDependency
                 ...$dependencies,
             ], $dev === true ? ['--save-dev'] : []))
             ->setTimeout(null)
-            ->run(fn (string $type, string $data) => $command->getOutput()->write($data));
+            ->run(static fn (string $type, string $data) => $command->getOutput()->write($data));
     }
 }
