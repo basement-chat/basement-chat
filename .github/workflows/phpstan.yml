@@ -3,8 +3,13 @@ name: PHPStan
 on:
   push:
     paths:
-      - '**.php'
-      - 'phpstan.neon.dist'
+      - config/**.php
+      - database/**.php
+      - routes/**.php
+      - src/**.php
+      - phpstan-baseline.neon
+      - phpstan-class-aliases.php
+      - phpstan.neon.dist
 
 jobs:
   phpstan:
@@ -16,11 +21,11 @@ jobs:
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
         with:
-          php-version: '8.1'
+          php-version: '8.0'
           coverage: none
 
       - name: Install composer dependencies
         uses: ramsey/composer-install@v1
 
       - name: Run PHPStan
-        run: ./vendor/bin/phpstan --error-format=github
+        run: composer analyse -- --error-format=github
