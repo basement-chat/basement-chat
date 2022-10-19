@@ -169,7 +169,7 @@ class Basement implements BasementContract
     /**
      * Get the avatar options from the basement configuration file.
      *
-     * @return array<string,string|int|bool>
+     * @return string
      */
     public static function getAvatarOptions(): array
     {
