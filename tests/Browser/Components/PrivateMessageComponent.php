@@ -34,9 +34,9 @@ class PrivateMessageComponent extends BaseComponent
         collect($messages)->each(static function (PrivateMessage $message) use ($browser): void {
             $selector = ".private-message__text--value[data-id=\"{$message->id}\"]";
             $browser
-                ->waitUntil(<<<JS
+                ->waitUntil(script: <<<JS
                     document.querySelector('{$selector}') !== null
-                JS)
+                JS, seconds: 10)
                 ->scrollIntoView($selector)
                 ->assertSee($message->value);
         });
