@@ -5,7 +5,7 @@ updates:
     directory: /
     schedule:
       interval: daily
-      timezone: "18:10 UTC"
+      timezone: "04:12 UTC"
     labels:
       - dependencies
     ignore:
