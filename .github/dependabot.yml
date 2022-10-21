@@ -5,7 +5,7 @@ updates:
     directory: /
     schedule:
       interval: daily
-      time: '11:13'
+      time: '11:27'
       timezone: "Asia/Jakarta"
     labels:
       - dependencies
