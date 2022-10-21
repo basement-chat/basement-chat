@@ -2,7 +2,13 @@ name: Release Package
 
 on:
   push:
-    branches: [main]
+    branches:
+      - '*.x'
+      - main
+      - next
+      - next-major
+      - beta
+      - alpha
 
 jobs:
   release:
