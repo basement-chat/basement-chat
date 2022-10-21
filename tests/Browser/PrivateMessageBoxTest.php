@@ -110,7 +110,7 @@ class PrivateMessageBoxTest extends BrowserTestCase
                     ->assertSee('Hello World!')));
 
             $browserReceiver->within(selector: new PrivateMessageComponent(), callback: static fn (Browser $message) => $message
-                ->waitFor(selector: '.private-message__text--value', seconds: 10)
+                ->waitFor(selector: '.private-message__text--value', seconds: 30)
                 ->assertSee('Hello World!'));
         });
     }
