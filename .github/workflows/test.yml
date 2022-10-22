@@ -27,7 +27,6 @@ jobs:
     strategy:
       fail-fast: true
       matrix:
-        os: [ubuntu-latest, windows-latest]
         php: [8.0, 8.1]
         laravel: [9.*]
         stability: [prefer-lowest, prefer-stable]
@@ -36,7 +35,7 @@ jobs:
 
     runs-on: ubuntu-latest
 
-    name: Tests on PHP ${{ matrix.php }} - Laravel ${{ matrix.laravel }} - Stability ${{ matrix.stability }} - OS ${{ matrix.os }}
+    name: Tests on PHP ${{ matrix.php }}, Laravel ${{ matrix.laravel }}, Stability ${{ matrix.stability }}
 
     steps:
       - name: Checkout code
