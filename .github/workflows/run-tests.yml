@@ -63,6 +63,9 @@ jobs:
           key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.json') }}
           restore-keys: ${{ runner.os }}-composer-
 
+      - name: Install dependencies
+        run: composer install --prefer-dist --no-interaction
+
       - name: List installed dependencies
         run: composer show -D
 
