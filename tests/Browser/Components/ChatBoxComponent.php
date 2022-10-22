@@ -33,7 +33,7 @@ class ChatBoxComponent extends BaseComponent
         $browser
             ->waitFor(
                 selector: ".chat-box__button--open[data-title=\"There are $count unread messages\"]",
-                seconds: 10,
+                seconds: 30,
             )
             ->assertSee($count);
     }

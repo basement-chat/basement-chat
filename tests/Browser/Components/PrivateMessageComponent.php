@@ -36,7 +36,7 @@ class PrivateMessageComponent extends BaseComponent
             $browser
                 ->waitUntil(script: <<<JS
                     document.querySelector('{$selector}') !== null
-                JS, seconds: 10)
+                JS, seconds: 30)
                 ->scrollIntoView($selector)
                 ->assertSee($message->value);
         });

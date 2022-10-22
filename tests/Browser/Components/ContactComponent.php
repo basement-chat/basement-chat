@@ -50,7 +50,7 @@ class ContactComponent extends BaseComponent
             $browser
                 ->waitFor(
                     selector: "{$selector} > div[data-title=\"{$contact->name} is offline\"]",
-                    seconds: 10,
+                    seconds: 30,
                 )
                 ->with(selector: $selector, callback: static fn (Browser $container) => $container
                     ->assertAttributeContains(
@@ -72,7 +72,7 @@ class ContactComponent extends BaseComponent
             $browser
                 ->waitFor(
                     selector: "{$selector} > div[data-title=\"{$contact->name} is online\"]",
-                    seconds: 10,
+                    seconds: 30,
                 )
                 ->with(selector: $selector, callback: static fn (Browser $container) => $container
                     ->assertAttributeContains(
@@ -110,7 +110,7 @@ class ContactComponent extends BaseComponent
     {
         $browser
             ->click(".contact__container--user-box[data-id=\"{$contact->id}\"]")
-            ->waitUntilMissing(selector: $this->selector(), seconds: 10);
+            ->waitUntilMissing(selector: $this->selector(), seconds: 30);
     }
 
     /**
@@ -118,6 +118,6 @@ class ContactComponent extends BaseComponent
      */
     public function waitUntilContactsVisible(Browser $browser): void
     {
-        $browser->waitUntilMissingText(text: 'No contacts found', seconds: 10);
+        $browser->waitUntilMissingText(text: 'No contacts found', seconds: 30);
     }
 }
