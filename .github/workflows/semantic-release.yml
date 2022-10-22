@@ -9,6 +9,7 @@ on:
       - next-major
       - beta
       - alpha
+      - dev
 
 jobs:
   release:
@@ -22,9 +23,10 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: latest
+          cache: npm
 
       - name: Install dependencies
-        run: npm i
+        run: npm ci
 
       - name: Release
         run: npx semantic-release

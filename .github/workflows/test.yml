@@ -8,7 +8,6 @@ on:
 
 jobs:
   test:
-    runs-on: ${{ matrix.os }}
     env:
       APP_URL: '127.0.0.1:8001'
       APP_ENV: testing
@@ -23,18 +22,20 @@ jobs:
       PUSHER_APP_KEY: ${{ secrets.PUSHER_APP_KEY }}
       PUSHER_APP_SECRET: ${{ secrets.PUSHER_APP_SECRET }}
       PUSHER_APP_CLUSTER: ${{ secrets.PUSHER_APP_CLUSTER }}
+
     strategy:
       fail-fast: true
       matrix:
-        os: [ubuntu-latest]
-        php: [8.0]
+        os: [ubuntu-latest, windows-latest]
+        php: [8.0, 8.1]
         laravel: [9.*]
-        stability: [prefer-stable]
+        stability: [prefer-lowest, prefer-stable]
         include:
           - laravel: 9.*
-            testbench: 7.*
 
-    name: P${{ matrix.php }} - L${{ matrix.laravel }} - ${{ matrix.stability }} - ${{ matrix.os }}
+    runs-on: ubuntu-latest
+
+    name: Tests on PHP ${{ matrix.php }} - Laravel ${{ matrix.laravel }} - Stability ${{ matrix.stability }} - OS ${{ matrix.os }}
 
     steps:
       - name: Checkout code
@@ -52,19 +53,13 @@ jobs:
           echo "::add-matcher::${{ runner.tool_cache }}/php.json"
           echo "::add-matcher::${{ runner.tool_cache }}/phpunit.json"
 
-      - name: Get composer cache directory
-        id: composer-cache
-        run: echo "::set-output name=dir::$(composer config cache-files-dir)"
-
       - name: Cache dependencies
-        uses: actions/cache@v2
-        with:
-          path: ${{ steps.composer-cache.outputs.dir }}
-          key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.json') }}
-          restore-keys: ${{ runner.os }}-composer-
+        uses: ./.github/actions/composer/cache
 
       - name: Install dependencies
-        run: composer install --prefer-dist --no-interaction
+        run: |
+          composer require "laravel/framework:${{ matrix.laravel }}" --no-interaction --no-update
+          composer update --${{ matrix.stability }} --prefer-dist --no-interaction
 
       - name: List installed dependencies
         run: composer show -D

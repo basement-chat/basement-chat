@@ -1,25 +1,21 @@
-name: Run PHP Stan
+name: Run Laravel Pint
 
 on:
   push:
     paths:
-      - config/**.php
-      - database/**.php
-      - routes/**.php
-      - src/**.php
-      - phpstan-baseline.neon
-      - phpstan-class-aliases.php
-      - phpstan.neon.dist
+      - '**.php'
 
 jobs:
-  phpstan:
+  lint:
     runs-on: ubuntu-latest
 
-    name: PHPStan
+    name: Laravel Pint
 
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
+        with:
+          ref: ${{ github.head_ref }}
 
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
@@ -32,8 +28,10 @@ jobs:
       - name: Install dependencies
         run: composer install --prefer-dist --no-interaction
 
-      - name: List installed dependencies
-        run: composer show -D
+      - name: Run Laravel Pint
+        run: composer format
 
-      - name: Run PHPStan
-        run: composer analyse -- --error-format=github
+      - name: Commit changes
+        uses: stefanzweifel/git-auto-commit-action@v4
+        with:
+          commit_message: 'style: fix styles using pint with psr-12 rules'

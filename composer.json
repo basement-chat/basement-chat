@@ -1,11 +1,12 @@
 {
   "name": "basement-chat/basement",
-  "description": "Easily add a real-time chat widget to your existing Laravel App!",
+  "description": "Real time chat widget package with flexible broadcast driver support. Built for Laravel using Alpine.js, TypeScript, and Tailwind CSS.",
   "keywords": [
     "laravel",
     "php",
     "websocket",
     "chat",
+    "realtime",
     "basement"
   ],
   "homepage": "https://github.com/yusuftaufiq/basement",
@@ -13,8 +14,7 @@
   "authors": [
     {
       "name": "Yusuf T.",
-      "email": "dev.yusuftaufiq@gmail.com",
-      "role": "Developer"
+      "email": "dev.yusuftaufiq@gmail.com"
     }
   ],
   "require": {
@@ -52,7 +52,7 @@
     }
   },
   "scripts": {
-    "analyse": "vendor/bin/phpstan analyse --memory-limit=1G",
+    "analyse": "vendor/bin/phpstan analyse --memory-limit=256M",
     "canvas": "vendor/bin/canvas",
     "dumper:start": [
       "Composer\\Config::disableProcessTimeout",
@@ -64,10 +64,10 @@
     ],
     "format": "vendor/bin/pint",
     "insights": "vendor/bin/phpinsights analyse config database routes src",
-    "test": "vendor/bin/testbench package:test",
-    "test-coverage": "vendor/bin/testbench package:test --coverage"
+    "test": "vendor/bin/testbench package:test"
   },
   "config": {
+    "optimize-autoloader": true,
     "sort-packages": true,
     "allow-plugins": {
       "dealerdirect/phpcodesniffer-composer-installer": true

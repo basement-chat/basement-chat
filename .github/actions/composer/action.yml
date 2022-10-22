@@ -1,0 +1,18 @@
+name: Cache
+description: Cache composer dependencies
+
+runs:
+  using: composite
+
+  steps:
+    - name: Get composer cache directory
+      shell: bash
+      id: composer-cache
+      run: echo "::set-output name=dir::$(composer config cache-files-dir)"
+
+    - name: Cache dependencies
+      uses: actions/cache@v2
+      with:
+        path: ${{ steps.composer-cache.outputs.dir }}
+        key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.json') }}
+        restore-keys: ${{ runner.os }}-composer-

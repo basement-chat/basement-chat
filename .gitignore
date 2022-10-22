@@ -2,9 +2,8 @@
 .phpunit.result.cache
 build
 composer.lock
-coverage
+coverage.xml
 docs
-package-lock.json
 phpunit.xml
 phpstan.neon
 public
