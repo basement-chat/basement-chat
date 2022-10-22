@@ -1,6 +1,7 @@
 name: Run PHP Stan
 
 on:
+  workflow_dispatch:
   push:
     paths:
       - config/**.php

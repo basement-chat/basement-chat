@@ -1,6 +1,7 @@
 name: Run Laravel Pint
 
 on:
+  workflow_dispatch:
   push:
     paths:
       - '**.php'
