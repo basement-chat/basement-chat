@@ -25,6 +25,7 @@ jobs:
       PUSHER_APP_CLUSTER: ${{ secrets.PUSHER_APP_CLUSTER }}
 
     strategy:
+      max-parallel: 1
       fail-fast: true
       matrix:
         php: [8.0, 8.1]
