@@ -35,7 +35,7 @@ jobs:
 
     runs-on: ubuntu-latest
 
-    name: Tests on PHP ${{ matrix.php }}, Laravel ${{ matrix.laravel }}, Stability ${{ matrix.stability }}
+    name: PHP ${{ matrix.php }}, Laravel ${{ matrix.laravel }}, Stability ${{ matrix.stability }}
 
     steps:
       - name: Checkout code
@@ -78,3 +78,17 @@ jobs:
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
           fail_ci_if_error: true
+
+      - name: Upload Screenshots
+        if: failure()
+        uses: actions/upload-artifact@v2
+        with:
+          name: screenshots
+          path: tests/Browser/screenshots
+
+      - name: Upload Console Logs
+        if: failure()
+        uses: actions/upload-artifact@v2
+        with:
+          name: console
+          path: tests/Browser/console
