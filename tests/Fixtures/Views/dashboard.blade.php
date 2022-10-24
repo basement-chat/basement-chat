@@ -15,7 +15,7 @@
 <body>
   <x-basement::chat-box />
 
-  {{ dump(auth()->user()) }}
+  {{ auth()->user()->toJson() }}
 
   <!-- Scripts -->
   <script src="{{ asset('vendor/basement/basement.bundle.min.js') }}"></script>
