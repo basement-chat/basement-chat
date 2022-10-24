@@ -25,7 +25,6 @@ jobs:
       PUSHER_APP_CLUSTER: ${{ secrets.PUSHER_APP_CLUSTER }}
 
     strategy:
-      max-parallel: 1
       fail-fast: true
       matrix:
         php: [8.0, 8.1]
@@ -80,28 +79,28 @@ jobs:
           token: ${{ secrets.CODECOV_TOKEN }}
           fail_ci_if_error: true
 
-      - name: Upload Screenshots
+      - name: Upload browser screenshots
         if: failure()
         uses: actions/upload-artifact@v2
         with:
           name: screenshots
           path: tests/Browser/screenshots
 
-      - name: Upload Console Logs
+      - name: Upload browser console logs
         if: failure()
         uses: actions/upload-artifact@v2
         with:
           name: console
           path: tests/Browser/console
 
-      - name: Upload Testbench Core Logs
+      - name: Upload testbench core logs
         if: failure()
         uses: actions/upload-artifact@v2
         with:
           name: testbench-core
           path: vendor/orchestra/testbench-core/laravel/storage/logs/
 
-      - name: Upload Testbench Dusk Logs
+      - name: Upload testbench dusk logs
         if: failure()
         uses: actions/upload-artifact@v2
         with:
