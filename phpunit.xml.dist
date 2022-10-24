@@ -1,48 +1,60 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <phpunit
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:noNamespaceSchemaLocation="vendor/phpunit/phpunit/phpunit.xsd"
-    backupGlobals="false"
-    backupStaticAttributes="false"
-    bootstrap="vendor/autoload.php"
-    colors="true"
-    convertErrorsToExceptions="true"
-    convertNoticesToExceptions="true"
-    convertWarningsToExceptions="true"
-    processIsolation="false"
-    stopOnFailure="false"
-    executionOrder="random"
-    failOnWarning="true"
-    failOnRisky="true"
-    failOnEmptyTestSuite="true"
-    beStrictAboutOutputDuringTests="true"
-    verbose="true"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:noNamespaceSchemaLocation="vendor/phpunit/phpunit/phpunit.xsd"
+  backupGlobals="false"
+  backupStaticAttributes="false"
+  bootstrap="vendor/autoload.php"
+  colors="true"
+  convertErrorsToExceptions="true"
+  convertNoticesToExceptions="true"
+  convertWarningsToExceptions="true"
+  processIsolation="false"
+  stopOnFailure="false"
+  executionOrder="random"
+  failOnWarning="true"
+  failOnRisky="true"
+  failOnEmptyTestSuite="true"
+  beStrictAboutOutputDuringTests="true"
+  verbose="true"
 >
-    <testsuites>
-        <testsuite name="Feature">
-            <directory>tests/Feature</directory>
-        </testsuite>
-        <testsuite name="Browser">
-            <directory>tests/Browser</directory>
-        </testsuite>
-        <testsuite name="Unit">
-            <directory>tests/Unit</directory>
-        </testsuite>
-    </testsuites>
-    <coverage>
-        <include>
-            <directory suffix=".php">./config</directory>
-            <directory suffix=".php">./resources</directory>
-            <directory suffix=".php">./routes</directory>
-            <directory suffix=".php">./src</directory>
-        </include>
-        <report>
-            <html outputDirectory="build/coverage"/>
-            <text outputFile="build/coverage.txt"/>
-            <clover outputFile="build/logs/clover.xml"/>
-        </report>
-    </coverage>
-    <logging>
-        <junit outputFile="build/report.junit.xml"/>
-    </logging>
+  <testsuites>
+    <testsuite name="Feature">
+      <directory>tests/Feature</directory>
+    </testsuite>
+    <testsuite name="Browser">
+      <directory>tests/Browser</directory>
+    </testsuite>
+    <testsuite name="Unit">
+      <directory>tests/Unit</directory>
+    </testsuite>
+  </testsuites>
+  <coverage>
+    <include>
+      <directory suffix=".php">./config</directory>
+      <directory suffix=".php">./resources</directory>
+      <directory suffix=".php">./routes</directory>
+      <directory suffix=".php">./src</directory>
+    </include>
+    <report>
+      <html outputDirectory="build/coverage" />
+      <text outputFile="build/coverage.txt" />
+      <clover outputFile="build/logs/clover.xml" />
+    </report>
+  </coverage>
+  <logging>
+    <junit outputFile="build/report.junit.xml" />
+  </logging>
+  <php>
+    <env name="APP_URL" value="127.0.0.1:8001" />
+    <env name="APP_ENV" value="testing" />
+    <env name="APP_DEBUG" value="true" />
+    <env name="APP_KEY" value="base64:IDrlmrVwu65iBhbUpPq3fsv7kybcnfUFZmY1wk+mamE=" />
+    <env name="DB_CONNECTION" value="sqlite" />
+    <env name="DB_DATABASE" value=":memory:"/>
+    <env name="BROADCAST_DRIVER" value="pusher" />
+    <env name="BASEMENT_BROADCAST_DRIVER" value="pusher" />
+    <env name="SESSION_DRIVER" value="cookie" />
+    <env name="SANCTUM_STATEFUL_DOMAINS" value="127.0.0.1:8001" />
+  </php>
 </phpunit>
