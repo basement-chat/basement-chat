@@ -6,6 +6,8 @@ use BasementChat\Basement\Factories\SymfonyProcessFactory;
 use BasementChat\Basement\Tests\Fixtures\Factories\FakeSymfonyProcessFactory;
 use BasementChat\Basement\Tests\TestCase;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Str;
+use Symfony\Component\Finder\SplFileInfo;
 
 class InstallCommandTest extends TestCase
 {
@@ -27,19 +29,19 @@ class InstallCommandTest extends TestCase
         $this
             ->artisan('basement:install app')
             ->assertSuccessful()
-            ->expectsOutputToContain('Publishing [basement-config] assets.')
-            ->expectsOutputToContain('Publishing [basement-migrations] assets.')
-            ->expectsOutputToContain('Publishing [basement-assets] assets.')
             ->expectsConfirmation('Would you like to run the migrations now?')
             ->expectsConfirmation(
                 'Do you want to install the broadcast driver? You can also do this later by calling <options=bold>basement:install --tag=driver</>.'
             );
 
         $this->assertFileExists(config_path('basement.php'));
-        $this->assertCount(expectedCount: 1, haystack: File::files(database_path('migrations')));
         $this->assertFileExists(public_path('vendor/basement/basement.bundle.min.css'));
         $this->assertFileExists(public_path('vendor/basement/basement.bundle.min.js'));
         $this->assertFileExists(public_path('vendor/basement/basement.bundle.min.js.map'));
+
+        collect(File::files(database_path('migrations')))->some(static fn (SplFileInfo $file): bool => (
+            Str::contains(haystack: $file->getFilename(), needles: 'create_private_messages_table.php')
+        ));
 
         File::deleteDirectory(public_path('vendor/basement'));
         File::cleanDirectory(database_path('migrations'));

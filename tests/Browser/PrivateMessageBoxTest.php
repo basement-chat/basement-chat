@@ -106,15 +106,12 @@ class PrivateMessageBoxTest extends BrowserTestCase
                     ->openPrivateChatWith($this->receiver))
                 ->within(selector: new PrivateMessageComponent(), callback: static fn (Browser $message) => $message
                     ->sendMessage('Hello World!')
-                    ->waitFor(selector: '.private-message__text--value', seconds: 30)
+                    ->waitFor(selector: '.private-message__text--value', seconds: 10)
                     ->assertSee('Hello World!')));
 
             $browserReceiver->within(selector: new PrivateMessageComponent(), callback: static fn (Browser $message) => $message
-                ->waitFor(selector: '.private-message__text--value', seconds: 30)
+                ->waitFor(selector: '.private-message__text--value', seconds: 10)
                 ->assertSee('Hello World!'));
-
-            $browserReceiver->storeConsoleLog('receiver browser private message test');
-            $browserSender->storeConsoleLog('sender browser private message test');
         });
     }
 

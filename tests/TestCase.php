@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace BasementChat\Basement\Tests;
 
-use Illuminate\Support\Facades\Config;
 use Orchestra\Testbench\TestCase as OrchestraTestCase;
 
 class TestCase extends OrchestraTestCase
@@ -27,7 +26,6 @@ class TestCase extends OrchestraTestCase
     public function getEnvironmentSetUp($app): void
     {
         BasementTestCaseEnvironment::setConfigurations();
-        Config::set(key: 'database.default', value: 'testing');
     }
 
     /**
