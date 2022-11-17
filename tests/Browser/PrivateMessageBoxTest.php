@@ -62,6 +62,8 @@ class PrivateMessageBoxTest extends BrowserTestCase
         ));
 
         $this->browse(function (Browser $browser): void {
+            $browser->resize(width: 800, height: 600);
+
             $last5Messages = $this->privateMessages->reverse()->slice(0, 5)->values();
             $first5Messages = $this->privateMessages->slice(0, 5)->values();
 
@@ -87,6 +89,9 @@ class PrivateMessageBoxTest extends BrowserTestCase
     public function itShouldBeAbleToSendAPrivateMessageInRealtime(): void
     {
         $this->browse(function (Browser $browserReceiver, Browser $browserSender): void {
+            $browserReceiver->resize(width: 800, height: 600);
+            $browserSender->resize(width: 800, height: 600);
+
             $browserReceiver->loginAs($this->receiver, guard: 'web');
             $browserReceiver->visit('/dashboard');
 
@@ -123,6 +128,8 @@ class PrivateMessageBoxTest extends BrowserTestCase
         $this->addPrivateMessages(receiver: $this->receiver, sender: $this->sender, count: 10);
 
         $this->browse(function (Browser $browser): void {
+            $browser->resize(width: 800, height: 600);
+
             $browser->loginAs($this->receiver, guard: 'web');
             $browser->visit('/dashboard');
 

@@ -53,6 +53,9 @@ class ContactBoxTest extends BrowserTestCase
         $this->addPrivateMessages(receiver: $this->receiver, sender: $this->sender2);
 
         $this->browse(function (Browser $browserReceiver, Browser $browserSender): void {
+            $browserReceiver->resize(width: 800, height: 600);
+            $browserSender->resize(width: 800, height: 600);
+
             $browserReceiver->loginAs($this->receiver, guard: 'web');
             $browserReceiver->visit('/dashboard');
 
@@ -75,6 +78,7 @@ class ContactBoxTest extends BrowserTestCase
     public function itShouldBeAbleToFilterContactsByKeyword(): void
     {
         $this->browse(function (Browser $browser): void {
+            $browser->resize(width: 800, height: 600);
             $browser->loginAs($this->receiver, guard: 'web');
             $browser->visit('/dashboard');
 
