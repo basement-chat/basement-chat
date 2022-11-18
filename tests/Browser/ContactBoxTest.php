@@ -69,6 +69,9 @@ class ContactBoxTest extends BrowserTestCase
                     ->assertSeeContacts($this->receiver, $this->sender1, $this->sender2)
                     ->assertContactsIsOnline($this->receiver, $this->sender1)
                     ->assertContactsIsOffline($this->sender2)));
+
+            $browserSender->screenshot('itShouldBeAbleToSeeAllContactsWithTheirOnlineStatus $browserSender');
+            $browserReceiver->screenshot('itShouldBeAbleToSeeAllContactsWithTheirOnlineStatus $browserReceiver');
         });
     }
 
@@ -90,6 +93,8 @@ class ContactBoxTest extends BrowserTestCase
                     ->assertSeeContacts($this->receiver)
                     ->filterContactsByKeyword(' ')
                     ->assertSeeContacts($this->receiver, $this->sender1, $this->sender2)));
+
+            $browser->screenshot('itShouldBeAbleToFilterContactsByKeyword $browser');
         });
     }
 }
