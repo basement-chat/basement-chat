@@ -81,7 +81,7 @@ class PrivateMessageBoxTest extends BrowserTestCase
                     ->clickLoadMoreMessagesButton()
                     ->assertSeeMessages(...$first5Messages)));
 
-            $browser->screenshot('itShouldBeAbleToSeeAllPrivateMessages $browser');
+            $browser->screenshot('itShouldBeAbleToSeeAllPrivateMessages $browser' . time());
         });
     }
 
@@ -120,8 +120,8 @@ class PrivateMessageBoxTest extends BrowserTestCase
                 ->waitFor(selector: '.private-message__text--value', seconds: 10)
                 ->assertSee('Hello World!'));
 
-            $browserSender->screenshot('itShouldBeAbleToSendAPrivateMessageInRealtime $browserSender');
-            $browserReceiver->screenshot('itShouldBeAbleToSendAPrivateMessageInRealtime $browserReceiver');
+            $browserSender->screenshot('itShouldBeAbleToSendAPrivateMessageInRealtime $browserSender' . time());
+            $browserReceiver->screenshot('itShouldBeAbleToSendAPrivateMessageInRealtime $browserReceiver' . time());
         });
     }
 
@@ -145,7 +145,7 @@ class PrivateMessageBoxTest extends BrowserTestCase
                     ->waitUntilContactsVisible()
                     ->assertSeeUnreadMessagesCount($this->sender, 10)));
 
-            $browser->screenshot('itShouldBeAbleToShowTheNumberOfUnreadMessages $browser');
+            $browser->screenshot('itShouldBeAbleToShowTheNumberOfUnreadMessages $browser' . time());
         });
     }
 }
