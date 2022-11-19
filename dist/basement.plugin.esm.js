@@ -4875,12 +4875,10 @@ tippy.setDefaultProps({
 });
 
 var NotificationStatus;
-
 (function (NotificationStatus) {
   NotificationStatus["Allowed"] = "ALLOWED";
   NotificationStatus["Muted"] = "MUTED";
 })(NotificationStatus || (NotificationStatus = {}));
-
 var NotificationStatus$1 = NotificationStatus;
 
 var chatBoxComponent = (function () {
@@ -4892,13 +4890,10 @@ var chatBoxComponent = (function () {
     hasNotificationPermission: Push.Permission.has(),
     online: true,
     totalUnreadMessages: 0,
-
     /**
      * Hook during the initialization phase of the current Alpine component.
-     */
-    init: function init() {
+     */init: function init() {
       var _this = this;
-
       void window.axios.get('/sanctum/csrf-cookie');
       window.addEventListener('online', function () {
         _this.online = true;
@@ -4910,13 +4905,10 @@ var chatBoxComponent = (function () {
       this.$el.addEventListener('send-push-notification', this.sendPushNotification.bind(this));
       this.registerTippy();
     },
-
     /**
      * Request push notification permission to the browser.
-     */
-    requestNotificationPermission: function requestNotificationPermission() {
+     */requestNotificationPermission: function requestNotificationPermission() {
       var _this2 = this;
-
       Push.Permission.request(function () {
         _this2.isNotificationAllowed = true;
         _this2.hasNotificationPermission = true;
@@ -4924,15 +4916,12 @@ var chatBoxComponent = (function () {
         _this2.hasNotificationPermission = false;
       });
     },
-
     /**
      * Send push notification permission to the browser if allowed.
-     */
-    sendPushNotification: function sendPushNotification(event) {
+     */sendPushNotification: function sendPushNotification(event) {
       if (this.isNotificationAllowed === false) {
         return;
       }
-
       void Push.create(event.detail.title, {
         body: event.detail.body,
         icon: event.detail.icon,
@@ -4943,29 +4932,24 @@ var chatBoxComponent = (function () {
         }
       });
     },
-
     /**
      * Register tippy.js instance creation for child elements.
-     */
-    registerTippy: function registerTippy() {
+     */registerTippy: function registerTippy() {
       delegate(this.$el, {
         animation: 'fade',
         arrow: true,
         target: '[data-title]',
         onShow: function onShow(instance) {
           var title = instance.reference.getAttribute('data-title');
-
           if (title !== null) {
             instance.setContent(title);
           }
         }
       });
     },
-
     /**
      * Watch when the notification status changes.
-     */
-    watchNotificationStatus: function watchNotificationStatus(newValue) {
+     */watchNotificationStatus: function watchNotificationStatus(newValue) {
       var status = newValue === true ? NotificationStatus$1.Allowed : NotificationStatus$1.Muted;
       window.localStorage.setItem('basement.notification', status);
     }
@@ -4974,17 +4958,14 @@ var chatBoxComponent = (function () {
 
 function ownKeys(object, enumerableOnly) {
   var keys = Object.keys(object);
-
   if (Object.getOwnPropertySymbols) {
     var symbols = Object.getOwnPropertySymbols(object);
     enumerableOnly && (symbols = symbols.filter(function (sym) {
       return Object.getOwnPropertyDescriptor(object, sym).enumerable;
     })), keys.push.apply(keys, symbols);
   }
-
   return keys;
 }
-
 function _objectSpread2(target) {
   for (var i = 1; i < arguments.length; i++) {
     var source = null != arguments[i] ? arguments[i] : {};
@@ -4994,25 +4975,19 @@ function _objectSpread2(target) {
       Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key));
     });
   }
-
   return target;
 }
-
 function _regeneratorRuntime() {
-  /*! regenerator-runtime -- Copyright (c) 2014-present, Facebook, Inc. -- license (MIT): https://github.com/facebook/regenerator/blob/main/LICENSE */
-
   _regeneratorRuntime = function () {
     return exports;
   };
-
   var exports = {},
-      Op = Object.prototype,
-      hasOwn = Op.hasOwnProperty,
-      $Symbol = "function" == typeof Symbol ? Symbol : {},
-      iteratorSymbol = $Symbol.iterator || "@@iterator",
-      asyncIteratorSymbol = $Symbol.asyncIterator || "@@asyncIterator",
-      toStringTagSymbol = $Symbol.toStringTag || "@@toStringTag";
-
+    Op = Object.prototype,
+    hasOwn = Op.hasOwnProperty,
+    $Symbol = "function" == typeof Symbol ? Symbol : {},
+    iteratorSymbol = $Symbol.iterator || "@@iterator",
+    asyncIteratorSymbol = $Symbol.asyncIterator || "@@asyncIterator",
+    toStringTagSymbol = $Symbol.toStringTag || "@@toStringTag";
   function define(obj, key, value) {
     return Object.defineProperty(obj, key, {
       value: value,
@@ -5021,7 +4996,6 @@ function _regeneratorRuntime() {
       writable: !0
     }), obj[key];
   }
-
   try {
     define({}, "");
   } catch (err) {
@@ -5029,40 +5003,33 @@ function _regeneratorRuntime() {
       return obj[key] = value;
     };
   }
-
   function wrap(innerFn, outerFn, self, tryLocsList) {
     var protoGenerator = outerFn && outerFn.prototype instanceof Generator ? outerFn : Generator,
-        generator = Object.create(protoGenerator.prototype),
-        context = new Context(tryLocsList || []);
+      generator = Object.create(protoGenerator.prototype),
+      context = new Context(tryLocsList || []);
     return generator._invoke = function (innerFn, self, context) {
       var state = "suspendedStart";
       return function (method, arg) {
         if ("executing" === state) throw new Error("Generator is already running");
-
         if ("completed" === state) {
           if ("throw" === method) throw arg;
           return doneResult();
         }
-
         for (context.method = method, context.arg = arg;;) {
           var delegate = context.delegate;
-
           if (delegate) {
             var delegateResult = maybeInvokeDelegate(delegate, context);
-
             if (delegateResult) {
               if (delegateResult === ContinueSentinel) continue;
               return delegateResult;
             }
           }
-
           if ("next" === context.method) context.sent = context._sent = context.arg;else if ("throw" === context.method) {
             if ("suspendedStart" === state) throw state = "completed", context.arg;
             context.dispatchException(context.arg);
           } else "return" === context.method && context.abrupt("return", context.arg);
           state = "executing";
           var record = tryCatch(innerFn, self, context);
-
           if ("normal" === record.type) {
             if (state = context.done ? "completed" : "suspendedYield", record.arg === ContinueSentinel) continue;
             return {
@@ -5070,13 +5037,11 @@ function _regeneratorRuntime() {
               done: context.done
             };
           }
-
           "throw" === record.type && (state = "completed", context.method = "throw", context.arg = record.arg);
         }
       };
     }(innerFn, self, context), generator;
   }
-
   function tryCatch(fn, obj, arg) {
     try {
       return {
@@ -5090,25 +5055,19 @@ function _regeneratorRuntime() {
       };
     }
   }
-
   exports.wrap = wrap;
   var ContinueSentinel = {};
-
   function Generator() {}
-
   function GeneratorFunction() {}
-
   function GeneratorFunctionPrototype() {}
-
   var IteratorPrototype = {};
   define(IteratorPrototype, iteratorSymbol, function () {
     return this;
   });
   var getProto = Object.getPrototypeOf,
-      NativeIteratorPrototype = getProto && getProto(getProto(values([])));
+    NativeIteratorPrototype = getProto && getProto(getProto(values([])));
   NativeIteratorPrototype && NativeIteratorPrototype !== Op && hasOwn.call(NativeIteratorPrototype, iteratorSymbol) && (IteratorPrototype = NativeIteratorPrototype);
   var Gp = GeneratorFunctionPrototype.prototype = Generator.prototype = Object.create(IteratorPrototype);
-
   function defineIteratorMethods(prototype) {
     ["next", "throw", "return"].forEach(function (method) {
       define(prototype, method, function (arg) {
@@ -5116,14 +5075,12 @@ function _regeneratorRuntime() {
       });
     });
   }
-
   function AsyncIterator(generator, PromiseImpl) {
     function invoke(method, arg, resolve, reject) {
       var record = tryCatch(generator[method], generator, arg);
-
       if ("throw" !== record.type) {
         var result = record.arg,
-            value = result.value;
+          value = result.value;
         return value && "object" == typeof value && hasOwn.call(value, "__await") ? PromiseImpl.resolve(value.__await).then(function (value) {
           invoke("next", value, resolve, reject);
         }, function (err) {
@@ -5134,89 +5091,71 @@ function _regeneratorRuntime() {
           return invoke("throw", error, resolve, reject);
         });
       }
-
       reject(record.arg);
     }
-
     var previousPromise;
-
     this._invoke = function (method, arg) {
       function callInvokeWithMethodAndArg() {
         return new PromiseImpl(function (resolve, reject) {
           invoke(method, arg, resolve, reject);
         });
       }
-
       return previousPromise = previousPromise ? previousPromise.then(callInvokeWithMethodAndArg, callInvokeWithMethodAndArg) : callInvokeWithMethodAndArg();
     };
   }
-
   function maybeInvokeDelegate(delegate, context) {
     var method = delegate.iterator[context.method];
-
     if (undefined === method) {
       if (context.delegate = null, "throw" === context.method) {
         if (delegate.iterator.return && (context.method = "return", context.arg = undefined, maybeInvokeDelegate(delegate, context), "throw" === context.method)) return ContinueSentinel;
         context.method = "throw", context.arg = new TypeError("The iterator does not provide a 'throw' method");
       }
-
       return ContinueSentinel;
     }
-
     var record = tryCatch(method, delegate.iterator, context.arg);
     if ("throw" === record.type) return context.method = "throw", context.arg = record.arg, context.delegate = null, ContinueSentinel;
     var info = record.arg;
     return info ? info.done ? (context[delegate.resultName] = info.value, context.next = delegate.nextLoc, "return" !== context.method && (context.method = "next", context.arg = undefined), context.delegate = null, ContinueSentinel) : info : (context.method = "throw", context.arg = new TypeError("iterator result is not an object"), context.delegate = null, ContinueSentinel);
   }
-
   function pushTryEntry(locs) {
     var entry = {
       tryLoc: locs[0]
     };
     1 in locs && (entry.catchLoc = locs[1]), 2 in locs && (entry.finallyLoc = locs[2], entry.afterLoc = locs[3]), this.tryEntries.push(entry);
   }
-
   function resetTryEntry(entry) {
     var record = entry.completion || {};
     record.type = "normal", delete record.arg, entry.completion = record;
   }
-
   function Context(tryLocsList) {
     this.tryEntries = [{
       tryLoc: "root"
     }], tryLocsList.forEach(pushTryEntry, this), this.reset(!0);
   }
-
   function values(iterable) {
     if (iterable) {
       var iteratorMethod = iterable[iteratorSymbol];
       if (iteratorMethod) return iteratorMethod.call(iterable);
       if ("function" == typeof iterable.next) return iterable;
-
       if (!isNaN(iterable.length)) {
         var i = -1,
-            next = function next() {
-          for (; ++i < iterable.length;) if (hasOwn.call(iterable, i)) return next.value = iterable[i], next.done = !1, next;
-
-          return next.value = undefined, next.done = !0, next;
-        };
-
+          next = function next() {
+            for (; ++i < iterable.length;) if (hasOwn.call(iterable, i)) return next.value = iterable[i], next.done = !1, next;
+            return next.value = undefined, next.done = !0, next;
+          };
         return next.next = next;
       }
     }
-
     return {
       next: doneResult
     };
   }
-
   function doneResult() {
     return {
       value: undefined,
       done: !0
     };
   }
-
   return GeneratorFunction.prototype = GeneratorFunctionPrototype, define(Gp, "constructor", GeneratorFunctionPrototype), define(GeneratorFunctionPrototype, "constructor", GeneratorFunction), GeneratorFunction.displayName = define(GeneratorFunctionPrototype, toStringTagSymbol, "GeneratorFunction"), exports.isGeneratorFunction = function (genFun) {
     var ctor = "function" == typeof genFun && genFun.constructor;
     return !!ctor && (ctor === GeneratorFunction || "GeneratorFunction" === (ctor.displayName || ctor.name));
@@ -5240,15 +5179,12 @@ function _regeneratorRuntime() {
     return "[object Generator]";
   }), exports.keys = function (object) {
     var keys = [];
-
     for (var key in object) keys.push(key);
-
     return keys.reverse(), function next() {
       for (; keys.length;) {
         var key = keys.pop();
         if (key in object) return next.value = key, next.done = !1, next;
       }
-
       return next.done = !0, next;
     };
   }, exports.values = values, Context.prototype = {
@@ -5265,20 +5201,16 @@ function _regeneratorRuntime() {
     dispatchException: function (exception) {
       if (this.done) throw exception;
       var context = this;
-
       function handle(loc, caught) {
         return record.type = "throw", record.arg = exception, context.next = loc, caught && (context.method = "next", context.arg = undefined), !!caught;
       }
-
       for (var i = this.tryEntries.length - 1; i >= 0; --i) {
         var entry = this.tryEntries[i],
-            record = entry.completion;
+          record = entry.completion;
         if ("root" === entry.tryLoc) return handle("end");
-
         if (entry.tryLoc <= this.prev) {
           var hasCatch = hasOwn.call(entry, "catchLoc"),
-              hasFinally = hasOwn.call(entry, "finallyLoc");
-
+            hasFinally = hasOwn.call(entry, "finallyLoc");
           if (hasCatch && hasFinally) {
             if (this.prev < entry.catchLoc) return handle(entry.catchLoc, !0);
             if (this.prev < entry.finallyLoc) return handle(entry.finallyLoc);
@@ -5294,13 +5226,11 @@ function _regeneratorRuntime() {
     abrupt: function (type, arg) {
       for (var i = this.tryEntries.length - 1; i >= 0; --i) {
         var entry = this.tryEntries[i];
-
         if (entry.tryLoc <= this.prev && hasOwn.call(entry, "finallyLoc") && this.prev < entry.finallyLoc) {
           var finallyEntry = entry;
           break;
         }
       }
-
       finallyEntry && ("break" === type || "continue" === type) && finallyEntry.tryLoc <= arg && arg <= finallyEntry.finallyLoc && (finallyEntry = null);
       var record = finallyEntry ? finallyEntry.completion : {};
       return record.type = type, record.arg = arg, finallyEntry ? (this.method = "next", this.next = finallyEntry.finallyLoc, ContinueSentinel) : this.complete(record);
@@ -5318,19 +5248,15 @@ function _regeneratorRuntime() {
     catch: function (tryLoc) {
       for (var i = this.tryEntries.length - 1; i >= 0; --i) {
         var entry = this.tryEntries[i];
-
         if (entry.tryLoc === tryLoc) {
           var record = entry.completion;
-
           if ("throw" === record.type) {
             var thrown = record.arg;
             resetTryEntry(entry);
           }
-
           return thrown;
         }
       }
-
       throw new Error("illegal catch attempt");
     },
     delegateYield: function (iterable, resultName, nextLoc) {
@@ -5342,7 +5268,6 @@ function _regeneratorRuntime() {
     }
   }, exports;
 }
-
 function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) {
   try {
     var info = gen[key](arg);
@@ -5351,40 +5276,33 @@ function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) {
     reject(error);
     return;
   }
-
   if (info.done) {
     resolve(value);
   } else {
     Promise.resolve(value).then(_next, _throw);
   }
 }
-
 function _asyncToGenerator(fn) {
   return function () {
     var self = this,
-        args = arguments;
+      args = arguments;
     return new Promise(function (resolve, reject) {
       var gen = fn.apply(self, args);
-
       function _next(value) {
         asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value);
       }
-
       function _throw(err) {
         asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err);
       }
-
       _next(undefined);
     });
   };
 }
-
 function _classCallCheck(instance, Constructor) {
   if (!(instance instanceof Constructor)) {
     throw new TypeError("Cannot call a class as a function");
   }
 }
-
 function _defineProperties(target, props) {
   for (var i = 0; i < props.length; i++) {
     var descriptor = props[i];
@@ -5394,7 +5312,6 @@ function _defineProperties(target, props) {
     Object.defineProperty(target, descriptor.key, descriptor);
   }
 }
-
 function _createClass(Constructor, protoProps, staticProps) {
   if (protoProps) _defineProperties(Constructor.prototype, protoProps);
   if (staticProps) _defineProperties(Constructor, staticProps);
@@ -5403,7 +5320,6 @@ function _createClass(Constructor, protoProps, staticProps) {
   });
   return Constructor;
 }
-
 function _defineProperty(obj, key, value) {
   if (key in obj) {
     Object.defineProperty(obj, key, {
@@ -5415,22 +5331,17 @@ function _defineProperty(obj, key, value) {
   } else {
     obj[key] = value;
   }
-
   return obj;
 }
-
 function _toConsumableArray(arr) {
   return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread();
 }
-
 function _arrayWithoutHoles(arr) {
   if (Array.isArray(arr)) return _arrayLikeToArray(arr);
 }
-
 function _iterableToArray(iter) {
   if (typeof Symbol !== "undefined" && iter[Symbol.iterator] != null || iter["@@iterator"] != null) return Array.from(iter);
 }
-
 function _unsupportedIterableToArray(o, minLen) {
   if (!o) return;
   if (typeof o === "string") return _arrayLikeToArray(o, minLen);
@@ -5439,15 +5350,11 @@ function _unsupportedIterableToArray(o, minLen) {
   if (n === "Map" || n === "Set") return Array.from(o);
   if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen);
 }
-
 function _arrayLikeToArray(arr, len) {
   if (len == null || len > arr.length) len = arr.length;
-
   for (var i = 0, arr2 = new Array(len); i < len; i++) arr2[i] = arr[i];
-
   return arr2;
 }
-
 function _nonIterableSpread() {
   throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method.");
 }
@@ -11346,12 +11253,10 @@ var dateFnsTz = {
 };
 
 var MessageType;
-
 (function (MessageType) {
   MessageType["Document"] = "DOCUMENT";
   MessageType["Text"] = "TEXT";
 })(MessageType || (MessageType = {}));
-
 var MessageType$1 = MessageType;
 
 // TODO: Remove from `core-js@4`
@@ -11710,55 +11615,44 @@ var DateFormatter = /*#__PURE__*/function () {
   /**
    * @example Saturday, December 31, 2022 at 12:15 PM
    */
+
   function DateFormatter(date) {
     _classCallCheck(this, DateFormatter);
-
     _defineProperty(this, "date", void 0);
-
     _defineProperty(this, "dateFormat", {
       day: 'numeric',
       month: 'long',
       year: 'numeric'
     });
-
     _defineProperty(this, "shortDateFormat", {
       day: 'numeric',
       month: 'numeric',
       year: '2-digit'
     });
-
     _defineProperty(this, "timeFormat", {
       hour: 'numeric',
       hour12: true,
       minute: 'numeric'
     });
-
     _defineProperty(this, "dateTimeFormat", _objectSpread2(_objectSpread2({}, this.dateFormat), this.timeFormat));
-
     _defineProperty(this, "dayDateTimeFormat", _objectSpread2(_objectSpread2({
       weekday: 'long'
     }, this.dateFormat), this.timeFormat));
-
     this.date = date;
   }
-
   _createClass(DateFormatter, [{
     key: "withinDifferenceDateFormat",
     get: function get() {
       if (this.date === null) {
         return '';
       }
-
       var diffInDays = differenceInDays(this.date, new Date());
-
       if (diffInDays === 0) {
         return intlFormat(this.date, this.timeFormat);
       }
-
       if (diffInDays === -1) {
         return 'Yesterday';
       }
-
       return intlFormat(this.date, this.shortDateFormat);
     }
   }, {
@@ -11782,28 +11676,19 @@ var DateFormatter = /*#__PURE__*/function () {
       return this.date === null ? '' : intlFormat(this.date, this.dayDateTimeFormat);
     }
   }]);
-
   return DateFormatter;
 }();
 
 var PrivateMessageData = /*#__PURE__*/function () {
   function PrivateMessageData(id, receiverId, senderId, type, value, createdAt, readAt) {
     _classCallCheck(this, PrivateMessageData);
-
     _defineProperty(this, "id", void 0);
-
     _defineProperty(this, "receiverId", void 0);
-
     _defineProperty(this, "senderId", void 0);
-
     _defineProperty(this, "type", void 0);
-
     _defineProperty(this, "value", void 0);
-
     _defineProperty(this, "createdAt", void 0);
-
     _defineProperty(this, "readAt", void 0);
-
     this.id = id;
     this.receiverId = receiverId;
     this.senderId = senderId;
@@ -11812,7 +11697,6 @@ var PrivateMessageData = /*#__PURE__*/function () {
     this.createdAt = createdAt;
     this.readAt = readAt;
   }
-
   _createClass(PrivateMessageData, [{
     key: "setReadAtTime",
     value: function setReadAtTime(time) {
@@ -11827,30 +11711,20 @@ var PrivateMessageData = /*#__PURE__*/function () {
       }[message.type]], message.value, new DateFormatter(dateFnsTz.utcToZonedTime(message.created_at, PrivateMessageData.timeZone)), new DateFormatter(message.read_at !== null ? dateFnsTz.utcToZonedTime(message.read_at, PrivateMessageData.timeZone) : null));
     }
   }]);
-
   return PrivateMessageData;
 }();
-
 _defineProperty(PrivateMessageData, "timeZone", Intl.DateTimeFormat().resolvedOptions().timeZone);
 
 var ContactData = /*#__PURE__*/function () {
   function ContactData(id, name, avatar, unreadMessages, lastPrivateMessage) {
     var isOnline = arguments.length > 5 && arguments[5] !== undefined ? arguments[5] : false;
-
     _classCallCheck(this, ContactData);
-
     _defineProperty(this, "id", void 0);
-
     _defineProperty(this, "name", void 0);
-
     _defineProperty(this, "avatar", void 0);
-
     _defineProperty(this, "unreadMessages", void 0);
-
     _defineProperty(this, "lastPrivateMessage", void 0);
-
     _defineProperty(this, "isOnline", void 0);
-
     this.id = id;
     this.name = name;
     this.avatar = avatar;
@@ -11858,14 +11732,12 @@ var ContactData = /*#__PURE__*/function () {
     this.lastPrivateMessage = lastPrivateMessage;
     this.isOnline = isOnline;
   }
-
   _createClass(ContactData, null, [{
     key: "from",
     value: function from(contact) {
       return new this(contact.id, contact.name, contact.avatar, contact.unread_messages, contact.last_private_message !== null ? PrivateMessageData.from(contact.last_private_message) : null);
     }
   }]);
-
   return ContactData;
 }();
 
@@ -11877,21 +11749,16 @@ var contactComponent = (function () {
     search: '',
     unreadMessages: 0,
     url: url,
-
     /**
      * Hook during the initialization phase of the current Alpine component.
-     */
-    init: function init() {
+     */init: function init() {
       this.$watch('contacts', this.watchContacts.bind(this));
       this.$refs.basementChatBox.addEventListener('update-last-private-message', this.updateLastPrivateMessage.bind(this));
     },
-
     /**
      * Load initial component data.
-     */
-    mount: function mount() {
+     */mount: function mount() {
       var _this = this;
-
       return _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee() {
         var response;
         return _regeneratorRuntime().wrap(function _callee$(_context) {
@@ -11903,16 +11770,14 @@ var contactComponent = (function () {
                   var data = _ref.data;
                   return data;
                 });
-
               case 2:
                 response = _context.sent;
                 _this.contacts = response.data.map(function (contact) {
                   return ContactData.from(contact);
                 });
-
+                console.error(_this.contacts);
                 _this.registerEchoEventListeners();
-
-              case 5:
+              case 6:
               case "end":
                 return _context.stop();
             }
@@ -11920,66 +11785,52 @@ var contactComponent = (function () {
         }, _callee);
       }))();
     },
-
     /**
      * Get contacts filtered by search keywords.
      */
     get filteredContacts() {
       var _this2 = this;
-
       if (this.search === '') {
         return this.contacts;
       }
-
       return this.contacts.filter(function (_ref2) {
         var name = _ref2.name;
         return name.toLowerCase().includes(_this2.search.toLowerCase());
       });
     },
-
     /**
      * Find the same contact with the given id in the current component.
-     */
-    findSameContact: function findSameContact(searchId) {
+     */findSameContact: function findSameContact(searchId) {
       var sameContactIndex = this.contacts.findIndex(function (_ref3) {
         var id = _ref3.id;
         return id === searchId;
       });
-
       if (sameContactIndex === -1) {
         return {
           index: null,
           contact: null
         };
       }
-
       return {
         index: sameContactIndex,
         contact: this.contacts.at(sameContactIndex)
       };
     },
-
     /**
      * Laravel Echo event listener to see other contacts that are on the current channel.
-     */
-    onHere: function onHere(contacts) {
+     */onHere: function onHere(contacts) {
       var _this3 = this;
-
       contacts.forEach(function (contact) {
         var sameContact = _this3.findSameContact(contact.id).contact;
-
         if (sameContact !== null) {
           sameContact.isOnline = true;
         }
       });
     },
-
     /**
      * Laravel Echo event listener when someone joins the channel.
-     */
-    onSomeoneJoining: function onSomeoneJoining(contact) {
+     */onSomeoneJoining: function onSomeoneJoining(contact) {
       var sameContact = this.findSameContact(contact.id).contact;
-
       if (sameContact !== null) {
         sameContact.isOnline = true;
       } else {
@@ -11988,56 +11839,41 @@ var contactComponent = (function () {
         this.contacts.push(newContact);
       }
     },
-
     /**
      * Laravel Echo event listener when someone leaves the channel.
-     */
-    onSomeoneLeaving: function onSomeoneLeaving(contact) {
+     */onSomeoneLeaving: function onSomeoneLeaving(contact) {
       var sameContact = this.findSameContact(contact.id).contact;
-
       if (sameContact !== null) {
         sameContact.isOnline = false;
       }
     },
-
     /**
      * Register Laravel Echo event listeners.
-     */
-    registerEchoEventListeners: function registerEchoEventListeners() {
+     */registerEchoEventListeners: function registerEchoEventListeners() {
       window.Echo.join('basement.contacts').here(this.onHere.bind(this)).joining(this.onSomeoneJoining.bind(this)).leaving(this.onSomeoneLeaving.bind(this));
     },
-
     /**
      * HTML DOM event listener to update the last private message in the current component.
-     */
-    updateLastPrivateMessage: function updateLastPrivateMessage(event) {
+     */updateLastPrivateMessage: function updateLastPrivateMessage(event) {
       var sameContactIndex = this.findSameContact(event.detail.senderId).index;
-
       if (sameContactIndex === null) {
         return;
       }
-
       var sameContact = this.contacts.splice(sameContactIndex, 1).at(0);
       sameContact.lastPrivateMessage = event.detail;
-
       if (sameContact.id !== event.detail.receiverId) {
         sameContact.unreadMessages += 1;
       }
-
       this.contacts.unshift(sameContact);
     },
-
     /**
      * Trigger update receiver event to the chat box component.
-     */
-    updateReceiver: function updateReceiver(contact) {
+     */updateReceiver: function updateReceiver(contact) {
       this.$dispatch('update-receiver', contact);
     },
-
     /**
      * Watch when the contacts changes.
-     */
-    watchContacts: function watchContacts(newValue) {
+     */watchContacts: function watchContacts(newValue) {
       this.unreadMessages = newValue.reduce(function (total, contact) {
         return total + contact.unreadMessages;
       }, 0);
@@ -14967,11 +14803,9 @@ var privateMessageComponent = (function () {
     urlTemplate: urlTemplate,
     urlBatchRequest: urlBatchRequest,
     urlShowMore: null,
-
     /**
      * Hook during the initialization phase of the current Alpine component.
-     */
-    init: function init() {
+     */init: function init() {
       this.$refs.basementChatBox.addEventListener('update-receiver', this.updateReceiver.bind(this));
       this.$watch('messages', this.watchMessages.bind(this));
       setInterval(this.markSeenMessagesAsRead.bind(this), 3000);
@@ -14981,16 +14815,12 @@ var privateMessageComponent = (function () {
         threshold: [0, 1]
       });
     },
-
     /**
      * Load initial component data.
-     */
-    mount: function mount() {
+     */mount: function mount() {
       var _this = this;
-
       return _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee() {
         var response, _this$unreadMessageCu;
-
         return _regeneratorRuntime().wrap(function _callee$(_context) {
           while (1) {
             switch (_context.prev = _context.next) {
@@ -15005,7 +14835,6 @@ var privateMessageComponent = (function () {
                   var data = _ref.data;
                   return data;
                 });
-
               case 3:
                 response = _context.sent;
                 _this.urlShowMore = response.links.next;
@@ -15013,15 +14842,12 @@ var privateMessageComponent = (function () {
                   return PrivateMessageData.from(message);
                 });
                 _this.isLoading = false;
-
                 if (_this.messages.length > 0) {
                   _this.setUnreadMessagesMarker();
-
                   _this.scrollTo((_this$unreadMessageCu = _this.unreadMessageCursor) !== null && _this$unreadMessageCu !== void 0 ? _this$unreadMessageCu : _this.messages.at(0).id, {
                     block: 'center'
                   });
                 }
-
               case 8:
               case "end":
                 return _context.stop();
@@ -15030,16 +14856,12 @@ var privateMessageComponent = (function () {
         }, _callee);
       }))();
     },
-
     /**
      * Load more component data.
-     */
-    mountMore: function mountMore() {
+     */mountMore: function mountMore() {
       var _this2 = this;
-
       return _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee2() {
         var _this2$messages;
-
         var response, messages, currentCursor;
         return _regeneratorRuntime().wrap(function _callee2$(_context2) {
           while (1) {
@@ -15049,9 +14871,7 @@ var privateMessageComponent = (function () {
                   _context2.next = 2;
                   break;
                 }
-
                 throw new Error('Next page to load more private messages is not available');
-
               case 2:
                 _this2.isLoadingShowMore = true;
                 _context2.next = 5;
@@ -15063,23 +14883,18 @@ var privateMessageComponent = (function () {
                   var data = _ref2.data;
                   return data;
                 });
-
               case 5:
                 response = _context2.sent;
                 messages = response.data.map(function (message) {
                   return PrivateMessageData.from(message);
                 });
                 currentCursor = _this2.messages.at(-1);
-
                 (_this2$messages = _this2.messages).push.apply(_this2$messages, _toConsumableArray(messages));
-
                 _this2.urlShowMore = response.links.next;
                 _this2.isLoadingShowMore = false;
-
                 if (currentCursor !== undefined) {
                   _this2.scrollTo(currentCursor.id);
                 }
-
               case 12:
               case "end":
                 return _context2.stop();
@@ -15088,52 +14903,40 @@ var privateMessageComponent = (function () {
         }, _callee2);
       }))();
     },
-
     /**
      * Get messages grouped by day of creation.
      */
     get groupedMessages() {
       var messages = new Map();
-
       _toConsumableArray(this.messages).reverse().forEach(function (message) {
         var date = message.createdAt.withinDateFormat;
-
         if (messages.has(date) === false) {
           messages.set(date, []);
         }
-
         messages.get(date).push(message);
       });
-
       return _toConsumableArray(messages.values());
     },
-
     /**
      * Action when the last message is hidden or shown.
-     */
-    lastMessageObserver: function lastMessageObserver(entries) {
+     */lastMessageObserver: function lastMessageObserver(entries) {
       var _entries$at = entries.at(0),
-          intersectionRatio = _entries$at.intersectionRatio;
-
+        intersectionRatio = _entries$at.intersectionRatio;
       if (intersectionRatio > 0.5) {
         this.isLastMessageShown = false;
       } else {
         this.isLastMessageShown = true;
       }
     },
-
     /**
      * Update messages that have been seen to the database.
-     */
-    markSeenMessagesAsRead: function markSeenMessagesAsRead() {
+     */markSeenMessagesAsRead: function markSeenMessagesAsRead() {
       if (this.seenMessages.length === 0) {
         return;
       }
-
       if (this.receiver === null) {
         throw new Error('Receiver cannot be empty');
       }
-
       void window.axios.patch(this.urlBatchRequest, this.seenMessages.map(function (value) {
         return {
           operation: 'mark as read',
@@ -15144,38 +14947,28 @@ var privateMessageComponent = (function () {
       }));
       this.seenMessages = [];
     },
-
     /**
      * Assign observer for the last message.
-     */
-    observeLastMessage: function observeLastMessage() {
+     */observeLastMessage: function observeLastMessage() {
       var lastMessage = this.messages.at(0);
-
       if (lastMessage === undefined) {
         return;
       }
-
-      this.$nextTick(function () {
+      void this.$nextTick(function () {
         var lastMessageElement = document.querySelector(".private-message__text--value[data-id=\"".concat(lastMessage.id, "\"]"));
         lastMessageObserver.disconnect();
         lastMessageObserver.observe(lastMessageElement);
       });
     },
-
     /**
      * Laravel Echo event listener when a message is received.
-     */
-    onMessageReceived: function onMessageReceived(event) {
+     */onMessageReceived: function onMessageReceived(event) {
       var _this$receiver;
-
       var receivedMessage = PrivateMessageData.from(event.detail);
-
       if (event.detail.sender_id === ((_this$receiver = this.receiver) === null || _this$receiver === void 0 ? void 0 : _this$receiver.id) && event.detail.value.includes(this.searchKeyword.trim())) {
         this.messages.unshift(receivedMessage);
       }
-
       this.$dispatch('update-last-private-message', receivedMessage);
-
       if (userId !== event.detail.sender_id) {
         this.$dispatch('send-push-notification', {
           title: event.detail.sender.name,
@@ -15184,80 +14977,60 @@ var privateMessageComponent = (function () {
         });
       }
     },
-
     /**
      * Laravel Echo event listener when a message is marked as read.
-     */
-    onMessageMarkedAsRead: function onMessageMarkedAsRead(event) {
+     */onMessageMarkedAsRead: function onMessageMarkedAsRead(event) {
       var _this$receiver2,
-          _this3 = this;
-
+        _this3 = this;
       if (((_this$receiver2 = this.receiver) === null || _this$receiver2 === void 0 ? void 0 : _this$receiver2.id) === event.detail.receiver.id) {
         event.detail.messages.forEach(function (value) {
           var sameMessage = _this3.messages.find(function (_ref3) {
             var id = _ref3.id;
             return id === value.id;
           });
-
           if (sameMessage !== undefined) {
             sameMessage.setReadAtTime(value.read_at);
           }
         });
       }
     },
-
     /**
      * Register Laravel Echo event listeners.
-     */
-    registerEchoEventListeners: function registerEchoEventListeners() {
+     */registerEchoEventListeners: function registerEchoEventListeners() {
       window.Echo.join("basement.contacts.".concat(userId)).listen('.basement.message.sent', this.onMessageReceived.bind(this)).listen('.basement.message.marked-as-read', this.onMessageMarkedAsRead.bind(this));
     },
-
     /**
      * Scroll component view to given message id.
-     */
-    scrollTo: function scrollTo(id) {
+     */scrollTo: function scrollTo(id) {
       var options = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
-
       if (id === null) {
         return;
       }
-
-      this.$nextTick(function () {
+      void this.$nextTick(function () {
         var _document$querySelect;
-
         (_document$querySelect = document.querySelector(".private-message__text--value[data-id=\"".concat(id, "\"]"))) === null || _document$querySelect === void 0 ? void 0 : _document$querySelect.scrollIntoView(options);
       });
     },
-
     /**
      * Scroll component view to the last message.
-     */
-    scrollToLastMessage: function scrollToLastMessage() {
+     */scrollToLastMessage: function scrollToLastMessage() {
       var _lastMessage$id;
-
       var lastMessage = this.messages.at(0);
       this.scrollTo((_lastMessage$id = lastMessage === null || lastMessage === void 0 ? void 0 : lastMessage.id) !== null && _lastMessage$id !== void 0 ? _lastMessage$id : null);
     },
-
     /**
      * Action when a given message is visible.
-     */
-    seeMessage: function seeMessage(message) {
+     */seeMessage: function seeMessage(message) {
       if (this.receiver === null || message.receiverId === this.receiver.id || message.readAt.date !== null) {
         return;
       }
-
       this.seenMessages.push(message.id);
       this.receiver.unreadMessages -= 1;
     },
-
     /**
      * Send a new message.
-     */
-    sendNewMessage: function sendNewMessage() {
+     */sendNewMessage: function sendNewMessage() {
       var _this4 = this;
-
       return _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee3() {
         var response, message;
         return _regeneratorRuntime().wrap(function _callee3$(_context3) {
@@ -15268,9 +15041,7 @@ var privateMessageComponent = (function () {
                   _context3.next = 2;
                   break;
                 }
-
                 throw new Error('Receiver cannot be empty');
-
               case 2:
                 _this4.isLoadingSentMessage = true;
                 _context3.next = 5;
@@ -15280,23 +15051,18 @@ var privateMessageComponent = (function () {
                   var data = _ref4.data;
                   return data;
                 });
-
               case 5:
                 response = _context3.sent;
                 message = PrivateMessageData.from(response.data);
-
                 if (_this4.receiver.id !== userId) {
                   _this4.messages.unshift(message);
-
                   _this4.scrollTo(message.id, {
                     behavior: 'smooth'
                   });
                 }
-
                 _this4.receiver.lastPrivateMessage = message;
                 _this4.newMessageValue = '';
                 _this4.isLoadingSentMessage = false;
-
               case 11:
               case "end":
                 return _context3.stop();
@@ -15305,49 +15071,38 @@ var privateMessageComponent = (function () {
         }, _callee3);
       }))();
     },
-
     /**
      * Add unread messages marker to the component.
-     */
-    setUnreadMessagesMarker: function setUnreadMessagesMarker() {
+     */setUnreadMessagesMarker: function setUnreadMessagesMarker() {
       var _this5 = this;
-
       this.messages.some(function (message) {
         var _this5$receiver;
-
         if (message.readAt.date !== null) {
           return true;
         }
-
         if (message.senderId === ((_this5$receiver = _this5.receiver) === null || _this5$receiver === void 0 ? void 0 : _this5$receiver.id)) {
           _this5.unreadMessageCursor = message.id;
         }
-
         return false;
       });
     },
-
     /**
      * HTML DOM event listener to update the current receiver.
-     */
-    updateReceiver: function updateReceiver(event) {
+     */updateReceiver: function updateReceiver(event) {
       this.unreadMessageCursor = null;
       this.searchKeyword = '';
       this.receiver = event.detail;
       this.url = this.urlTemplate.replace(':contact', String(event.detail.id));
       void this.mount();
     },
-
     /**
      * Watch when the messages changes.
-     */
-    watchMessages: function watchMessages() {
+     */watchMessages: function watchMessages() {
       if (this.searchKeyword.trim() === '') {
         highlighter.unmark();
       } else {
         highlighter.mark(this.searchKeyword.trim());
       }
-
       this.observeLastMessage();
     }
   };
