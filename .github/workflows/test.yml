@@ -26,7 +26,6 @@ jobs:
 
     strategy:
       fail-fast: true
-      max-parallel: 1
       matrix:
         php: [8.0, 8.1]
         laravel: [9.*]
