@@ -10,8 +10,6 @@ jobs:
   lint:
     runs-on: ubuntu-latest
 
-    name: Laravel Pint
-
     steps:
       - name: Checkout code
         uses: actions/checkout@v3

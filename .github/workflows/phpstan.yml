@@ -16,8 +16,6 @@ jobs:
   phpstan:
     runs-on: ubuntu-latest
 
-    name: PHPStan
-
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
