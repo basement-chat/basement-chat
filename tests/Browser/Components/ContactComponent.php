@@ -108,8 +108,10 @@ class ContactComponent extends BaseComponent
      */
     public function openPrivateChatWith(Browser $browser, User $contact): void
     {
+        $this->filterContactsByKeyword($browser, $contact->name);
+
         $browser
-            ->click(".contact__container--user-box[data-id=\"{$contact->id}\"]")
+            ->click(".contact__container--user-box")
             ->waitUntilMissing(selector: $this->selector(), seconds: 10);
     }
 
