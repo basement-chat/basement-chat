@@ -11777,9 +11777,8 @@ var contactComponent = (function () {
                 _this.contacts = response.data.map(function (contact) {
                   return ContactData.from(contact);
                 });
-                console.error(_this.contacts);
                 _this.registerEchoEventListeners();
-              case 6:
+              case 5:
               case "end":
                 return _context.stop();
             }

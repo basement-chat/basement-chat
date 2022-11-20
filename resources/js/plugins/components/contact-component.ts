@@ -34,8 +34,6 @@ export default (): AlpineComponent<ContactComponent> => {
         .data
         .map((contact: Contact): ContactData => ContactData.from(contact))
 
-      console.error(this.contacts)
-
       this.registerEchoEventListeners()
     },
 
