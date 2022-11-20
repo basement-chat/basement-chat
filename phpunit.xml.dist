@@ -56,5 +56,9 @@
     <env name="BASEMENT_BROADCAST_DRIVER" value="pusher" />
     <env name="SESSION_DRIVER" value="cookie" />
     <env name="SANCTUM_STATEFUL_DOMAINS" value="127.0.0.1:8001" />
+    <!-- <env name="PUSHER_APP_ID" value="" />
+    <env name="PUSHER_APP_KEY" value="" />
+    <env name="PUSHER_APP_SECRET" value="" />
+    <env name="PUSHER_APP_CLUSTER" value="" /> -->
   </php>
 </phpunit>
