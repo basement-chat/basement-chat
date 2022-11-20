@@ -39,7 +39,7 @@ class PrivateMessageFactory extends Factory
             'receiver_id' => $receiver->id,
             'sender_id' => $sender->id,
             'type' => MessageType::text(),
-            'value' => fake()->text(),
+            'value' => fake()->text(50),
             'read_at' => null,
         ];
     }
