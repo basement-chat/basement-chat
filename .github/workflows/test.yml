@@ -3,22 +3,36 @@ name: Run Tests
 on:
   workflow_dispatch:
   push:
-    branches: [main]
+    branches:
+      - "*.x"
+      - main
+      - next
+      - next-major
+      - beta
+      - alpha
+      - dev
   pull_request:
-    branches: [main]
+    branches:
+      - "*.x"
+      - main
+      - next
+      - next-major
+      - beta
+      - alpha
+      - dev
 
 jobs:
   test:
     env:
-      APP_URL: '127.0.0.1:8001'
+      APP_URL: "127.0.0.1:8001"
       APP_ENV: testing
       APP_DEBUG: true
-      APP_KEY: 'base64:IDrlmrVwu65iBhbUpPq3fsv7kybcnfUFZmY1wk+mamE='
+      APP_KEY: "base64:IDrlmrVwu65iBhbUpPq3fsv7kybcnfUFZmY1wk+mamE="
       DB_CONNECTION: sqlite
       BROADCAST_DRIVER: pusher
       BASEMENT_BROADCAST_DRIVER: pusher
       SESSION_DRIVER: cookie
-      SANCTUM_STATEFUL_DOMAINS: '127.0.0.1:8001'
+      SANCTUM_STATEFUL_DOMAINS: "127.0.0.1:8001"
       PUSHER_APP_ID: ${{ secrets.PUSHER_APP_ID }}
       PUSHER_APP_KEY: ${{ secrets.PUSHER_APP_KEY }}
       PUSHER_APP_SECRET: ${{ secrets.PUSHER_APP_SECRET }}
@@ -27,11 +41,15 @@ jobs:
     strategy:
       fail-fast: true
       matrix:
-        php: [8.0, 8.1]
-        laravel: [9.*]
+        laravel: [9.*, 10.*]
         stability: [prefer-lowest, prefer-stable]
         include:
+          - laravel: 10.*
+            testbench: 8.*
+            php: 8.1
           - laravel: 9.*
+            testbench: 7.*
+            php: 8.0
 
     runs-on: ubuntu-latest
 
@@ -55,6 +73,7 @@ jobs:
 
       - name: Install dependencies
         run: |
+          composer require --dev  "orchestra/canvas:${{ matrix.testbench }}" "orchestra/testbench:${{ matrix.testbench }}" "orchestra/testbench-dusk:${{ matrix.testbench }}" --no-interaction --no-update
           composer require "laravel/framework:${{ matrix.laravel }}" --no-interaction --no-update
           composer update --${{ matrix.stability }} --prefer-dist --no-interaction
 
