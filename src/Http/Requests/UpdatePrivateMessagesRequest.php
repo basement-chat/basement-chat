@@ -6,10 +6,10 @@ namespace BasementChat\Basement\Http\Requests;
 
 use BasementChat\Basement\Data\PrivateMessageData;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\Rule;
 use Illuminate\Validation\Validator;
-use Spatie\LaravelData\DataCollection;
 
 class UpdatePrivateMessagesRequest extends FormRequest
 {
@@ -21,7 +21,7 @@ class UpdatePrivateMessagesRequest extends FormRequest
     /**
      * Private messages list with mark as read operation.
      */
-    protected DataCollection $markAsReadOperation;
+    protected Collection $markAsReadOperation;
 
     /**
      * Determine if the user is authorized to make this request.
@@ -47,7 +47,7 @@ class UpdatePrivateMessagesRequest extends FormRequest
     /**
      * Get private messages request that need to be marked as read.
      */
-    public function markAsReadOperation(): DataCollection
+    public function markAsReadOperation(): Collection
     {
         return $this->markAsReadOperation;
     }
@@ -81,7 +81,7 @@ class UpdatePrivateMessagesRequest extends FormRequest
         $this->markAsReadOperation = PrivateMessageData::collectionFromId($messagesId);
 
         /** @var \Illuminate\Support\Collection<int,\BasementChat\Basement\Data\PrivateMessageData> $privateMessages */
-        $privateMessages = $this->markAsReadOperation->toCollection();
+        $privateMessages = $this->markAsReadOperation;
 
         $privateMessages->each(static function (PrivateMessageData $data, int $key) use ($validator): void {
             if ($data->receiver_id === Auth::id()) {

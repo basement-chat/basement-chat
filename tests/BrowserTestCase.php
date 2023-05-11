@@ -44,6 +44,7 @@ class BrowserTestCase extends OrchestraDuskTestCase
 
         BasementTestCaseEnvironment::setConfigurations();
 
+        Config::set(key: 'app.key', value: 'base64:IDrlmrVwu65iBhbUpPq3fsv7kybcnfUFZmY1wk+mamE=');
         Config::set(key: 'auth.providers.users.model', value: User::class);
         Config::set(key: 'database.connections.sqlite.database', value: database_path('database.sqlite'));
         Config::set(key: 'sanctum.middleware.encrypt_cookies', value: EncryptCookies::class);

@@ -55,7 +55,15 @@ class SendPrivateMessageTest extends TestCase
             /** @var \BasementChat\Basement\Contracts\SendPrivateMessage $sendPrivateMessageAction */
             $sendPrivateMessageAction = app(SendPrivateMessage::class);
 
-            $createdMessage = $sendPrivateMessageAction->send(PrivateMessageData::from($message));
+            $createdMessage = $sendPrivateMessageAction->send(new PrivateMessageData(
+                receiver_id: (int) $message->receiver_id,
+                sender_id: (int) $message->sender_id,
+                type: $message->type,
+                value: $message->value,
+                id: (int) $message->id,
+                created_at: $message->created_at,
+                read_at: $message->read_at,
+            ));
 
             $this->assertInstanceOf(expected: PrivateMessageData::class, actual: $createdMessage);
             $this->assertInstanceOf(expected: Carbon::class, actual: $createdMessage->created_at);
@@ -91,7 +99,15 @@ class SendPrivateMessageTest extends TestCase
         $this->freezeTime(function (Carbon $time) use ($message): void {
             /** @var \BasementChat\Basement\Contracts\SendPrivateMessage $sendPrivateMessageAction */
             $sendPrivateMessageAction = app(SendPrivateMessage::class);
-            $createdMessage = $sendPrivateMessageAction->send(PrivateMessageData::from($message));
+            $createdMessage = $sendPrivateMessageAction->send(new PrivateMessageData(
+                receiver_id: (int) $message->receiver_id,
+                sender_id: (int) $message->sender_id,
+                type: $message->type,
+                value: $message->value,
+                id: (int) $message->id,
+                created_at: $message->created_at,
+                read_at: $message->read_at,
+            ));
 
             $this->assertInstanceOf(expected: PrivateMessageData::class, actual: $createdMessage);
 

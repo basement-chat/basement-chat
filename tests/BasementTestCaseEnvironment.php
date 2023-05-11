@@ -12,7 +12,6 @@ use Illuminate\Http\Response;
 use Illuminate\Routing\Router;
 use Illuminate\Support\Facades\Config;
 use Laravel\Sanctum\SanctumServiceProvider;
-use Spatie\LaravelData\LaravelDataServiceProvider;
 
 class BasementTestCaseEnvironment
 {
@@ -24,7 +23,6 @@ class BasementTestCaseEnvironment
         return [
             BasementServiceProvider::class,
             DumpServerServiceProvider::class,
-            LaravelDataServiceProvider::class,
             SanctumServiceProvider::class,
         ];
     }

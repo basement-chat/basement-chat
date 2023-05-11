@@ -17,6 +17,7 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Auth;
+use Spatie\LaravelData\DataCollection;
 use Symfony\Component\HttpFoundation\Response;
 
 class PrivateMessageController extends Controller
@@ -39,7 +40,7 @@ class PrivateMessageController extends Controller
 
         $messages = $allPrivateMessages->allBetweenTwoUsers(receiver: $user, sender: $contact, keyword: $keyword);
 
-        return JsonResource::collection($messages->items())->response();
+        return JsonResource::collection($messages)->response();
     }
 
     /**
@@ -59,8 +60,8 @@ class PrivateMessageController extends Controller
         $value = $request->input('value');
 
         $message = $sendPrivateMessage->send(new PrivateMessageData(
-            receiver_id: $contact->id,
-            sender_id: $senderId,
+            receiver_id: (int) $contact->id,
+            sender_id: (int) $senderId,
             type: MessageType::text(),
             value: $value,
         ));
@@ -83,6 +84,6 @@ class PrivateMessageController extends Controller
             privateMessages: $request->markAsReadOperation(),
         );
 
-        return JsonResource::collection($messages->items())->response();
+        return JsonResource::collection($messages->values())->response();
     }
 }

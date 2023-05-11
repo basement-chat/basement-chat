@@ -13,7 +13,6 @@ use BasementChat\Basement\Tests\WithUsers;
 use Illuminate\Contracts\Pagination\CursorPaginator;
 use Illuminate\Database\Eloquent\Factories\Sequence;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Spatie\LaravelData\DataCollection;
 
 class AllPrivateMessagesTest extends TestCase
 {
@@ -53,8 +52,8 @@ class AllPrivateMessagesTest extends TestCase
 
         $messages = $allPrivateMessages->allBetweenTwoUsers(receiver: $this->receiver, sender: $this->sender);
 
-        $this->assertInstanceOf(expected: DataCollection::class, actual: $messages);
-        $this->assertCount(expectedCount: $this->privateMessages->count(), haystack: $messages);
+        $this->assertInstanceOf(expected: CursorPaginator::class, actual: $messages);
+        $this->assertCount(expectedCount: $this->privateMessages->count(), haystack: $messages->items());
 
         $this->privateMessages
             ->reverse()
@@ -79,8 +78,8 @@ class AllPrivateMessagesTest extends TestCase
         $messages = $allPrivateMessages->allBetweenTwoUsers(receiver: $this->receiver, sender: $this->sender);
 
         $this->assertCount(expectedCount: 50, haystack: $messages);
-        $this->assertInstanceOf(expected: CursorPaginator::class, actual: $messages->items());
-        $this->assertNotNull(actual: $messages->items()->nextPageUrl());
+        $this->assertInstanceOf(expected: CursorPaginator::class, actual: $messages);
+        $this->assertNotNull(actual: $messages->nextPageUrl());
     }
 
     /**

@@ -10,7 +10,6 @@ use BasementChat\Basement\Events\PrivateMessageRead;
 use BasementChat\Basement\Facades\Basement;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Support\Collection;
-use Spatie\LaravelData\DataCollection;
 
 class MarkPrivatesMessagesAsRead implements MarkPrivatesMessagesAsReadContract
 {
@@ -19,25 +18,22 @@ class MarkPrivatesMessagesAsRead implements MarkPrivatesMessagesAsReadContract
      *
      * @param \Illuminate\Foundation\Auth\User&\BasementChat\Basement\Contracts\User $readBy
      */
-    public function markAsRead(Authenticatable $readBy, DataCollection $privateMessages): DataCollection
+    public function markAsRead(Authenticatable $readBy, Collection $privateMessages): Collection
     {
         $time = now();
 
         Basement::newPrivateMessageModel()
-            ->whereIn('id', $privateMessages->toCollection()->pluck('id'))
+            ->whereIn('id', $privateMessages->pluck('id'))
             ->whereNull('read_at')
             ->update([
                 'read_at' => $time,
             ]);
 
-        /** @var \Illuminate\Support\Collection<int,\BasementChat\Basement\Data\PrivateMessageData> $messages */
-        $messages = $privateMessages->toCollection();
-
-        $messages->each(static function (PrivateMessageData $data) use ($time): void {
+        $privateMessages->each(static function (PrivateMessageData $data) use ($time): void {
             $data->read_at = $time;
         });
 
-        $this->notifySenders(receiver: $readBy, privateMessages: $messages);
+        $this->notifySenders(receiver: $readBy, privateMessages: $privateMessages);
 
         return $privateMessages;
     }
@@ -53,8 +49,8 @@ class MarkPrivatesMessagesAsRead implements MarkPrivatesMessagesAsReadContract
         $privateMessages
             ->groupBy('sender_id')
             ->each(static fn (Collection $messages, int $senderId) => broadcast(new PrivateMessageRead(
-                receiverId: $receiver->id,
-                senderId: $senderId,
+                receiverId: (int) $receiver->id,
+                senderId: (int) $senderId,
                 messages: $messages,
             )));
     }

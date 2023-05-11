@@ -21,6 +21,6 @@ class ContactController extends Controller
         $user = Auth::user();
         $contacts = $allContacts->all($user);
 
-        return JsonResource::collection($contacts->items())->response();
+        return JsonResource::collection($contacts->values())->response();
     }
 }

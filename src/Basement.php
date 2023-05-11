@@ -154,6 +154,7 @@ class Basement implements BasementContract
      */
     public static function getAvatarStyle(): AvatarStyle
     {
+        /** @var mixed $style */
         $style = config('basement.avatar.style');
 
         if ($style instanceof AvatarStyle === false) {
@@ -173,6 +174,7 @@ class Basement implements BasementContract
      */
     public static function getAvatarOptions(): array
     {
+        /** @var mixed $options */
         $options = config('basement.avatar.options');
 
         if (is_array($options) === false) {
@@ -189,6 +191,7 @@ class Basement implements BasementContract
      */
     public static function getChatBoxWidgetPosition(): ChatBoxPosition
     {
+        /** @var mixed $position */
         $position = config('basement.chat_box_widget_position');
 
         if ($position instanceof ChatBoxPosition === false) {
@@ -208,6 +211,7 @@ class Basement implements BasementContract
      */
     public static function getBroadcastOptions(): array
     {
+        /** @var mixed $connections */
         $connections = config('basement.broadcaster.connections');
         $driver = config('basement.broadcaster.default');
 

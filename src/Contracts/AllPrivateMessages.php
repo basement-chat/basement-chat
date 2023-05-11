@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace BasementChat\Basement\Contracts;
 
+use Illuminate\Contracts\Pagination\CursorPaginator;
 use Illuminate\Foundation\Auth\User as Authenticatable;
-use Spatie\LaravelData\DataCollection;
 
 interface AllPrivateMessages
 {
@@ -19,5 +19,5 @@ interface AllPrivateMessages
         Authenticatable $receiver,
         Authenticatable $sender,
         string $keyword = '',
-    ): DataCollection;
+    ): CursorPaginator;
 }

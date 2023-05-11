@@ -13,7 +13,7 @@ use BasementChat\Basement\Tests\TestCase;
 use BasementChat\Basement\Tests\WithPrivateMessages;
 use BasementChat\Basement\Tests\WithUsers;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Spatie\LaravelData\DataCollection;
+use Illuminate\Support\Collection;
 
 class AllContactsTest extends TestCase
 {
@@ -53,7 +53,7 @@ class AllContactsTest extends TestCase
 
         $contacts = $allContacts->all($this->receiver);
 
-        $this->assertInstanceOf(expected: DataCollection::class, actual: $contacts);
+        $this->assertInstanceOf(expected: Collection::class, actual: $contacts);
         $this->assertCount(expectedCount: 3, haystack: $contacts);
 
         $contact = $this->sameContact(id: $this->receiver->id, contacts: $contacts);
@@ -114,7 +114,7 @@ class AllContactsTest extends TestCase
         /** @var \BasementChat\Basement\Contracts\AllContacts $allContacts */
         $allContacts = app(AllContacts::class);
 
-        /** @var \Spatie\LaravelData\DataCollection & array<\BasementChat\Basement\Data\ContactData> $contacts */
+        /** @var Collection & array<\BasementChat\Basement\Data\ContactData> $contacts */
         $contacts = $allContacts->all($this->receiver);
 
         $this->assertSame(expected: $this->sender2->id, actual: $contacts[0]->id);
@@ -141,10 +141,10 @@ class AllContactsTest extends TestCase
         );
     }
 
-    protected function sameContact(int $id, DataCollection $contacts): ContactData
+    protected function sameContact(int $id, Collection $contacts): ContactData
     {
         /** @var \BasementChat\Basement\Data\ContactData $contact */
-        $contact = $contacts->toCollection()->first(static fn (ContactData $data): bool => $data->id === $id);
+        $contact = $contacts->first(static fn (ContactData $data): bool => $data->id === $id);
 
         return $contact;
     }

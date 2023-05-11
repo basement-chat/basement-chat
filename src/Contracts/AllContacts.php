@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace BasementChat\Basement\Contracts;
 
 use Illuminate\Foundation\Auth\User as Authenticatable;
-use Spatie\LaravelData\DataCollection;
+use Illuminate\Support\Collection;
 
 interface AllContacts
 {
@@ -14,5 +14,5 @@ interface AllContacts
      *
      * @param \Illuminate\Foundation\Auth\User&\BasementChat\Basement\Contracts\User $user
      */
-    public function all(Authenticatable $user): DataCollection;
+    public function all(Authenticatable $user): Collection;
 }

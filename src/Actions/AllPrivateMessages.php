@@ -5,10 +5,9 @@ declare(strict_types=1);
 namespace BasementChat\Basement\Actions;
 
 use BasementChat\Basement\Contracts\AllPrivateMessages as AllPrivateMessagesContract;
-use BasementChat\Basement\Data\PrivateMessageData;
 use BasementChat\Basement\Facades\Basement;
+use Illuminate\Contracts\Pagination\CursorPaginator;
 use Illuminate\Foundation\Auth\User as Authenticatable;
-use Spatie\LaravelData\DataCollection;
 
 class AllPrivateMessages implements AllPrivateMessagesContract
 {
@@ -27,13 +26,13 @@ class AllPrivateMessages implements AllPrivateMessagesContract
         Authenticatable $receiver,
         Authenticatable $sender,
         string $keyword = '',
-    ): DataCollection {
+    ): CursorPaginator {
         $messages = Basement::newPrivateMessageModel()
             ->whereBetweenTwoUsers($receiver, $sender)
             ->whereValueLike($keyword)
             ->orderByDescId()
             ->cursorPaginate(self::MESSAGES_PER_PAGE);
 
-        return PrivateMessageData::collection($messages);
+        return $messages;
     }
 }

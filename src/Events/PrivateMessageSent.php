@@ -31,7 +31,7 @@ class PrivateMessageSent implements ShouldBroadcast
         $this->detail = $message->toArray();
 
         /** @var \Illuminate\Foundation\Auth\User&\BasementChat\Basement\Contracts\User $sender */
-        $sender = $message->sender->resolve();
+        $sender = $message->sender;
 
         $this->detail['sender'] = $sender->only(['id', 'name', 'avatar']);
     }

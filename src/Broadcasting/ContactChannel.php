@@ -26,6 +26,11 @@ class ContactChannel
         $contact = Basement::newUserModel()->findOrFail($user->id);
         $contact->append('avatar');
 
-        return ContactData::from($contact)->all();
+        return (new ContactData(
+            id: (int) $contact->id,
+            name: $contact->name,
+            avatar: $contact->avatar,
+            last_private_message: null,
+        ))->toArray();
     }
 }

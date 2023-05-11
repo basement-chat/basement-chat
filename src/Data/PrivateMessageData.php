@@ -6,23 +6,27 @@ namespace BasementChat\Basement\Data;
 
 use BasementChat\Basement\Enums\MessageType;
 use BasementChat\Basement\Facades\Basement;
+use BasementChat\Basement\Models\PrivateMessage;
+use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Support\Carbon;
-use Spatie\LaravelData\Data;
-use Spatie\LaravelData\DataCollection;
-use Spatie\LaravelData\Lazy;
+use Illuminate\Support\Collection;
 
 /**
- * @property \Spatie\LaravelData\Lazy $receiver
- * @property \Spatie\LaravelData\Lazy $sender
+ * @property Authenticatable&\BasementChat\Basement\Contracts\User $receiver
+ * @property Authenticatable&\BasementChat\Basement\Contracts\User $sender
  */
-class PrivateMessageData extends Data
+class PrivateMessageData implements Arrayable
 {
+    protected \Closure $receiverResolver;
+
+    protected \Closure $senderResolver;
+
     /**
      * Create a new private message data instance.
      *
-     * @param \Spatie\LaravelData\Lazy|(Authenticatable&\BasementChat\Basement\Contracts\User)|null $receiver
-     * @param \Spatie\LaravelData\Lazy|(Authenticatable&\BasementChat\Basement\Contracts\User)|null $sender
+     * @param (Authenticatable&\BasementChat\Basement\Contracts\User)|null $receiver
+     * @param (Authenticatable&\BasementChat\Basement\Contracts\User)|null $sender
      */
     public function __construct(
         public int $receiver_id,
@@ -32,14 +36,28 @@ class PrivateMessageData extends Data
         public ?int $id = null,
         public ?Carbon $created_at = null,
         public ?Carbon $read_at = null,
-        public Lazy|Authenticatable|null $receiver = null,
-        public Lazy|Authenticatable|null $sender = null,
+        Authenticatable|null $receiver = null,
+        Authenticatable|null $sender = null,
     ) {
-        $this->receiver = Lazy::create(fn (): Authenticatable => $receiver instanceof Authenticatable ?
-            $receiver : Basement::newUserModel()->findOrFail($this->receiver_id));
+        $this->receiverResolver = function () use ($receiver) {
+            if ($receiver !== null) {
+                return $receiver;
+            }
 
-        $this->sender = Lazy::create(fn (): Authenticatable => $sender instanceof Authenticatable ?
-            $sender : Basement::newUserModel()->findOrFail($this->sender_id));
+            $receiver = Basement::newUserModel()->findOrFail($this->receiver_id);
+
+            return $receiver;
+        };
+
+        $this->senderResolver = function () use ($sender) {
+            if ($sender !== null) {
+                return $sender;
+            }
+
+            $sender = Basement::newUserModel()->findOrFail($this->sender_id);
+
+            return $sender;
+        };
     }
 
     /**
@@ -48,13 +66,50 @@ class PrivateMessageData extends Data
      * @param array<int> $messagesId
      * @param array<string> $with
      */
-    public static function collectionFromId(array $messagesId, array $with = []): DataCollection
+    public static function collectionFromId(array $messagesId, array $with = []): Collection
     {
         $messages = Basement::newPrivateMessageModel()
             ->with($with)
             ->whereIn('id', $messagesId)
             ->get();
 
-        return self::collection($messages);
+        return $messages->map(fn (PrivateMessage $message): self => new self(
+            receiver_id: (int) $message->receiver_id,
+            sender_id: (int) $message->sender_id,
+            type: $message->type,
+            value: $message->value,
+            id: (int) $message->id,
+            created_at: $message->created_at,
+            read_at: $message->read_at,
+        ));
+    }
+
+    /**
+     * Get the instance as an array.
+     */
+    public function toArray()
+    {
+        return [
+            'receiver_id' => $this->receiver_id,
+            'sender_id' => $this->sender_id,
+            'type' => $this->type->value,
+            'value' => $this->value,
+            'id' => $this->id,
+            'created_at' => $this->created_at?->toISOString(),
+            'read_at' => $this->read_at?->toISOString(),
+            'receiver' => $this->receiver->toArray(),
+            'sender' => $this->sender->toArray(),
+        ];
+    }
+
+    public function __get(string $name): mixed
+    {
+        if ($name === 'receiver') {
+            return ($this->receiverResolver)();
+        }
+
+        if ($name === 'sender') {
+            return ($this->senderResolver)();
+        }
     }
 }

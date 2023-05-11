@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace BasementChat\Basement\Contracts;
 
 use Illuminate\Foundation\Auth\User as Authenticatable;
-use Spatie\LaravelData\DataCollection;
+use Illuminate\Support\Collection;
 
 interface MarkPrivatesMessagesAsRead
 {
@@ -14,5 +14,5 @@ interface MarkPrivatesMessagesAsRead
      *
      * @param \Illuminate\Foundation\Auth\User&\BasementChat\Basement\Contracts\User $readBy
      */
-    public function markAsRead(Authenticatable $readBy, DataCollection $privateMessages): DataCollection;
+    public function markAsRead(Authenticatable $readBy, Collection $privateMessages): Collection;
 }
