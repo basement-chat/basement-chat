@@ -20,6 +20,8 @@ class UpdatePrivateMessagesRequest extends FormRequest
 
     /**
      * Private messages list with mark as read operation.
+     *
+     * @var \Illuminate\Support\Collection<int,\BasementChat\Basement\Data\PrivateMessageData>
      */
     protected Collection $markAsReadOperation;
 
@@ -46,6 +48,8 @@ class UpdatePrivateMessagesRequest extends FormRequest
 
     /**
      * Get private messages request that need to be marked as read.
+     *
+     * @return \Illuminate\Support\Collection<int,\BasementChat\Basement\Data\PrivateMessageData>
      */
     public function markAsReadOperation(): Collection
     {

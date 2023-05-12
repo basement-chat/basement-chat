@@ -13,6 +13,8 @@ interface AllContacts
      * Get all contact list.
      *
      * @param \Illuminate\Foundation\Auth\User&\BasementChat\Basement\Contracts\User $user
+     *
+     * @return \Illuminate\Support\Collection<int,\BasementChat\Basement\Data\ContactData>
      */
     public function all(Authenticatable $user): Collection;
 }

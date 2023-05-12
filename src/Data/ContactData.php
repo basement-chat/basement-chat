@@ -6,6 +6,9 @@ namespace BasementChat\Basement\Data;
 
 use Illuminate\Contracts\Support\Arrayable;
 
+/**
+ * @implements Arrayable<string,mixed>
+ */
 class ContactData implements Arrayable
 {
     /**

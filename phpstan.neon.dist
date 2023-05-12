@@ -1,19 +1,17 @@
 includes:
-    - phpstan-baseline.neon
-    - ./vendor/nunomaduro/larastan/extension.neon
-    - ./vendor/phpstan/phpstan-phpunit/extension.neon
-    - ./vendor/phpstan/phpstan-deprecation-rules/rules.neon
+  - phpstan-baseline.neon
+  - ./vendor/nunomaduro/larastan/extension.neon
+  - ./vendor/phpstan/phpstan-phpunit/extension.neon
+  - ./vendor/phpstan/phpstan-deprecation-rules/rules.neon
 
 parameters:
-    level: 9
-    paths:
-        - config
-        - database
-        - routes
-        - src
-    tmpDir: build/phpstan
-    checkOctaneCompatibility: true
-    checkModelProperties: true
-    checkMissingIterableValueType: false
-    ignoreErrors:
-        - '#Cannot call method resolve\(\) on (.*)Spatie\\LaravelData\\Lazy(.*)#'
+  level: 9
+  paths:
+    - config
+    - database
+    - routes
+    - src
+  tmpDir: build/phpstan
+  checkOctaneCompatibility: true
+  checkModelProperties: true
+  checkMissingIterableValueType: false

@@ -17,6 +17,9 @@ class MarkPrivatesMessagesAsRead implements MarkPrivatesMessagesAsReadContract
      * Mark given private messages as has been read.
      *
      * @param \Illuminate\Foundation\Auth\User&\BasementChat\Basement\Contracts\User $readBy
+     * @param \Illuminate\Support\Collection<int,\BasementChat\Basement\Data\PrivateMessageData> $privateMessages
+     *
+     * @return \Illuminate\Support\Collection<int,\BasementChat\Basement\Data\PrivateMessageData>
      */
     public function markAsRead(Authenticatable $readBy, Collection $privateMessages): Collection
     {

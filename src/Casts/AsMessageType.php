@@ -7,6 +7,9 @@ namespace BasementChat\Basement\Casts;
 use BasementChat\Basement\Enums\MessageType;
 use Illuminate\Contracts\Database\Eloquent\CastsAttributes;
 
+/**
+ * @implements CastsAttributes<MessageType,MessageType>
+ */
 class AsMessageType implements CastsAttributes
 {
     /**

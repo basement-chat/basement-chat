@@ -15,6 +15,8 @@ use Illuminate\Support\Collection;
 /**
  * @property Authenticatable&\BasementChat\Basement\Contracts\User $receiver
  * @property Authenticatable&\BasementChat\Basement\Contracts\User $sender
+ *
+ * @implements Arrayable<string,mixed>
  */
 class PrivateMessageData implements Arrayable
 {
@@ -65,6 +67,8 @@ class PrivateMessageData implements Arrayable
      *
      * @param array<int> $messagesId
      * @param array<string> $with
+     *
+     * @return \Illuminate\Support\Collection<int,PrivateMessageData>
      */
     public static function collectionFromId(array $messagesId, array $with = []): Collection
     {
@@ -111,5 +115,7 @@ class PrivateMessageData implements Arrayable
         if ($name === 'sender') {
             return ($this->senderResolver)();
         }
+
+        return null;
     }
 }

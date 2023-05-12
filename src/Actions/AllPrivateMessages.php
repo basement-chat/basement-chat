@@ -21,6 +21,8 @@ class AllPrivateMessages implements AllPrivateMessagesContract
      *
      * @param \Illuminate\Foundation\Auth\User&\BasementChat\Basement\Contracts\User $receiver
      * @param \Illuminate\Foundation\Auth\User&\BasementChat\Basement\Contracts\User $sender
+     *
+     * @return \Illuminate\Contracts\Pagination\CursorPaginator<\BasementChat\Basement\Models\PrivateMessage>
      */
     public function allBetweenTwoUsers(
         Authenticatable $receiver,
