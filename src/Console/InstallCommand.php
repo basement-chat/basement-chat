@@ -128,7 +128,7 @@ class InstallCommand extends Command
             'ably' => $this->composerDependency->install(command: $this, dependencies: ['ably/ably-php']),
             'laravel-websockets' => $this->composerDependency->install(command: $this, dependencies: [
                 'beyondcode/laravel-websockets',
-                'pusher/pusher-php-server:7.0.2'
+                'pusher/pusher-php-server'
             ]),
             'soketi' => $this->nodeDependency->install(command: $this, dependencies: ['@soketi/soketi']),
             default => Command::INVALID,
