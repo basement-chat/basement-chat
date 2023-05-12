@@ -118,7 +118,7 @@
                   class="bm-bg-gray-50 bm-text-center bm-font-semibold bm-text-blue-500 bm-border-b bm-rounded-b-lg bm-border-gray-300 bm--mx-3 bm-py-1 bm-mb-3 bm-mt-1">
                   Unread Messages
                 </div>
-                <div x-bind:class="message.receiverId === receiver.id ? 'bm-flex-row-reverse bm-mb-5' : 'bm-flex-row'" class="bm-flex bm-group bm-relative">
+                <div x-bind:class="message.receiverId === receiver.id ? 'bm-flex-row-reverse' : 'bm-flex-row'" class="bm-flex bm-group bm-relative bm-mb-5">
                   <div class="bm-max-w-[90%]">
                     <p
                       x-intersect.once="seeMessage(message)"
@@ -135,6 +135,12 @@
                         <x-basement::atoms.icons.fas-check-double
                           x-bind:class="message.readAt.date !== null ? 'bm-text-blue-500' : 'bm-text-gray-500'"
                           class="bm-w-3 bm-inline" />
+                      </span>
+                    </template>
+                    <template x-if="message.receiverId !== receiver.id">
+                      <span
+                        x-text="message.createdAt.withinTimeFormat"
+                        class="bm-bg-white bm-text-xs bm-font-bold bm-py-1 bm-px-2 bm-absolute bm-rounded-b-lg bm-shadow-md bm-left-0">
                       </span>
                     </template>
                   </div>
