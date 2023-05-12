@@ -14,6 +14,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 /**
  * @phpstan-method static Authenticatable&User addSelectLastPrivateMessageId(Authenticatable&User $value)
  * @phpstan-method static Authenticatable&User addSelectUnreadMessages(Authenticatable&User $value)
+ *
  * @property string $name
  * @property string $avatar
  * @property int|null $unread_messages

@@ -17,7 +17,6 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Auth;
-use Spatie\LaravelData\DataCollection;
 use Symfony\Component\HttpFoundation\Response;
 
 class PrivateMessageController extends Controller

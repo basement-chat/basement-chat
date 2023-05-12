@@ -46,7 +46,7 @@ class AllContacts implements AllContactsContract
             id: (int) $contact->id,
             name: $contact->name,
             avatar: $contact->avatar,
-            last_private_message: (fn () => $contact->lastPrivateMessage !== null ? new PrivateMessageData(
+            last_private_message: (static fn () => $contact->lastPrivateMessage !== null ? new PrivateMessageData(
                 receiver_id: (int) $contact->lastPrivateMessage->receiver_id,
                 sender_id: (int) $contact->lastPrivateMessage->sender_id,
                 type: $contact->lastPrivateMessage->type,

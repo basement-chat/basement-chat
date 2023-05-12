@@ -29,12 +29,10 @@ class AllPrivateMessages implements AllPrivateMessagesContract
         Authenticatable $sender,
         string $keyword = '',
     ): CursorPaginator {
-        $messages = Basement::newPrivateMessageModel()
+        return Basement::newPrivateMessageModel()
             ->whereBetweenTwoUsers($receiver, $sender)
             ->whereValueLike($keyword)
             ->orderByDescId()
             ->cursorPaginate(self::MESSAGES_PER_PAGE);
-
-        return $messages;
     }
 }

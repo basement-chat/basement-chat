@@ -46,9 +46,7 @@ class PrivateMessageData implements Arrayable
                 return $receiver;
             }
 
-            $receiver = Basement::newUserModel()->findOrFail($this->receiver_id);
-
-            return $receiver;
+            return Basement::newUserModel()->findOrFail($this->receiver_id);
         };
 
         $this->senderResolver = function () use ($sender) {
@@ -56,10 +54,21 @@ class PrivateMessageData implements Arrayable
                 return $sender;
             }
 
-            $sender = Basement::newUserModel()->findOrFail($this->sender_id);
-
-            return $sender;
+            return Basement::newUserModel()->findOrFail($this->sender_id);
         };
+    }
+
+    public function __get(string $name): mixed
+    {
+        if ($name === 'receiver') {
+            return ($this->receiverResolver)();
+        }
+
+        if ($name === 'sender') {
+            return ($this->senderResolver)();
+        }
+
+        return null;
     }
 
     /**
@@ -77,7 +86,7 @@ class PrivateMessageData implements Arrayable
             ->whereIn('id', $messagesId)
             ->get();
 
-        return $messages->map(fn (PrivateMessage $message): self => new self(
+        return $messages->map(static fn (PrivateMessage $message): self => new self(
             receiver_id: (int) $message->receiver_id,
             sender_id: (int) $message->sender_id,
             type: $message->type,
@@ -104,18 +113,5 @@ class PrivateMessageData implements Arrayable
             'receiver' => $this->receiver->toArray(),
             'sender' => $this->sender->toArray(),
         ];
-    }
-
-    public function __get(string $name): mixed
-    {
-        if ($name === 'receiver') {
-            return ($this->receiverResolver)();
-        }
-
-        if ($name === 'sender') {
-            return ($this->senderResolver)();
-        }
-
-        return null;
     }
 }
