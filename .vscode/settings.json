@@ -1,5 +1,0 @@
-{
-  "phpcs.composerJsonPath": "./composer.json",
-  "phpcs.executablePath": "./vendor/bin/phpcs",
-  "phpcs.standard": "PSR12"
-}
