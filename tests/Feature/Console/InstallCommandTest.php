@@ -31,7 +31,7 @@ class InstallCommandTest extends TestCase
             ->assertSuccessful()
             ->expectsConfirmation('Would you like to run the migrations now?')
             ->expectsConfirmation(
-                'Do you want to install the broadcast driver? You can also do this later by calling <options=bold>basement:install --tag=driver</>.'
+                'Do you want to install the broadcast driver? You can also do this later by calling <options=bold>basement:install driver</>.'
             );
 
         $this->assertFileExists(config_path('basement.php'));
