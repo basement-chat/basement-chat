@@ -105,7 +105,7 @@ class InstallCommand extends Command
 
         $this->info('Basement Chat Application has been installed!');
 
-        if ($this->confirm('Do you want to install the broadcast driver? You can also do this later by calling ' . sprintf($this->styles['code'], 'basement:install --tag=driver') . '.')) {
+        if ($this->confirm('Do you want to install the broadcast driver? You can also do this later by calling ' . sprintf($this->styles['code'], 'basement:install driver') . '.')) {
             return $this->installDriver();
         }
 
