@@ -6,10 +6,10 @@ namespace BasementChat\Basement\Events;
 
 use BasementChat\Basement\Data\PrivateMessageData;
 use Illuminate\Broadcasting\PresenceChannel;
-use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
+use Illuminate\Contracts\Broadcasting\ShouldBroadcastNow;
 use Illuminate\Support\Collection;
 
-class PrivateMessageRead implements ShouldBroadcast
+class PrivateMessageRead implements ShouldBroadcastNow
 {
     /**
      * The value of the private message sent.
