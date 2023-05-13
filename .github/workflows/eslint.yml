@@ -1,0 +1,35 @@
+name: Run Code Style Checks
+
+on:
+  workflow_dispatch:
+  pull_request:
+    branches:
+      - "*.x"
+      - main
+      - next
+      - next-major
+      - beta
+      - alpha
+      - dev
+    paths:
+      - resources/**/*.ts
+
+jobs:
+  code-style-check:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 19
+          cache: npm
+
+      - name: Clean install dependencies
+        run: npm ci
+
+      - name: Run ESLint
+        run: npm run lint:ci

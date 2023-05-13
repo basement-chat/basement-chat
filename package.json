@@ -5,7 +5,8 @@
     "commit": "cz",
     "build": "npm run clean && rollup -c",
     "dev": "vite",
-    "lint": "eslint \"./resources/js/**/*.ts\" --fix"
+    "lint": "eslint \"./resources/js/**/*.ts\" --fix",
+    "lint:ci": "eslint \"./resources/js/**/*.ts\" --format github"
   },
   "dependencies": {
     "@alpinejs/intersect": "^3.10.4",
@@ -42,6 +43,7 @@
     "eslint": "^8.25.0",
     "eslint-config-airbnb-base": "^15.0.0",
     "eslint-config-airbnb-typescript": "^17.0.0",
+    "eslint-formatter-github": "^1.1.4",
     "eslint-plugin-import": "^2.26.0",
     "laravel-vite-plugin": "^0.6.1",
     "mark.js": "^8.11.1",
