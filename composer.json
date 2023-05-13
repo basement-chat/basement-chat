@@ -19,7 +19,7 @@
   ],
   "require": {
     "php": "^8.0",
-    "laravel/framework": "^9.36.4 | ^10.0.0",
+    "laravel/framework": "^9.0.0 | ^10.0.0",
     "laravel/sanctum": "^2.14.0 | ^3.0.1",
     "spatie/enum": "^3.13.0",
     "spatie/laravel-package-tools": "^1.13.6"
@@ -30,9 +30,9 @@
     "nunomaduro/collision": "^6.4.0",
     "nunomaduro/larastan": "^2.2.5",
     "nunomaduro/phpinsights": "^2.6.1",
-    "orchestra/canvas": "^7.3.0",
-    "orchestra/testbench": "^7.11.0",
-    "orchestra/testbench-dusk": "^7.11.0",
+    "orchestra/canvas": "^7.5.0",
+    "orchestra/testbench": "^7.24.1",
+    "orchestra/testbench-dusk": "^7.25.1",
     "phpstan/phpstan-deprecation-rules": "^1.0.0",
     "phpstan/phpstan-phpunit": "^1.1.1",
     "phpunit/phpunit": "^9.5.25",
