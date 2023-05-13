@@ -32,7 +32,6 @@
   <coverage>
     <include>
       <directory suffix=".php">./config</directory>
-      <directory suffix=".php">./resources</directory>
       <directory suffix=".php">./routes</directory>
       <directory suffix=".php">./src</directory>
     </include>
