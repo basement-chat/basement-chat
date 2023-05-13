@@ -84,7 +84,7 @@
         <div class="bm-col-span-10">
           <div class="bm-grid bm-grid-cols-4">
             <h4 class="bm-text-sm bm-font-bold bm-text-gray-900 bm-col-span-3 bm-truncate">
-              <span x-text="contact.name" x-bind:data-title="contact.name"></span>
+              <span x-text="(contact.id === {{ \Illuminate\Support\Facades\Auth::id() }} ? '(You) ' : '') + contact.name" x-bind:data-title="contact.name"></span>
             </h4>
 
             <p
