@@ -27,7 +27,7 @@
     "@semantic-release/changelog": "^6.0.1",
     "@semantic-release/git": "^10.0.1",
     "@tailwindcss/forms": "^0.5.3",
-    "@types/alpinejs": "^3.7.0",
+    "@types/alpinejs": "^3.7.1",
     "@types/mark.js": "^8.11.8",
     "@typescript-eslint/eslint-plugin": "^5.40.1",
     "@typescript-eslint/parser": "^5.40.1",
