@@ -1,3 +1,11 @@
+## [1.0.2](https://github.com/basement-chat/basement-chat/compare/v1.0.1...v1.0.2) (2023-05-13)
+
+
+### Bug Fixes
+
+* **contacts:** add current account indicator ([c069e04](https://github.com/basement-chat/basement-chat/commit/c069e04df26604fc57d6d2996eacf16bf9c4bf4a))
+* **private messages:** add sent message time tooltip ([ce136d0](https://github.com/basement-chat/basement-chat/commit/ce136d0e4f3b7b85b17edebb39300542d8a11abf))
+
 ## [1.0.1](https://github.com/basement-chat/basement-chat/compare/v1.0.0...v1.0.1) (2023-05-12)
 
 
