@@ -4,7 +4,8 @@
     "clean": "rm -rf ./dist",
     "commit": "cz",
     "build": "npm run clean && rollup -c",
-    "dev": "vite"
+    "dev": "vite",
+    "lint": "eslint \"./resources/js/**/*.ts\" --fix"
   },
   "dependencies": {
     "@alpinejs/intersect": "^3.10.4",
