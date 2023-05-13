@@ -11,7 +11,7 @@ export default (): AlpineComponent<PrivateMessageComponent> => {
   let lastMessageObserver: IntersectionObserver
   const urlTemplate: string = container.getAttribute('data-url')!
   const urlBatchRequest: string = container.getAttribute('data-batch-request-url')!
-  const userId: number = Number(container.getAttribute('data-user-id')!)
+  const userId = Number(container.getAttribute('data-user-id')!)
 
   return {
     isInfoBoxOpened: false,
@@ -55,9 +55,10 @@ export default (): AlpineComponent<PrivateMessageComponent> => {
     async mount(): Promise<void> {
       this.isLoading = true
 
-      const response: PaginatedResponse<PrivateMessage[]> = await window.axios
-        .get(this.url, { params: { keyword: this.searchKeyword.trim() } })
-        .then(({ data }: any): any => data)
+      const response = await window.axios.get<PaginatedResponse<PrivateMessage[]>>(
+        this.url,
+        { params: { keyword: this.searchKeyword.trim() } },
+      ).then(({ data }) => data)
 
       this.urlShowMore = response.links.next
       this.messages = response
@@ -84,9 +85,10 @@ export default (): AlpineComponent<PrivateMessageComponent> => {
 
       this.isLoadingShowMore = true
 
-      const response: PaginatedResponse<PrivateMessage[]> = await window.axios
-        .get(this.urlShowMore, { params: { keyword: this.searchKeyword.trim() } })
-        .then(({ data }: any): any => data)
+      const response = await window.axios.get<PaginatedResponse<PrivateMessage[]>>(
+        this.urlShowMore,
+        { params: { keyword: this.searchKeyword.trim() } },
+      ).then(({ data }) => data)
 
       const messages: PrivateMessageData[] = response
         .data
@@ -273,9 +275,9 @@ export default (): AlpineComponent<PrivateMessageComponent> => {
 
       this.isLoadingSentMessage = true
 
-      const response: Response<PrivateMessage> = await window.axios
-        .post(this.url, { value: this.newMessageValue })
-        .then(({ data }: any): any => data)
+      const response = await window.axios
+        .post<Response<PrivateMessage>>(this.url, { value: this.newMessageValue })
+        .then(({ data }) => data)
       const message: PrivateMessageData = PrivateMessageData.from(response.data)
 
       if (this.receiver.id !== userId) {

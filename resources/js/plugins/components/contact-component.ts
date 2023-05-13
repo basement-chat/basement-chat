@@ -26,9 +26,9 @@ export default (): AlpineComponent<ContactComponent> => {
      * Load initial component data.
      */
     async mount(): Promise<void> {
-      const response: Response<Contact[]> = await window.axios
-        .get(this.url)
-        .then(({ data }: any): any => data)
+      const response = await window.axios
+        .get<Response<Contact[]>>(this.url)
+        .then(({ data }) => data)
 
       this.contacts = response
         .data
