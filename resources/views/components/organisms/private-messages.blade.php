@@ -139,6 +139,8 @@
                     </template>
                     <template x-if="message.receiverId !== receiver.id">
                       <span
+                        x-bind:data-title="`Sent at ${message.createdAt.withinDateTimeFormat}`"
+                        data-tippy-placement="right"
                         x-text="message.createdAt.withinTimeFormat"
                         class="bm-bg-white bm-text-xs bm-font-bold bm-py-1 bm-px-2 bm-absolute bm-rounded-b-lg bm-shadow-md bm-left-0">
                       </span>
