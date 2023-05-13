@@ -53,12 +53,14 @@
     <env name="DB_CONNECTION" value="sqlite" />
     <env name="DB_DATABASE" value=":memory:"/>
     <env name="BROADCAST_DRIVER" value="pusher" />
-    <env name="BASEMENT_BROADCAST_DRIVER" value="pusher" />
+    <env name="BASEMENT_BROADCAST_DRIVER" value="soketi" />
     <env name="SESSION_DRIVER" value="cookie" />
     <env name="SANCTUM_STATEFUL_DOMAINS" value="127.0.0.1:8001" />
-    <!-- <env name="PUSHER_APP_ID" value="" />
-    <env name="PUSHER_APP_KEY" value="" />
-    <env name="PUSHER_APP_SECRET" value="" />
-    <env name="PUSHER_APP_CLUSTER" value="" /> -->
+    <env name="PUSHER_APP_ID" value="app-id" />
+    <env name="PUSHER_APP_KEY" value="app-key" />
+    <env name="PUSHER_APP_SECRET" value="app-secret" />
+    <env name="PUSHER_HOST" value="127.0.0.1" />
+    <env name="PUSHER_PORT" value="6001" />
+    <env name="PUSHER_SCHEME" value="http" />
   </php>
 </phpunit>

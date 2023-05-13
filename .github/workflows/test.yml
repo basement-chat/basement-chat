@@ -30,13 +30,15 @@ jobs:
       APP_KEY: "base64:IDrlmrVwu65iBhbUpPq3fsv7kybcnfUFZmY1wk+mamE="
       DB_CONNECTION: sqlite
       BROADCAST_DRIVER: pusher
-      BASEMENT_BROADCAST_DRIVER: pusher
+      BASEMENT_BROADCAST_DRIVER: soketi
       SESSION_DRIVER: cookie
       SANCTUM_STATEFUL_DOMAINS: "127.0.0.1:8001"
-      PUSHER_APP_ID: ${{ secrets.PUSHER_APP_ID }}
-      PUSHER_APP_KEY: ${{ secrets.PUSHER_APP_KEY }}
-      PUSHER_APP_SECRET: ${{ secrets.PUSHER_APP_SECRET }}
-      PUSHER_APP_CLUSTER: ${{ secrets.PUSHER_APP_CLUSTER }}
+      PUSHER_APP_ID: app-id
+      PUSHER_APP_KEY: app-key
+      PUSHER_APP_SECRET: app-secret
+      PUSHER_HOST: 127.0.0.1
+      PUSHER_PORT: 6001
+      PUSHER_SCHEME: http
 
     strategy:
       fail-fast: true
@@ -80,11 +82,21 @@ jobs:
       - name: List installed dependencies
         run: composer show -D
 
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: latest
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
       - name: Set up testing
         run: |
           ./vendor/orchestra/testbench-core/create-sqlite-db
           ./vendor/orchestra/testbench-dusk/create-sqlite-db
           ./vendor/bin/dusk-updater detect --auto-update
+          npx soketi start &
 
       - name: Execute tests
         run: composer test -- --coverage-clover coverage.xml
