@@ -99,14 +99,14 @@ class InstallCommand extends Command
         $this->call(command: 'vendor:publish', arguments: ['--tag' => 'basement-migrations']);
         $this->call(command: 'vendor:publish', arguments: ['--tag' => 'basement-assets']);
 
-        if ($this->confirm('Would you like to run the migrations now?')) {
-            $this->call('migrate');
-        }
-
         $this->info('Basement Chat Application has been installed!');
 
         if ($this->confirm('Do you want to install the broadcast driver? You can also do this later by calling ' . sprintf($this->styles['code'], 'basement:install driver') . '.')) {
             return $this->installDriver();
+        }
+
+        if ($this->confirm('Would you like to run the migrations now?')) {
+            $this->call('migrate');
         }
 
         return Command::SUCCESS;
