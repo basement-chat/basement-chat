@@ -130,7 +130,13 @@ class InstallCommand extends Command
                 'beyondcode/laravel-websockets',
                 'pusher/pusher-php-server',
             ]),
-            'soketi' => $this->nodeDependency->install(command: $this, dependencies: ['@soketi/soketi']),
+            'soketi' => $this->nodeDependency->install(
+                command: $this,
+                dependencies: ['@soketi/soketi'],
+            ) && $this->composerDependency->install(
+                command: $this,
+                dependencies: ['pusher/pusher-php-server'],
+            ),
             default => Command::INVALID,
         };
 
