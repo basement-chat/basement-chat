@@ -128,14 +128,15 @@
                       class="private-message__text--value bm-rounded-t-lg bm-py-1 bm-px-2 bm-break-words"></p>
 
                     <template x-if="message.receiverId === receiver.id">
-                      <span
+                      <div
                         x-bind:data-title="`Sent at ${message.createdAt.withinDateTimeFormat}`"
                         data-tippy-placement="left"
-                        class="bm-bg-white bm-text-xs bm-font-bold bm-py-1 bm-px-2 bm-absolute bm-rounded-b-lg bm-shadow-md bm-right-0">
+                        class="bm-bg-white bm-text-xs bm-font-bold bm-py-1 bm-px-2 bm-absolute bm-rounded-b-lg bm-shadow-md bm-right-0 bm-flex bm-space-x-1">
                         <x-basement::atoms.icons.fas-check-double
                           x-bind:class="message.readAt.date !== null ? 'bm-text-blue-500' : 'bm-text-gray-500'"
                           class="bm-w-3 bm-inline" />
-                      </span>
+                        <span x-text="message.createdAt.withinTimeFormat"></span>
+                      </div>
                     </template>
                     <template x-if="message.receiverId !== receiver.id">
                       <span
