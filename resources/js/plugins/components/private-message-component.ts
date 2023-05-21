@@ -199,6 +199,10 @@ export default (): AlpineComponent<PrivateMessageComponent> => {
           icon: event.detail.sender.avatar,
         })
       }
+
+      if (this.isLastMessageShown === true) {
+        this.scrollToLastMessage()
+      }
     },
 
     /**
