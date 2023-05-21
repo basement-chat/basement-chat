@@ -246,7 +246,9 @@ export default (): AlpineComponent<PrivateMessageComponent> => {
     scrollToLastMessage(): void {
       const lastMessage: PrivateMessageData | undefined = this.messages.at(0)
 
-      this.scrollTo(lastMessage?.id ?? null)
+      this.scrollTo(lastMessage?.id ?? null, {
+        behavior: 'smooth',
+      })
     },
 
     /**
@@ -282,9 +284,7 @@ export default (): AlpineComponent<PrivateMessageComponent> => {
 
       if (this.receiver.id !== userId) {
         this.messages.unshift(message)
-        this.scrollTo(message.id, {
-          behavior: 'smooth',
-        })
+        this.scrollToLastMessage()
       }
 
       this.receiver.lastPrivateMessage = message
