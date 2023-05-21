@@ -131,9 +131,9 @@ export default (): AlpineComponent<PrivateMessageComponent> => {
       const { intersectionRatio }: IntersectionObserverEntry = entries.at(0)!
 
       if (intersectionRatio > 0.5) {
-        this.isLastMessageShown = false
-      } else {
         this.isLastMessageShown = true
+      } else {
+        this.isLastMessageShown = false
       }
     },
 
