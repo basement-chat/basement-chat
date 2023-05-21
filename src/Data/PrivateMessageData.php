@@ -46,7 +46,9 @@ class PrivateMessageData implements Arrayable
                 return $receiver;
             }
 
-            return Basement::newUserModel()->findOrFail($this->receiver_id);
+            $receiver = Basement::newUserModel()->findOrFail($this->receiver_id);
+
+            return $receiver;
         };
 
         $this->senderResolver = function () use ($sender) {
@@ -54,7 +56,9 @@ class PrivateMessageData implements Arrayable
                 return $sender;
             }
 
-            return Basement::newUserModel()->findOrFail($this->sender_id);
+            $sender = Basement::newUserModel()->findOrFail($this->sender_id);
+
+            return $sender;
         };
     }
 
