@@ -1,4 +1,4 @@
-import { differenceInDays, intlFormat } from 'date-fns'
+import { intlFormat, isToday, isYesterday } from 'date-fns'
 import { FormatOptions } from '../types/date-fns'
 
 class DateFormatter {
@@ -56,13 +56,11 @@ class DateFormatter {
       return ''
     }
 
-    const diffInDays: number = differenceInDays(this.date, new Date())
-
-    if (diffInDays === 0) {
+    if (isToday(this.date) === true) {
       return intlFormat(this.date, this.timeFormat)
     }
 
-    if (diffInDays === -1) {
+    if (isYesterday(this.date) === true) {
       return 'Yesterday'
     }
 
