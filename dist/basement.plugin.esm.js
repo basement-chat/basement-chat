@@ -106,12 +106,12 @@ var functionUncurryThis = function (fn) {
   if (classofRaw$1(fn) === 'Function') return uncurryThisRaw(fn);
 };
 
-var uncurryThis$t = functionUncurryThis;
+var uncurryThis$s = functionUncurryThis;
 var fails$q = fails$t;
 var classof$b = classofRaw$2;
 
 var $Object$4 = Object;
-var split = uncurryThis$t(''.split);
+var split = uncurryThis$s(''.split);
 
 // fallback for non-array-like ES3 and non-enumerable old V8 strings
 var indexedObject = fails$q(function () {
@@ -191,9 +191,9 @@ var getBuiltIn$7 = function (namespace, method) {
   return arguments.length < 2 ? aFunction(global$l[namespace]) : global$l[namespace] && global$l[namespace][method];
 };
 
-var uncurryThis$s = functionUncurryThis;
+var uncurryThis$r = functionUncurryThis;
 
-var objectIsPrototypeOf = uncurryThis$s({}.isPrototypeOf);
+var objectIsPrototypeOf = uncurryThis$r({}.isPrototypeOf);
 
 var getBuiltIn$6 = getBuiltIn$7;
 
@@ -356,10 +356,10 @@ var toObject$9 = function (argument) {
   return $Object$2(requireObjectCoercible$6(argument));
 };
 
-var uncurryThis$r = functionUncurryThis;
+var uncurryThis$q = functionUncurryThis;
 var toObject$8 = toObject$9;
 
-var hasOwnProperty$1 = uncurryThis$r({}.hasOwnProperty);
+var hasOwnProperty$1 = uncurryThis$q({}.hasOwnProperty);
 
 // `HasOwnProperty` abstract operation
 // https://tc39.es/ecma262/#sec-hasownproperty
@@ -368,11 +368,11 @@ var hasOwnProperty_1 = Object.hasOwn || function hasOwn(it, key) {
   return hasOwnProperty$1(toObject$8(it), key);
 };
 
-var uncurryThis$q = functionUncurryThis;
+var uncurryThis$p = functionUncurryThis;
 
 var id$1 = 0;
 var postfix = Math.random();
-var toString$b = uncurryThis$q(1.0.toString);
+var toString$b = uncurryThis$p(1.0.toString);
 
 var uid$3 = function (key) {
   return 'Symbol(' + (key === undefined ? '' : key) + ')_' + toString$b(++id$1 + postfix, 36);
@@ -586,11 +586,11 @@ var functionName = {
   CONFIGURABLE: CONFIGURABLE
 };
 
-var uncurryThis$p = functionUncurryThis;
+var uncurryThis$o = functionUncurryThis;
 var isCallable$f = isCallable$l;
 var store$1 = sharedStore;
 
-var functionToString$1 = uncurryThis$p(Function.toString);
+var functionToString$1 = uncurryThis$o(Function.toString);
 
 // this helper broken in `core-js@3.4.1-3.4.4`, so we can't use `shared` helper
 if (!isCallable$f(store$1.inspectSource)) {
@@ -745,7 +745,7 @@ var definePropertyModule$4 = objectDefineProperty;
 var makeBuiltIn = makeBuiltIn$2.exports;
 var defineGlobalProperty$1 = defineGlobalProperty$3;
 
-var defineBuiltIn$a = function (O, key, value, options) {
+var defineBuiltIn$9 = function (O, key, value, options) {
   if (!options) options = {};
   var simple = options.enumerable;
   var name = options.name !== undefined ? options.name : key;
@@ -855,13 +855,13 @@ var arrayIncludes = {
   indexOf: createMethod$4(false)
 };
 
-var uncurryThis$o = functionUncurryThis;
+var uncurryThis$n = functionUncurryThis;
 var hasOwn$7 = hasOwnProperty_1;
 var toIndexedObject$4 = toIndexedObject$7;
 var indexOf$1 = arrayIncludes.indexOf;
 var hiddenKeys$3 = hiddenKeys$5;
 
-var push$2 = uncurryThis$o([].push);
+var push$2 = uncurryThis$n([].push);
 
 var objectKeysInternal = function (object, names) {
   var O = toIndexedObject$4(object);
@@ -905,12 +905,12 @@ var objectGetOwnPropertySymbols = {};
 objectGetOwnPropertySymbols.f = Object.getOwnPropertySymbols;
 
 var getBuiltIn$4 = getBuiltIn$7;
-var uncurryThis$n = functionUncurryThis;
+var uncurryThis$m = functionUncurryThis;
 var getOwnPropertyNamesModule$1 = objectGetOwnPropertyNames;
 var getOwnPropertySymbolsModule = objectGetOwnPropertySymbols;
 var anObject$b = anObject$d;
 
-var concat$2 = uncurryThis$n([].concat);
+var concat$2 = uncurryThis$m([].concat);
 
 // all object keys, includes non-enumerable and symbols
 var ownKeys$2 = getBuiltIn$4('Reflect', 'ownKeys') || function ownKeys(it) {
@@ -962,7 +962,7 @@ var isForced_1 = isForced$3;
 var global$d = global$m;
 var getOwnPropertyDescriptor$2 = objectGetOwnPropertyDescriptor.f;
 var createNonEnumerableProperty$6 = createNonEnumerableProperty$8;
-var defineBuiltIn$9 = defineBuiltIn$a;
+var defineBuiltIn$8 = defineBuiltIn$9;
 var defineGlobalProperty = defineGlobalProperty$3;
 var copyConstructorProperties$1 = copyConstructorProperties$2;
 var isForced$2 = isForced_1;
@@ -1010,15 +1010,15 @@ var _export = function (options, source) {
     if (options.sham || (targetProperty && targetProperty.sham)) {
       createNonEnumerableProperty$6(sourceProperty, 'sham', true);
     }
-    defineBuiltIn$9(target, key, sourceProperty, options);
+    defineBuiltIn$8(target, key, sourceProperty, options);
   }
 };
 
-var uncurryThis$m = functionUncurryThis;
-
-var arraySlice$4 = uncurryThis$m([].slice);
-
 var uncurryThis$l = functionUncurryThis;
+
+var arraySlice$4 = uncurryThis$l([].slice);
+
+var uncurryThis$k = functionUncurryThis;
 var aCallable$3 = aCallable$5;
 var isObject$8 = isObject$e;
 var hasOwn$5 = hasOwnProperty_1;
@@ -1026,8 +1026,8 @@ var arraySlice$3 = arraySlice$4;
 var NATIVE_BIND$2 = functionBindNative;
 
 var $Function = Function;
-var concat$1 = uncurryThis$l([].concat);
-var join = uncurryThis$l([].join);
+var concat$1 = uncurryThis$k([].concat);
+var join = uncurryThis$k([].join);
 var factories = {};
 
 var construct$1 = function (C, argsLength, args) {
@@ -5359,11 +5359,11 @@ function _nonIterableSpread() {
   throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method.");
 }
 
-var uncurryThis$k = functionUncurryThis;
+var uncurryThis$j = functionUncurryThis;
 var aCallable$2 = aCallable$5;
 var NATIVE_BIND$1 = functionBindNative;
 
-var bind$3 = uncurryThis$k(uncurryThis$k.bind);
+var bind$3 = uncurryThis$j(uncurryThis$j.bind);
 
 // optional / simple context binding
 var functionBindContext = function (fn, that) {
@@ -5421,7 +5421,7 @@ var classof$9 = TO_STRING_TAG_SUPPORT$2 ? classofRaw : function (it) {
     : (result = classofRaw(O)) == 'Object' && isCallable$a(O.callee) ? 'Arguments' : result;
 };
 
-var uncurryThis$j = functionUncurryThis;
+var uncurryThis$i = functionUncurryThis;
 var fails$k = fails$t;
 var isCallable$9 = isCallable$l;
 var classof$8 = classof$9;
@@ -5432,7 +5432,7 @@ var noop = function () { /* empty */ };
 var empty = [];
 var construct = getBuiltIn$3('Reflect', 'construct');
 var constructorRegExp = /^\s*(?:class|function)\b/;
-var exec$1 = uncurryThis$j(constructorRegExp.exec);
+var exec$1 = uncurryThis$i(constructorRegExp.exec);
 var INCORRECT_TO_STRING$1 = !constructorRegExp.exec(noop);
 
 var isConstructorModern = function isConstructor(argument) {
@@ -5506,13 +5506,13 @@ var arraySpeciesCreate$2 = function (originalArray, length) {
 };
 
 var bind$2 = functionBindContext;
-var uncurryThis$i = functionUncurryThis;
+var uncurryThis$h = functionUncurryThis;
 var IndexedObject$2 = indexedObject;
 var toObject$7 = toObject$9;
 var lengthOfArrayLike$7 = lengthOfArrayLike$9;
 var arraySpeciesCreate$1 = arraySpeciesCreate$2;
 
-var push$1 = uncurryThis$i([].push);
+var push$1 = uncurryThis$h([].push);
 
 // `Array.prototype.{ forEach, map, filter, some, every, find, findIndex, filterReject }` methods implementation
 var createMethod$3 = function (TYPE) {
@@ -5820,7 +5820,7 @@ var regexpUnsupportedNcg = fails$g(function () {
 /* eslint-disable regexp/no-empty-capturing-group, regexp/no-empty-group, regexp/no-lazy-ends -- testing */
 /* eslint-disable regexp/no-useless-quantifier -- testing */
 var call$8 = functionCall;
-var uncurryThis$h = functionUncurryThis;
+var uncurryThis$g = functionUncurryThis;
 var toString$9 = toString$a;
 var regexpFlags = regexpFlags$1;
 var stickyHelpers = regexpStickyHelpers;
@@ -5833,10 +5833,10 @@ var UNSUPPORTED_NCG = regexpUnsupportedNcg;
 var nativeReplace = shared('native-string-replace', String.prototype.replace);
 var nativeExec = RegExp.prototype.exec;
 var patchedExec = nativeExec;
-var charAt$5 = uncurryThis$h(''.charAt);
-var indexOf = uncurryThis$h(''.indexOf);
-var replace$3 = uncurryThis$h(''.replace);
-var stringSlice$3 = uncurryThis$h(''.slice);
+var charAt$5 = uncurryThis$g(''.charAt);
+var indexOf = uncurryThis$g(''.indexOf);
+var replace$3 = uncurryThis$g(''.replace);
+var stringSlice$3 = uncurryThis$g(''.slice);
 
 var UPDATES_LAST_INDEX_WRONG = (function () {
   var re1 = /a/;
@@ -5945,8 +5945,8 @@ $$m({ target: 'RegExp', proto: true, forced: /./.exec !== exec }, {
 
 // TODO: Remove from `core-js@4` since it's moved to entry points
 
-var uncurryThis$g = functionUncurryThis;
-var defineBuiltIn$8 = defineBuiltIn$a;
+var uncurryThis$f = functionUncurryThis;
+var defineBuiltIn$7 = defineBuiltIn$9;
 var regexpExec$1 = regexpExec$2;
 var fails$f = fails$t;
 var wellKnownSymbol$c = wellKnownSymbol$i;
@@ -5994,9 +5994,9 @@ var fixRegexpWellKnownSymbolLogic = function (KEY, exec, FORCED, SHAM) {
     !DELEGATES_TO_EXEC ||
     FORCED
   ) {
-    var uncurriedNativeRegExpMethod = uncurryThis$g(/./[SYMBOL]);
+    var uncurriedNativeRegExpMethod = uncurryThis$f(/./[SYMBOL]);
     var methods = exec(SYMBOL, ''[KEY], function (nativeMethod, regexp, str, arg2, forceStringMethod) {
-      var uncurriedNativeMethod = uncurryThis$g(nativeMethod);
+      var uncurriedNativeMethod = uncurryThis$f(nativeMethod);
       var $exec = regexp.exec;
       if ($exec === regexpExec$1 || $exec === RegExpPrototype.exec) {
         if (DELEGATES_TO_SYMBOL && !forceStringMethod) {
@@ -6010,8 +6010,8 @@ var fixRegexpWellKnownSymbolLogic = function (KEY, exec, FORCED, SHAM) {
       return { done: false };
     });
 
-    defineBuiltIn$8(String.prototype, KEY, methods[0]);
-    defineBuiltIn$8(RegExpPrototype, SYMBOL, methods[1]);
+    defineBuiltIn$7(String.prototype, KEY, methods[0]);
+    defineBuiltIn$7(RegExpPrototype, SYMBOL, methods[1]);
   }
 
   if (SHAM) createNonEnumerableProperty$5(RegExpPrototype[SYMBOL], 'sham', true);
@@ -6109,24 +6109,24 @@ var objectToString = TO_STRING_TAG_SUPPORT$1 ? {}.toString : function toString()
 };
 
 var TO_STRING_TAG_SUPPORT = toStringTagSupport;
-var defineBuiltIn$7 = defineBuiltIn$a;
+var defineBuiltIn$6 = defineBuiltIn$9;
 var toString$7 = objectToString;
 
 // `Object.prototype.toString` method
 // https://tc39.es/ecma262/#sec-object.prototype.tostring
 if (!TO_STRING_TAG_SUPPORT) {
-  defineBuiltIn$7(Object.prototype, 'toString', toString$7, { unsafe: true });
+  defineBuiltIn$6(Object.prototype, 'toString', toString$7, { unsafe: true });
 }
 
 var DESCRIPTORS$7 = descriptors;
 var FUNCTION_NAME_EXISTS = functionName.EXISTS;
-var uncurryThis$f = functionUncurryThis;
+var uncurryThis$e = functionUncurryThis;
 var defineProperty$7 = objectDefineProperty.f;
 
 var FunctionPrototype$1 = Function.prototype;
-var functionToString = uncurryThis$f(FunctionPrototype$1.toString);
+var functionToString = uncurryThis$e(FunctionPrototype$1.toString);
 var nameRE = /function\b(?:\s|\/\*[\S\s]*?\*\/|\/\/[^\n\r]*[\n\r]+)*([^\s(/]*)/;
-var regExpExec$1 = uncurryThis$f(nameRE.exec);
+var regExpExec$1 = uncurryThis$e(nameRE.exec);
 var NAME = 'name';
 
 // Function instances `.name` property
@@ -6226,13 +6226,13 @@ var correctIsRegexpLogic = function (METHOD_NAME) {
 };
 
 var $$j = _export;
-var uncurryThis$e = functionUncurryThis;
+var uncurryThis$d = functionUncurryThis;
 var notARegExp = notARegexp;
 var requireObjectCoercible$4 = requireObjectCoercible$8;
 var toString$6 = toString$a;
 var correctIsRegExpLogic = correctIsRegexpLogic;
 
-var stringIndexOf$1 = uncurryThis$e(''.indexOf);
+var stringIndexOf$1 = uncurryThis$d(''.indexOf);
 
 // `String.prototype.includes` method
 // https://tc39.es/ecma262/#sec-string.prototype.includes
@@ -6288,13 +6288,13 @@ $$h({ target: 'Array', proto: true }, {
 addToUnscopables$2('at');
 
 var $$g = _export;
-var uncurryThis$d = functionUncurryThis;
+var uncurryThis$c = functionUncurryThis;
 var requireObjectCoercible$3 = requireObjectCoercible$8;
 var toIntegerOrInfinity$3 = toIntegerOrInfinity$7;
 var toString$5 = toString$a;
 var fails$d = fails$t;
 
-var charAt$4 = uncurryThis$d(''.charAt);
+var charAt$4 = uncurryThis$c(''.charAt);
 
 var FORCED$1 = fails$d(function () {
   // eslint-disable-next-line es/no-array-string-prototype-at -- safe
@@ -6488,12 +6488,12 @@ $$e({ target: 'Array', proto: true, arity: 1, forced: INCORRECT_TO_LENGTH || SIL
 });
 
 var $$d = _export;
-var uncurryThis$c = functionUncurryThis;
+var uncurryThis$b = functionUncurryThis;
 var IndexedObject$1 = indexedObject;
 var toIndexedObject$2 = toIndexedObject$7;
 var arrayMethodIsStrict$2 = arrayMethodIsStrict$4;
 
-var nativeJoin = uncurryThis$c([].join);
+var nativeJoin = uncurryThis$b([].join);
 
 var ES3_STRINGS = IndexedObject$1 != Object;
 var STRICT_METHOD$2 = arrayMethodIsStrict$2('join', ',');
@@ -6914,7 +6914,7 @@ var subMilliseconds = {exports: {}};
 
 var addMilliseconds = {exports: {}};
 
-var toInteger = {exports: {}};
+var toInteger$1 = {exports: {}};
 
 (function (module, exports) {
 
@@ -6938,7 +6938,7 @@ var toInteger = {exports: {}};
 	}
 
 	module.exports = exports.default;
-} (toInteger, toInteger.exports));
+} (toInteger$1, toInteger$1.exports));
 
 (function (module, exports) {
 
@@ -6947,7 +6947,7 @@ var toInteger = {exports: {}};
 	});
 	exports.default = addMilliseconds;
 
-	var _index = _interopRequireDefault(toInteger.exports);
+	var _index = _interopRequireDefault(toInteger$1.exports);
 
 	var _index2 = _interopRequireDefault(toDate$2.exports);
 
@@ -6994,7 +6994,7 @@ var toInteger = {exports: {}};
 
 	var _index2 = _interopRequireDefault(requiredArgs$1.exports);
 
-	var _index3 = _interopRequireDefault(toInteger.exports);
+	var _index3 = _interopRequireDefault(toInteger$1.exports);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -7225,7 +7225,7 @@ function setDefaultOptions(newOptions) {
 
 	var _index2 = _interopRequireDefault(requiredArgs$1.exports);
 
-	var _index3 = _interopRequireDefault(toInteger.exports);
+	var _index3 = _interopRequireDefault(toInteger$1.exports);
 
 	var _index4 = defaultOptions$1;
 
@@ -7270,7 +7270,7 @@ var getUTCWeekYear = {exports: {}};
 
 	var _index3 = _interopRequireDefault(startOfUTCWeek.exports);
 
-	var _index4 = _interopRequireDefault(toInteger.exports);
+	var _index4 = _interopRequireDefault(toInteger$1.exports);
 
 	var _index5 = defaultOptions$1;
 
@@ -7323,7 +7323,7 @@ var getUTCWeekYear = {exports: {}};
 
 	var _index3 = _interopRequireDefault(startOfUTCWeek.exports);
 
-	var _index4 = _interopRequireDefault(toInteger.exports);
+	var _index4 = _interopRequireDefault(toInteger$1.exports);
 
 	var _index5 = defaultOptions$1;
 
@@ -8495,7 +8495,7 @@ var longFormatters = {exports: {}};
 	module.exports = exports.default;
 } (longFormatters, longFormatters.exports));
 
-var getTimezoneOffsetInMilliseconds$1 = {exports: {}};
+var getTimezoneOffsetInMilliseconds = {exports: {}};
 
 (function (module, exports) {
 
@@ -8522,7 +8522,7 @@ var getTimezoneOffsetInMilliseconds$1 = {exports: {}};
 	}
 
 	module.exports = exports.default;
-} (getTimezoneOffsetInMilliseconds$1, getTimezoneOffsetInMilliseconds$1.exports));
+} (getTimezoneOffsetInMilliseconds, getTimezoneOffsetInMilliseconds.exports));
 
 var protectedTokens = {};
 
@@ -9240,11 +9240,11 @@ var buildMatchPatternFn = {exports: {}};
 
 	var _index5 = _interopRequireDefault(longFormatters.exports);
 
-	var _index6 = _interopRequireDefault(getTimezoneOffsetInMilliseconds$1.exports);
+	var _index6 = _interopRequireDefault(getTimezoneOffsetInMilliseconds.exports);
 
 	var _index7 = protectedTokens;
 
-	var _index8 = _interopRequireDefault(toInteger.exports);
+	var _index8 = _interopRequireDefault(toInteger$1.exports);
 
 	var _index9 = _interopRequireDefault(requiredArgs$1.exports);
 
@@ -10181,9 +10181,9 @@ var tzPattern = {exports: {}};
 	});
 	exports.default = toDate;
 
-	var _index = _interopRequireDefault(toInteger.exports);
+	var _index = _interopRequireDefault(toInteger$1.exports);
 
-	var _index2 = _interopRequireDefault(getTimezoneOffsetInMilliseconds$1.exports);
+	var _index2 = _interopRequireDefault(getTimezoneOffsetInMilliseconds.exports);
 
 	var _index3 = _interopRequireDefault(tzParseTimezone.exports);
 
@@ -11259,24 +11259,18 @@ var MessageType;
 })(MessageType || (MessageType = {}));
 var MessageType$1 = MessageType;
 
-// TODO: Remove from `core-js@4`
-var uncurryThis$b = functionUncurryThis;
-var defineBuiltIn$6 = defineBuiltIn$a;
+function toInteger(dirtyNumber) {
+  if (dirtyNumber === null || dirtyNumber === true || dirtyNumber === false) {
+    return NaN;
+  }
 
-var DatePrototype = Date.prototype;
-var INVALID_DATE = 'Invalid Date';
-var TO_STRING = 'toString';
-var nativeDateToString = uncurryThis$b(DatePrototype[TO_STRING]);
-var thisTimeValue = uncurryThis$b(DatePrototype.getTime);
+  var number = Number(dirtyNumber);
 
-// `Date.prototype.toString` method
-// https://tc39.es/ecma262/#sec-date.prototype.tostring
-if (String(new Date(NaN)) != INVALID_DATE) {
-  defineBuiltIn$6(DatePrototype, TO_STRING, function toString() {
-    var value = thisTimeValue(this);
-    // eslint-disable-next-line no-self-compare -- NaN check
-    return value === value ? nativeDateToString(this) : INVALID_DATE;
-  });
+  if (isNaN(number)) {
+    return number;
+  }
+
+  return number < 0 ? Math.ceil(number) : Math.floor(number);
 }
 
 function requiredArgs(required, args) {
@@ -11339,20 +11333,40 @@ function toDate(argument) {
 }
 
 /**
- * Google Chrome as of 67.0.3396.87 introduced timezones with offset that includes seconds.
- * They usually appear for dates that denote time before the timezones were introduced
- * (e.g. for 'Europe/Prague' timezone the offset is GMT+00:57:44 before 1 October 1891
- * and GMT+01:00:00 after that date)
+ * @name addDays
+ * @category Day Helpers
+ * @summary Add the specified number of days to the given date.
  *
- * Date#getTimezoneOffset returns the offset in minutes and would return 57 for the example above,
- * which would lead to incorrect calculations.
+ * @description
+ * Add the specified number of days to the given date.
  *
- * This function returns the timezone offset in milliseconds that takes seconds in account.
+ * @param {Date|Number} date - the date to be changed
+ * @param {Number} amount - the amount of days to be added. Positive decimals will be rounded using `Math.floor`, decimals less than zero will be rounded using `Math.ceil`.
+ * @returns {Date} - the new date with the days added
+ * @throws {TypeError} - 2 arguments required
+ *
+ * @example
+ * // Add 10 days to 1 September 2014:
+ * const result = addDays(new Date(2014, 8, 1), 10)
+ * //=> Thu Sep 11 2014 00:00:00
  */
-function getTimezoneOffsetInMilliseconds(date) {
-  var utcDate = new Date(Date.UTC(date.getFullYear(), date.getMonth(), date.getDate(), date.getHours(), date.getMinutes(), date.getSeconds(), date.getMilliseconds()));
-  utcDate.setUTCFullYear(date.getFullYear());
-  return date.getTime() - utcDate.getTime();
+
+function addDays(dirtyDate, dirtyAmount) {
+  requiredArgs(2, arguments);
+  var date = toDate(dirtyDate);
+  var amount = toInteger(dirtyAmount);
+
+  if (isNaN(amount)) {
+    return new Date(NaN);
+  }
+
+  if (!amount) {
+    // If 0 days, no-op to avoid changing times in the hour before end of DST
+    return date;
+  }
+
+  date.setDate(date.getDate() + amount);
+  return date;
 }
 
 /**
@@ -11381,129 +11395,40 @@ function startOfDay(dirtyDate) {
   return date;
 }
 
-var MILLISECONDS_IN_DAY = 86400000;
 /**
- * @name differenceInCalendarDays
+ * @name isSameDay
  * @category Day Helpers
- * @summary Get the number of calendar days between the given dates.
+ * @summary Are the given dates in the same day (and year and month)?
  *
  * @description
- * Get the number of calendar days between the given dates. This means that the times are removed
- * from the dates and then the difference in days is calculated.
+ * Are the given dates in the same day (and year and month)?
  *
- * @param {Date|Number} dateLeft - the later date
- * @param {Date|Number} dateRight - the earlier date
- * @returns {Number} the number of calendar days
+ * @param {Date|Number} dateLeft - the first date to check
+ * @param {Date|Number} dateRight - the second date to check
+ * @returns {Boolean} the dates are in the same day (and year and month)
  * @throws {TypeError} 2 arguments required
  *
  * @example
- * // How many calendar days are between
- * // 2 July 2011 23:00:00 and 2 July 2012 00:00:00?
- * const result = differenceInCalendarDays(
- *   new Date(2012, 6, 2, 0, 0),
- *   new Date(2011, 6, 2, 23, 0)
- * )
- * //=> 366
- * // How many calendar days are between
- * // 2 July 2011 23:59:00 and 3 July 2011 00:01:00?
- * const result = differenceInCalendarDays(
- *   new Date(2011, 6, 3, 0, 1),
- *   new Date(2011, 6, 2, 23, 59)
- * )
- * //=> 1
- */
-
-function differenceInCalendarDays(dirtyDateLeft, dirtyDateRight) {
-  requiredArgs(2, arguments);
-  var startOfDayLeft = startOfDay(dirtyDateLeft);
-  var startOfDayRight = startOfDay(dirtyDateRight);
-  var timestampLeft = startOfDayLeft.getTime() - getTimezoneOffsetInMilliseconds(startOfDayLeft);
-  var timestampRight = startOfDayRight.getTime() - getTimezoneOffsetInMilliseconds(startOfDayRight); // Round the number of days to the nearest integer
-  // because the number of milliseconds in a day is not constant
-  // (e.g. it's different in the day of the daylight saving time clock shift)
-
-  return Math.round((timestampLeft - timestampRight) / MILLISECONDS_IN_DAY);
-}
-
-// for accurate equality comparisons of UTC timestamps that end up
-// having the same representation in local time, e.g. one hour before
-// DST ends vs. the instant that DST ends.
-
-function compareLocalAsc(dateLeft, dateRight) {
-  var diff = dateLeft.getFullYear() - dateRight.getFullYear() || dateLeft.getMonth() - dateRight.getMonth() || dateLeft.getDate() - dateRight.getDate() || dateLeft.getHours() - dateRight.getHours() || dateLeft.getMinutes() - dateRight.getMinutes() || dateLeft.getSeconds() - dateRight.getSeconds() || dateLeft.getMilliseconds() - dateRight.getMilliseconds();
-
-  if (diff < 0) {
-    return -1;
-  } else if (diff > 0) {
-    return 1; // Return 0 if diff is 0; return NaN if diff is NaN
-  } else {
-    return diff;
-  }
-}
-/**
- * @name differenceInDays
- * @category Day Helpers
- * @summary Get the number of full days between the given dates.
- *
- * @description
- * Get the number of full day periods between two dates. Fractional days are
- * truncated towards zero.
- *
- * One "full day" is the distance between a local time in one day to the same
- * local time on the next or previous day. A full day can sometimes be less than
- * or more than 24 hours if a daylight savings change happens between two dates.
- *
- * To ignore DST and only measure exact 24-hour periods, use this instead:
- * `Math.floor(differenceInHours(dateLeft, dateRight)/24)|0`.
- *
- *
- * @param {Date|Number} dateLeft - the later date
- * @param {Date|Number} dateRight - the earlier date
- * @returns {Number} the number of full days according to the local timezone
- * @throws {TypeError} 2 arguments required
+ * // Are 4 September 06:00:00 and 4 September 18:00:00 in the same day?
+ * const result = isSameDay(new Date(2014, 8, 4, 6, 0), new Date(2014, 8, 4, 18, 0))
+ * //=> true
  *
  * @example
- * // How many full days are between
- * // 2 July 2011 23:00:00 and 2 July 2012 00:00:00?
- * const result = differenceInDays(
- *   new Date(2012, 6, 2, 0, 0),
- *   new Date(2011, 6, 2, 23, 0)
- * )
- * //=> 365
- * // How many full days are between
- * // 2 July 2011 23:59:00 and 3 July 2011 00:01:00?
- * const result = differenceInDays(
- *   new Date(2011, 6, 3, 0, 1),
- *   new Date(2011, 6, 2, 23, 59)
- * )
- * //=> 0
- * // How many full days are between
- * // 1 March 2020 0:00 and 1 June 2020 0:00 ?
- * // Note: because local time is used, the
- * // result will always be 92 days, even in
- * // time zones where DST starts and the
- * // period has only 92*24-1 hours.
- * const result = differenceInDays(
- *   new Date(2020, 5, 1),
- *   new Date(2020, 2, 1)
- * )
-//=> 92
+ * // Are 4 September and 4 October in the same day?
+ * const result = isSameDay(new Date(2014, 8, 4), new Date(2014, 9, 4))
+ * //=> false
+ *
+ * @example
+ * // Are 4 September, 2014 and 4 September, 2015 in the same day?
+ * const result = isSameDay(new Date(2014, 8, 4), new Date(2015, 8, 4))
+ * //=> false
  */
 
-
-function differenceInDays(dirtyDateLeft, dirtyDateRight) {
+function isSameDay(dirtyDateLeft, dirtyDateRight) {
   requiredArgs(2, arguments);
-  var dateLeft = toDate(dirtyDateLeft);
-  var dateRight = toDate(dirtyDateRight);
-  var sign = compareLocalAsc(dateLeft, dateRight);
-  var difference = Math.abs(differenceInCalendarDays(dateLeft, dateRight));
-  dateLeft.setDate(dateLeft.getDate() - sign * difference); // Math.abs(diff in full days - diff in calendar days) === 1 if last calendar day is not full
-  // If so, result must be decreased by 1 in absolute value
-
-  var isLastDayNotFull = Number(compareLocalAsc(dateLeft, dateRight) === -sign);
-  var result = sign * (difference - isLastDayNotFull); // Prevent negative zero
-
-  return result === 0 ? 0 : result;
+  var dateLeftStartOfDay = startOfDay(dirtyDateLeft);
+  var dateRightStartOfDay = startOfDay(dirtyDateRight);
+  return dateLeftStartOfDay.getTime() === dateRightStartOfDay.getTime();
 }
 
 /**
@@ -11595,6 +11520,85 @@ function isFormatOptions(opts) {
   return opts !== undefined && !('locale' in opts);
 }
 
+/**
+ * @name isToday
+ * @category Day Helpers
+ * @summary Is the given date today?
+ * @pure false
+ *
+ * @description
+ * Is the given date today?
+ *
+ * > ⚠️ Please note that this function is not present in the FP submodule as
+ * > it uses `Date.now()` internally hence impure and can't be safely curried.
+ *
+ * @param {Date|Number} date - the date to check
+ * @returns {Boolean} the date is today
+ * @throws {TypeError} 1 argument required
+ *
+ * @example
+ * // If today is 6 October 2014, is 6 October 14:00:00 today?
+ * const result = isToday(new Date(2014, 9, 6, 14, 0))
+ * //=> true
+ */
+
+function isToday(dirtyDate) {
+  requiredArgs(1, arguments);
+  return isSameDay(dirtyDate, Date.now());
+}
+
+/**
+ * @name subDays
+ * @category Day Helpers
+ * @summary Subtract the specified number of days from the given date.
+ *
+ * @description
+ * Subtract the specified number of days from the given date.
+ *
+ * @param {Date|Number} date - the date to be changed
+ * @param {Number} amount - the amount of days to be subtracted. Positive decimals will be rounded using `Math.floor`, decimals less than zero will be rounded using `Math.ceil`.
+ * @returns {Date} the new date with the days subtracted
+ * @throws {TypeError} 2 arguments required
+ *
+ * @example
+ * // Subtract 10 days from 1 September 2014:
+ * const result = subDays(new Date(2014, 8, 1), 10)
+ * //=> Fri Aug 22 2014 00:00:00
+ */
+
+function subDays(dirtyDate, dirtyAmount) {
+  requiredArgs(2, arguments);
+  var amount = toInteger(dirtyAmount);
+  return addDays(dirtyDate, -amount);
+}
+
+/**
+ * @name isYesterday
+ * @category Day Helpers
+ * @summary Is the given date yesterday?
+ * @pure false
+ *
+ * @description
+ * Is the given date yesterday?
+ *
+ * > ⚠️ Please note that this function is not present in the FP submodule as
+ * > it uses `Date.now()` internally hence impure and can't be safely curried.
+ *
+ * @param {Date|Number} date - the date to check
+ * @returns {Boolean} the date is yesterday
+ * @throws {TypeError} 1 argument required
+ *
+ * @example
+ * // If today is 6 October 2014, is 5 October 14:00:00 yesterday?
+ * const result = isYesterday(new Date(2014, 9, 5, 14, 0))
+ * //=> true
+ */
+
+function isYesterday(dirtyDate) {
+  requiredArgs(1, arguments);
+  return isSameDay(dirtyDate, subDays(Date.now(), 1));
+}
+
 var DateFormatter = /*#__PURE__*/function () {
   /**
    * @example December 31, 2022
@@ -11646,11 +11650,10 @@ var DateFormatter = /*#__PURE__*/function () {
       if (this.date === null) {
         return '';
       }
-      var diffInDays = differenceInDays(this.date, new Date());
-      if (diffInDays === 0) {
+      if (isToday(this.date) === true) {
         return intlFormat(this.date, this.timeFormat);
       }
-      if (diffInDays === -1) {
+      if (isYesterday(this.date) === true) {
         return 'Yesterday';
       }
       return intlFormat(this.date, this.shortDateFormat);
@@ -11984,7 +11987,7 @@ var DESCRIPTORS$5 = descriptors;
 var global$7 = global$m;
 var uncurryThis$7 = functionUncurryThis;
 var isForced$1 = isForced_1;
-var defineBuiltIn$5 = defineBuiltIn$a;
+var defineBuiltIn$5 = defineBuiltIn$9;
 var hasOwn$4 = hasOwnProperty_1;
 var inheritIfRequired$2 = inheritIfRequired$3;
 var isPrototypeOf$3 = objectIsPrototypeOf;
@@ -12372,7 +12375,7 @@ var errorToString$1 = INCORRECT_TO_STRING ? function toString() {
   return !name ? message : !message ? name : name + ': ' + message;
 } : nativeErrorToString;
 
-var defineBuiltIn$4 = defineBuiltIn$a;
+var defineBuiltIn$4 = defineBuiltIn$9;
 var errorToString = errorToString$1;
 
 var ErrorPrototype = Error.prototype;
@@ -12420,7 +12423,7 @@ var fails$5 = fails$t;
 var isCallable$3 = isCallable$l;
 var isObject$3 = isObject$e;
 var getPrototypeOf$1 = objectGetPrototypeOf;
-var defineBuiltIn$3 = defineBuiltIn$a;
+var defineBuiltIn$3 = defineBuiltIn$9;
 var wellKnownSymbol$8 = wellKnownSymbol$i;
 
 var ITERATOR$5 = wellKnownSymbol$8('iterator');
@@ -12500,7 +12503,7 @@ var getPrototypeOf = objectGetPrototypeOf;
 var setPrototypeOf = objectSetPrototypeOf;
 var setToStringTag$1 = setToStringTag$3;
 var createNonEnumerableProperty$1 = createNonEnumerableProperty$8;
-var defineBuiltIn$2 = defineBuiltIn$a;
+var defineBuiltIn$2 = defineBuiltIn$9;
 var wellKnownSymbol$6 = wellKnownSymbol$i;
 var Iterators$3 = iterators;
 var IteratorsCore = iteratorsCore;
@@ -13010,7 +13013,7 @@ var $$3 = _export;
 var global$2 = global$m;
 var uncurryThis$4 = functionUncurryThis;
 var isForced = isForced_1;
-var defineBuiltIn$1 = defineBuiltIn$a;
+var defineBuiltIn$1 = defineBuiltIn$9;
 var InternalMetadataModule = internalMetadata.exports;
 var iterate$1 = iterate$2;
 var anInstance$1 = anInstance$2;
@@ -13112,7 +13115,7 @@ var collection$1 = function (CONSTRUCTOR_NAME, wrapper, common) {
   return Constructor;
 };
 
-var defineBuiltIn = defineBuiltIn$a;
+var defineBuiltIn = defineBuiltIn$9;
 
 var defineBuiltIns$1 = function (target, src, options) {
   for (var key in src) defineBuiltIn(target, key, src[key], options);
@@ -14922,9 +14925,9 @@ var privateMessageComponent = (function () {
       var _entries$at = entries.at(0),
         intersectionRatio = _entries$at.intersectionRatio;
       if (intersectionRatio > 0.5) {
-        this.isLastMessageShown = false;
-      } else {
         this.isLastMessageShown = true;
+      } else {
+        this.isLastMessageShown = false;
       }
     },
     /**
@@ -14975,6 +14978,9 @@ var privateMessageComponent = (function () {
           icon: event.detail.sender.avatar
         });
       }
+      if (this.isLastMessageShown === true) {
+        this.scrollToLastMessage();
+      }
     },
     /**
      * Laravel Echo event listener when a message is marked as read.
@@ -15015,7 +15021,9 @@ var privateMessageComponent = (function () {
      */scrollToLastMessage: function scrollToLastMessage() {
       var _lastMessage$id;
       var lastMessage = this.messages.at(0);
-      this.scrollTo((_lastMessage$id = lastMessage === null || lastMessage === void 0 ? void 0 : lastMessage.id) !== null && _lastMessage$id !== void 0 ? _lastMessage$id : null);
+      this.scrollTo((_lastMessage$id = lastMessage === null || lastMessage === void 0 ? void 0 : lastMessage.id) !== null && _lastMessage$id !== void 0 ? _lastMessage$id : null, {
+        behavior: 'smooth'
+      });
     },
     /**
      * Action when a given message is visible.
@@ -15055,9 +15063,7 @@ var privateMessageComponent = (function () {
                 message = PrivateMessageData.from(response.data);
                 if (_this4.receiver.id !== userId) {
                   _this4.messages.unshift(message);
-                  _this4.scrollTo(message.id, {
-                    behavior: 'smooth'
-                  });
+                  _this4.scrollToLastMessage();
                 }
                 _this4.receiver.lastPrivateMessage = message;
                 _this4.newMessageValue = '';
