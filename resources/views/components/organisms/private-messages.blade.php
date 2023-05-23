@@ -184,7 +184,7 @@
     </div>
 
     <div
-      x-show="isLastMessageShown === false"
+      x-show="isLastMessageShown === false && messages.length > 0"
       x-transition=""
       class="bm-absolute bm-bottom-[4.5rem] bm-right-6">
       <button
