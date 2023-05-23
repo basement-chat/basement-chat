@@ -29,10 +29,10 @@ class InstallCommandTest extends TestCase
         $this
             ->artisan('basement:install app')
             ->assertSuccessful()
-            ->expectsConfirmation('Would you like to run the migrations now?')
             ->expectsConfirmation(
                 'Do you want to install the broadcast driver? You can also do this later by calling <options=bold>basement:install driver</>.'
-            );
+            )
+            ->expectsConfirmation('Would you like to run the migrations now?');
 
         $this->assertFileExists(config_path('basement.php'));
         $this->assertFileExists(public_path('vendor/basement/basement.bundle.min.css'));
