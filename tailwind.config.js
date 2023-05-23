@@ -15,6 +15,8 @@ module.exports = {
     },
   },
   plugins: [
-    tailwindCssForms,
+    tailwindCssForms({
+      strategy: 'class',
+    }),
   ],
 }
