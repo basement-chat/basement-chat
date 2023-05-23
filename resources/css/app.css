@@ -1,4 +1,8 @@
 @import 'tailwindcss/base';
 @import 'tailwindcss/components';
 @import 'tailwindcss/utilities';
-@import 'tippy.js/dist/tippy.css'
+@import 'tippy.js/dist/tippy.css';
+
+.tippy-content {
+  @apply bm-font-sans;
+}
