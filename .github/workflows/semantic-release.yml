@@ -38,6 +38,6 @@ jobs:
           commit_message: 'build(npm): bundle frontend assets [skip ci]'
 
       - name: Release
-        run: npx semantic-release
+        run: npx semantic-release --dry-run
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
