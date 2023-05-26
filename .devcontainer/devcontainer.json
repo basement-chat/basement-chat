@@ -1,51 +1,7 @@
-// For format details, see https://aka.ms/devcontainer.json. For config options, see the README at:
-// https://github.com/microsoft/vscode-dev-containers/tree/v0.245.0/containers/php
 {
-	"name": "PHP",
-	"build": {
-		"dockerfile": "Dockerfile",
-		"args": { 
-			// Update VARIANT to pick a PHP version: 8, 8.1, 8.0, 7, 7.4
-			// Append -bullseye or -buster to pin to an OS version.
-			// Use -bullseye variants on local on arm64/Apple Silicon.
-			"VARIANT": "8.0",
-			"NODE_VERSION": "16"
-		}
-	},
-
-	// Configure tool-specific properties.
-	"customizations": {
-		// Configure properties specific to VS Code.
-		"vscode": {
-			// Set *default* container specific settings.json values on container create.
-			"settings": { 
-				"php.validate.executablePath": "/usr/local/bin/php"
-			},
-			
-			// Add the IDs of extensions you want installed when the container is created.
-			"extensions": [
-				"xdebug.php-debug",
-				"bmewburn.vscode-intelephense-client",
-				"mrmlnc.vscode-apache"
-			]
-		}
-	},
-
-	// Use 'forwardPorts' to make a list of ports inside the container available locally.
-	"forwardPorts": [8080],
-
-	// Use 'postCreateCommand' to run commands after the container is created.
-	// "postCreateCommand": "sudo chmod a+x \"$(pwd)\" && sudo rm -rf /var/www/html && sudo ln -s \"$(pwd)\" /var/www/html"
-
-	// Comment out to connect as root instead. More info: https://aka.ms/vscode-remote/containers/non-root.
-	"remoteUser": "vscode",
-	"features": {
-		"git": "latest"
-	},
-
-	// Mount Visual Studio Code extensions into remote container
-    "mounts": [
-        "source=vscode-extensions,target=/home/vscode/.vscode-server/extensions,type=volume",
-        "source=vscode-insiders-extensions,target=/home/vscode/.vscode-server-insiders/extensions,type=volume"
-	]
+  "name": "Basement Chat",
+  "service": "devcontainer",
+  "shutdownAction": "stopCompose",
+  "workspaceFolder": "/workspaces/basement-chat",
+  "dockerComposeFile": "docker-compose.yml"
 }
