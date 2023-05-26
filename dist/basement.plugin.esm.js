@@ -4938,7 +4938,7 @@ var chatBoxComponent = (function () {
       delegate(this.$el, {
         animation: 'fade',
         arrow: true,
-        target: '[data-title]',
+        target: '.basement [data-title]',
         onShow: function onShow(instance) {
           var title = instance.reference.getAttribute('data-title');
           if (title !== null) {
@@ -11745,7 +11745,7 @@ var ContactData = /*#__PURE__*/function () {
 }();
 
 var contactComponent = (function () {
-  var container = document.querySelector('.contact__container--main');
+  var container = document.querySelector('.basement-contacts');
   var url = container.getAttribute('data-url');
   return {
     contacts: [],
@@ -14780,8 +14780,8 @@ var mark = {exports: {}};
 var Mark = mark.exports;
 
 var privateMessageComponent = (function () {
-  var container = document.querySelector('.private-message__container--main');
-  var highlighter = new Mark('.private-message__text--value');
+  var container = document.querySelector('.basement-private-messages');
+  var highlighter = new Mark('.basement-private-messages__message-value');
   var lastMessageObserver;
   var urlTemplate = container.getAttribute('data-url');
   var urlBatchRequest = container.getAttribute('data-batch-request-url');
@@ -14957,7 +14957,7 @@ var privateMessageComponent = (function () {
         return;
       }
       void this.$nextTick(function () {
-        var lastMessageElement = document.querySelector(".private-message__text--value[data-id=\"".concat(lastMessage.id, "\"]"));
+        var lastMessageElement = document.querySelector(".basement-private-messages__message-value[data-id=\"".concat(lastMessage.id, "\"]"));
         lastMessageObserver.disconnect();
         lastMessageObserver.observe(lastMessageElement);
       });
@@ -15013,7 +15013,7 @@ var privateMessageComponent = (function () {
       }
       void this.$nextTick(function () {
         var _document$querySelect;
-        (_document$querySelect = document.querySelector(".private-message__text--value[data-id=\"".concat(id, "\"]"))) === null || _document$querySelect === void 0 ? void 0 : _document$querySelect.scrollIntoView(options);
+        (_document$querySelect = document.querySelector(".basement-private-messages__message-value[data-id=\"".concat(id, "\"]"))) === null || _document$querySelect === void 0 ? void 0 : _document$querySelect.scrollIntoView(options);
       });
     },
     /**
