@@ -40,5 +40,6 @@ module.exports = {
   },
   rules: {
     semi: ['error', 'never'],
+    'import/no-extraneous-dependencies': ['error', { devDependencies: true }],
   },
 }
