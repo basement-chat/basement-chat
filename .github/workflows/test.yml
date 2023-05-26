@@ -97,28 +97,28 @@ jobs:
 
       - name: Upload browser screenshots
         if: failure()
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: browser screenshots
           path: tests/Browser/screenshots
 
       - name: Upload browser console logs
         if: failure()
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: browser console
           path: tests/Browser/console
 
       - name: Upload testbench core logs
         if: failure()
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: testbench core
           path: vendor/orchestra/testbench-core/laravel/storage/logs/
 
       - name: Upload testbench dusk logs
         if: failure()
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: testbench dusk
           path: vendor/orchestra/testbench-dusk/laravel/storage/logs/
