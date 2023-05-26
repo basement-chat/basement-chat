@@ -47,7 +47,7 @@ class ContactTest extends TestCase
 
         $this->actingAs($this->receiver);
 
-        $response = $this->get('/api/contacts');
+        $response = $this->get('/api/basement/contacts');
 
         $response->assertOk();
         $response->assertJsonStructure([
@@ -64,7 +64,7 @@ class ContactTest extends TestCase
      */
     public function itShouldBeRedirectedToLoginPageIfNotAuthenticatedWhenGettingAllContacts(): void
     {
-        $response = $this->get('/api/contacts');
+        $response = $this->get('/api/basement/contacts');
 
         $response->assertRedirect('login');
     }

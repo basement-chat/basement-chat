@@ -14,7 +14,7 @@ $middleware = config('basement.middleware', [
     'auth:sanctum',
 ]);
 
-Route::middleware($middleware)->name('api.')->prefix('api')->group(static function (): void {
+Route::middleware($middleware)->name('api.basement.')->prefix('api/basement')->group(static function (): void {
     Route::apiResource(name: 'contacts', controller: ContactController::class)
         ->only('index');
 

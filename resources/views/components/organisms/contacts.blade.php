@@ -1,6 +1,6 @@
 <div
     class="basement-contacts bm-relative bm-flex bm-h-full bm-w-full bm-flex-col bm-shadow-lg"
-    data-url="{{ route('api.contacts.index') }}"
+    data-url="{{ route('api.basement.contacts.index') }}"
     x-init="mount"
     x-data="basementContact"
     x-show="isContactOpened === true"

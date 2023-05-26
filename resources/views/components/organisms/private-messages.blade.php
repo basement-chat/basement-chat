@@ -1,7 +1,7 @@
 <div
     class="basement-private-messages bm-relative bm-flex bm-h-full bm-w-full bm-flex-col bm-shadow-lg"
-    data-url="{{ route('api.contacts.private-messages.index', ['contact' => ':contact']) }}"
-    data-batch-request-url="{{ route('api.private-messages.updates') }}"
+    data-url="{{ route('api.basement.contacts.private-messages.index', ['contact' => ':contact']) }}"
+    data-batch-request-url="{{ route('api.basement.private-messages.updates') }}"
     data-user-id="{{ \Illuminate\Support\Facades\Auth::id() }}"
     x-data="basementPrivateChat"
     x-show="isMessageBoxOpened"

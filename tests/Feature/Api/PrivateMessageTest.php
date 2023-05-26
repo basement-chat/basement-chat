@@ -46,7 +46,7 @@ class PrivateMessageTest extends TestCase
 
         $this->actingAs($this->sender);
 
-        $response = $this->get("/api/contacts/{$this->receiver->id}/private-messages");
+        $response = $this->get("/api/basement/contacts/{$this->receiver->id}/private-messages");
 
         $response->assertOk();
         $response->assertJsonStructure(array_merge($this->paginationStructure, [
@@ -61,7 +61,7 @@ class PrivateMessageTest extends TestCase
      */
     public function itShouldBeRedirectedToLoginPageIfNotAuthenticatedWhenGettingAllPrivateMessages(): void
     {
-        $response = $this->get("/api/contacts/{$this->receiver->id}/private-messages");
+        $response = $this->get("/api/basement/contacts/{$this->receiver->id}/private-messages");
 
         $response->assertRedirect('login');
     }
@@ -73,7 +73,7 @@ class PrivateMessageTest extends TestCase
     {
         $this->actingAs($this->sender);
 
-        $response = $this->post(uri: "/api/contacts/{$this->receiver->id}/private-messages", data: [
+        $response = $this->post(uri: "/api/basement/contacts/{$this->receiver->id}/private-messages", data: [
             'value' => fake()->text(),
         ]);
 
@@ -90,7 +90,7 @@ class PrivateMessageTest extends TestCase
     {
         $this->actingAs($this->sender);
 
-        $response = $this->post(uri: "/api/contacts/{$this->receiver->id}/private-messages", headers: [
+        $response = $this->post(uri: "/api/basement/contacts/{$this->receiver->id}/private-messages", headers: [
             'Accept' => 'application/json',
         ]);
 
@@ -103,7 +103,7 @@ class PrivateMessageTest extends TestCase
      */
     public function itShouldBeRedirectedToLoginPageIfNotAuthenticatedWhenSendingAPrivateMessage(): void
     {
-        $response = $this->post(uri: "/api/contacts/{$this->receiver->id}/private-messages", data: [
+        $response = $this->post(uri: "/api/basement/contacts/{$this->receiver->id}/private-messages", data: [
             'value' => fake()->text(),
         ]);
 
@@ -120,7 +120,7 @@ class PrivateMessageTest extends TestCase
         $this->actingAs($this->receiver);
 
         $response = $this->patch(
-            uri: '/api/private-messages',
+            uri: '/api/basement/private-messages',
             data: $this->privateMessages->pluck('id')->map(static fn (int $id): array => [
                 'operation' => 'mark as read',
                 'value' => ['id' => $id],
@@ -145,7 +145,7 @@ class PrivateMessageTest extends TestCase
     {
         $this->actingAs($this->sender);
 
-        $response = $this->patch(uri: '/api/private-messages', data: [], headers: [
+        $response = $this->patch(uri: '/api/basement/private-messages', data: [], headers: [
             'Accept' => 'application/json',
         ]);
 
@@ -163,7 +163,7 @@ class PrivateMessageTest extends TestCase
         $this->actingAs($this->sender);
 
         $response = $this->patch(
-            uri: '/api/private-messages',
+            uri: '/api/basement/private-messages',
             data: $this->privateMessages->pluck('id')->map(static fn (int $id): array => [
                 'operation' => 'mark as read',
                 'value' => ['id' => $id],
