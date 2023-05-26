@@ -4,7 +4,7 @@
   <p>Add a real-time chat widget to your Laravel application.</p>
 </div>
 
-[basement-chat.webm](https://github.com/basement-chat/basement-chat/assets/52187958/5ef510e2-348a-4a1e-9941-728c11f1e1c0)
+[basement-chat.webm](https://github.com/basement-chat/basement-chat/assets/52187958/67f6b0e5-05af-4936-b469-038bb6cefd7e)
 
 ## Table of Contents
 
@@ -26,7 +26,8 @@ With this package, you can enhance user engagement, boost collaboration, and fac
 <details>
   <summary>Trivia</summary>
 
-  The Basement name was inspired by Aech's private chat room from [Ready Player One](https://readyplayerone.fandom.com/wiki/Basement).
+The Basement name was inspired by Aech's private chat room from [Ready Player One](https://readyplayerone.fandom.com/wiki/Basement).
+
 </details>
 
 ## Features
@@ -49,6 +50,7 @@ Here is a demo with scaffolding using Laravel Breeze. You should register first 
 ## Installation
 
 ### Requirements:
+
 - Server-side: `php ^8.0` and `laravel/framework ^9.0.0 | ^10.0.0` installed in your project.
 - Client-side: `chrome >= 80`, `edge >= 80`, `firefox >= 74`, or equivalent. See details [here](https://browsersl.ist/#q=chrome+%3E%3D+80%2C+edge+%3E%3D+80%2C+firefox+%3E%3D+74%2C+maintained+node+versions).
 
@@ -67,6 +69,7 @@ Here is a demo with scaffolding using Laravel Breeze. You should register first 
 - Selecting a broadcast driver
 
   Before selecting a broadcast driver, you need to ensure that `BroadcastServiceProvider::class` is enabled by uncommenting it or adding it to your `providers` in `config/app.php`:
+
   ```diff
   /*
    * Application Service Providers...
@@ -80,80 +83,91 @@ Here is a demo with scaffolding using Laravel Breeze. You should register first 
   ```
 
   Then you can select one of the following drivers:
+
   > If you accidentally missed installing the driver in the previous step, you can install it again using the `php artisan basement:install driver` command.
 
   - <details>
       <summary><a href="https://pusher.com/">Pusher</a> (Click here to expand)</summary>
 
-      After creating a new channel in the Pusher account, you need to configure Laravel `.env` by providing the relevant configurations:
-      ```ini
-      BASEMENT_BROADCAST_DRIVER=pusher
-      BROADCAST_DRIVER=pusher
-      PUSHER_APP_ID=<replace-with-your-pusher-app-id>
-      PUSHER_APP_KEY=<replace-with-your-pusher-key>
-      PUSHER_APP_SECRET=<replace-with-your-pusher-secret>
-      PUSHER_APP_CLUSTER=<replace-with-your-pusher-cluster>
-      ```
+    After creating a new channel in the Pusher account, you need to configure Laravel `.env` by providing the relevant configurations:
+
+    ```ini
+    BASEMENT_BROADCAST_DRIVER=pusher
+    BROADCAST_DRIVER=pusher
+    PUSHER_APP_ID=<replace-with-your-pusher-app-id>
+    PUSHER_APP_KEY=<replace-with-your-pusher-key>
+    PUSHER_APP_SECRET=<replace-with-your-pusher-secret>
+    PUSHER_APP_CLUSTER=<replace-with-your-pusher-cluster>
+    ```
 
     </details>
 
   - <details>
       <summary><a href="https://ably.com/">Ably</a> (Click here to expand)</summary>
 
-      Provide relevant configurations in your `.env` after creating a new app in your Ably account:
-      ```ini
-      BASEMENT_BROADCAST_DRIVER=ably
-      BROADCAST_DRIVER=ably
-      ABLY_KEY=<replace-with-your-ably-key>
-      ABLY_PUBLIC_KEY=<replace-with-your-ably-public-key>
-      ```
+    Provide relevant configurations in your `.env` after creating a new app in your Ably account:
+
+    ```ini
+    BASEMENT_BROADCAST_DRIVER=ably
+    BROADCAST_DRIVER=ably
+    ABLY_KEY=<replace-with-your-ably-key>
+    ABLY_PUBLIC_KEY=<replace-with-your-ably-public-key>
+    ```
+
     </details>
 
   - <details>
       <summary><a href="https://docs.soketi.app/">Soketi</a> (Click here to expand)</summary>
 
-      Configure your `.env` first with the following configuration:
-      ```ini
-      BASEMENT_BROADCAST_DRIVER=soketi
-      BROADCAST_DRIVER=pusher
-      PUSHER_APP_ID=app-id
-      PUSHER_APP_KEY=app-key
-      PUSHER_APP_SECRET=app-secret
-      PUSHER_HOST=127.0.0.1
-      PUSHER_PORT=6001
-      PUSHER_SCHEME=http
-      ```
+    Configure your `.env` first with the following configuration:
 
-      Then, keep the Soketi server running with the following command when you want to use chat features in your app:
-      ```
-      npx soketi start
-      ```
+    ```ini
+    BASEMENT_BROADCAST_DRIVER=soketi
+    BROADCAST_DRIVER=pusher
+    PUSHER_APP_ID=app-id
+    PUSHER_APP_KEY=app-key
+    PUSHER_APP_SECRET=app-secret
+    PUSHER_HOST=127.0.0.1
+    PUSHER_PORT=6001
+    PUSHER_SCHEME=http
+    ```
+
+    Then, keep the Soketi server running with the following command when you want to use chat features in your app:
+
+    ```
+    npx soketi start
+    ```
+
     </details>
 
   - <details>
       <summary><a href="https://beyondco.de/docs/laravel-websockets/">Laravel Websockets</a> (Click here to expand)</summary>
 
-      Similar to Soketi, you need to configure `.env` first with the following configuration:
-      ```ini
-      BASEMENT_BROADCAST_DRIVER=laravel-websockets
-      BROADCAST_DRIVER=pusher
-      PUSHER_APP_ID=app-id
-      PUSHER_APP_KEY=app-key
-      PUSHER_APP_SECRET=app-secret
-      PUSHER_HOST=127.0.0.1
-      PUSHER_PORT=6001
-      PUSHER_SCHEME=http
-      ```
+    Similar to Soketi, you need to configure `.env` first with the following configuration:
 
-      Then, keep the Laravel Websockets server running with the following command when you want to use chat features in your app:
-      ```
-      php artisan websockets:serve
-      ```
+    ```ini
+    BASEMENT_BROADCAST_DRIVER=laravel-websockets
+    BROADCAST_DRIVER=pusher
+    PUSHER_APP_ID=app-id
+    PUSHER_APP_KEY=app-key
+    PUSHER_APP_SECRET=app-secret
+    PUSHER_HOST=127.0.0.1
+    PUSHER_PORT=6001
+    PUSHER_SCHEME=http
+    ```
+
+    Then, keep the Laravel Websockets server running with the following command when you want to use chat features in your app:
+
+    ```
+    php artisan websockets:serve
+    ```
+
     </details>
 
 - Implements Basement Chat functionality to your user model
 
   In your user model (by default uses `app/Models/User.php`), modify it so it implements `BasementChat\Basement\Contracts\User` and uses `BasementChat\Basement\Traits\HasPrivateMessages` trait
+
   ```diff
   <?php
 
@@ -176,6 +190,7 @@ Here is a demo with scaffolding using Laravel Breeze. You should register first 
 - Loading the Basement Chat component into your views
 
   To add a chat box component, load it in the `.blade` view file **where the user is already logged in**. For example, if you use Laravel Breeze, the path should be in `resources/views/layouts/app.blade.php`. Then, add the `<x-basement::chat-box />` line before the closing `</body>` tag.
+
   ```diff
   <!DOCTYPE html>
   <html lang="en">
@@ -197,71 +212,78 @@ Here is a demo with scaffolding using Laravel Breeze. You should register first 
   - <details>
       <summary>Use pre-bundled assets via the <code>link</code> and <code>script</code> tags directly</summary>
 
-      This is the simplest way to integrate Basement Chat frontend assets with your existing Laravel application. Note that this bundle also sets the following packages to your global `window` object:
-      - `window.Alpine`
-      - `window.axios`
-      - `window.Pusher`
-      - `window.Echo`
+    This is the simplest way to integrate Basement Chat frontend assets with your existing Laravel application. Note that this bundle also sets the following packages to your global `window` object:
 
-      In the same file as the previous step that added the chat box component, you need to load the Basement Chat `.css` and `.js` files:
-      ```diff
-      <!DOCTYPE html>
-      <html lang="en">
-      <head>
-          ...
+    - `window.Alpine`
+    - `window.axios`
+    - `window.Pusher`
+    - `window.Echo`
 
-      +    <link rel="stylesheet" href="{{ asset('vendor/basement/basement.bundle.min.css') }}">
-      +    <script src="{{ asset('vendor/basement/basement.bundle.min.js') }}"></script>
+    In the same file as the previous step that added the chat box component, you need to load the Basement Chat `.css` and `.js` files:
 
-      </head>
-      <body>
-          ...
+    ```diff
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+        ...
 
-         <x-basement::chat-box />
-      </body>
-      </html>
-      ```
+    +    <link rel="stylesheet" href="{{ asset('vendor/basement/basement.bundle.min.css') }}">
+    +    <script src="{{ asset('vendor/basement/basement.bundle.min.js') }}"></script>
+
+    </head>
+    <body>
+        ...
+
+       <x-basement::chat-box />
+    </body>
+    </html>
+    ```
+
     </details>
+
   - <details>
       <summary>More robust approach by importing into a bundle</summary>
 
-      You can also import the Basement Chat library as a module into your own `.js` file and bundle it yourself. 
+    You can also import the Basement Chat library as a module into your own `.js` file and bundle it yourself.
 
-      - First, make sure you assign the following packages to the global `window` object:
-        - `alpinejs@^3` with `@alpinejs/intersect@^3` plugin as `window.Alpine`
-        - `axios@^1` as `window.axios`
-        - `laravel-echo@^1` as `window.Echo`
-        - `pusher-js@^7` as `window.Pusher`
+    - First, make sure you assign the following packages to the global `window` object:
+      - `alpinejs@^3` with `@alpinejs/intersect@^3` plugin as `window.Alpine`
+      - `axios@^1` as `window.axios`
+      - `laravel-echo@^1` as `window.Echo`
+      - `pusher-js@^7` as `window.Pusher`
         > To automatically install the above dependencies you can use the following command:
+        >
         > ```
         > php artisan basement:install frontend_deps
         > ```
-      - Then, you need to import the following modules:
-        - `vendor/basement-chat/basement-chat/dist/basement.bundle.min.css`
-        - `vendor/basement-chat/basement-chat/dist/basement.plugin.esm` as an Alpine.js plugin
-        - `vendor/basement-chat/basement-chat/dist/basement.echo-options.esm` as a Laravel Echo argument
+    - Then, you need to import the following modules:
+      - `vendor/basement-chat/basement-chat/dist/basement.bundle.min.css`
+      - `vendor/basement-chat/basement-chat/dist/basement.plugin.esm` as an Alpine.js plugin
+      - `vendor/basement-chat/basement-chat/dist/basement.echo-options.esm` as a Laravel Echo argument
         > You can change the `.esm` suffix to `.common` if you are using cjs module instead of esm.
-      - A fully working example inside `resources/js/app.js` would be like the following:
-        ```js
-        import '../../vendor/basement-chat/basement-chat/dist/basement.bundle.min.css';
-        import axios from 'axios';
-        import Pusher from 'pusher-js';
-        import Echo from 'laravel-echo';
-        import echoOptions from '../../vendor/basement-chat/basement-chat/dist/basement.echo-options.esm';
-        import Alpine from 'alpinejs';
-        import basement from '../../vendor/basement-chat/basement-chat/dist/basement.plugin.esm';
-        import intersect from '@alpinejs/intersect';
+    - A fully working example inside `resources/js/app.js` would be like the following:
 
-        window.axios = axios;
+      ```js
+      import '../../vendor/basement-chat/basement-chat/dist/basement.bundle.min.css'
+      import axios from 'axios'
+      import Pusher from 'pusher-js'
+      import Echo from 'laravel-echo'
+      import Alpine from 'alpinejs'
+      import intersect from '@alpinejs/intersect'
+      import echoOptions from '../../vendor/basement-chat/basement-chat/dist/basement.echo-options.esm'
+      import basement from '../../vendor/basement-chat/basement-chat/dist/basement.plugin.esm'
 
-        window.Pusher = Pusher;
-        window.Echo = new Echo(echoOptions);
+      window.axios = axios
 
-        window.Alpine = Alpine;
-        window.Alpine.plugin(intersect)
-        window.Alpine.plugin(basement)
-        window.Alpine.start();
-        ```
+      window.Pusher = Pusher
+      window.Echo = new Echo(echoOptions)
+
+      window.Alpine = Alpine
+      window.Alpine.plugin(intersect)
+      window.Alpine.plugin(basement)
+      window.Alpine.start()
+      ```
+
     </details>
 
 ## Configurations
@@ -269,10 +291,13 @@ Here is a demo with scaffolding using Laravel Breeze. You should register first 
 This package publishes a `config/basement.php` configuration file and offers options to configure `broadcaster`, `chat_box_widget_position`, `user_model`, `avatar`, and `middleware`. See this [file](./config/basement.php) for more detailed information on what you can configure.
 
 ## Advanced customizations
+
 Other than configuring through the `config/basement.php` file, you can customize further by changing the class implementation or overriding the default method. Let's explore some of the use cases you can do with this feature:
 
 ### Changing the name shown in the contacts
+
 By default, the Basement Chat package will display the user's full name in your contacts list. If you want to show the last name instead, you can override the `getNameAttribute` as in the following example:
+
 ```php
 <?php
 
@@ -298,7 +323,9 @@ class User extends Authenticatable implements BasementUserContract
 ```
 
 ### Using custom avatars
+
 Like when you are changing the name shown in the contacts. You can also override the default `getAvatarAttribute` to change your contact's avatar.
+
 ```php
 <?php
 
@@ -324,7 +351,9 @@ class User extends Authenticatable implements BasementUserContract
 ```
 
 ### Providing the chat feature to specific users
+
 Instead of providing the chat feature to all available users, you can also conditionally provide the chat feature to specific users. For example, if you are using [spatie/laravel-permission](https://github.com/spatie/laravel-permission) and want to provide a chat feature only for the `administrator` role:
+
 ```php
 // app/Actions/AllContacts.php
 <?php
@@ -390,7 +419,9 @@ class AppServiceProvider extends ServiceProvider
     }
 }
 ```
+
 > The following is a list of functions that you can use to override other actions and models:
+>
 > ```php
 > Basement::useUserModel(User::class);
 > Basement::usePrivateMessageModel(PrivateMessage::class);
@@ -401,21 +432,22 @@ class AppServiceProvider extends ServiceProvider
 > Basement::markPrivateMessagesAsReadUsing(MarkPrivatesMessagesAsRead::class);
 > Basement::sendPrivateMessagesUsing(SendPrivateMessage::class);
 > ```
+
 ```html
 <!-- resources/views/layouts/app.blade.php -->
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  ...
-</head>
-<body>
-  ...
+  <head>
+    ...
+  </head>
+  <body>
+    ...
 
-  <!-- The chat box component button will only be available if the current user is an administrator -->
-  @role('administrator')
+    <!-- The chat box component button will only be available if the current user is an administrator -->
+    @role('administrator')
     <x-basement::chat-box />
-  @endrole
-</body>
+    @endrole
+  </body>
 </html>
 ```
 
@@ -437,6 +469,7 @@ It is also possible to customize the view style. For example, you can do the fol
   </header>
   ```
 - Open the `resources/views/vendor/basement/chat-box.blade.php` file, and add text color style:
+
   ```diff
   <div class="chat-box__container--wrapper">
     <div ...>
@@ -460,11 +493,13 @@ It is also possible to customize the view style. For example, you can do the fol
 ### Updating package
 
 When you are using pre-bundled assets. Every time after updating this package with `composer update`, you need to keep your assets file up to date using the following command:
+
 ```
 php artisan vendor:publish --tag=basement-assets --force
 ```
 
 Alternatively, to run the above command automatically after the `update` command is executed, you can configure `composer.json` by adding it to the `post-update-cmd` scripts:
+
 ```diff
 "scripts": {
   "post-update-cmd": [
@@ -474,8 +509,10 @@ Alternatively, to run the above command automatically after the `update` command
 },
 ```
 
-### Fixing vite memory leaks
-When you are using the vite development server and get very high memory usage, you can configure your `vite.config.js` to ignore watching the vendor folder like the following example:
+### Fixing Vite memory leaks
+
+When you are using the Vite development server and get very high memory usage, you can configure your `vite.config.js` to ignore watching the vendor folder like the following example:
+
 ```diff
 import { defineConfig } from 'vite'
 import laravel from 'laravel-vite-plugin'
@@ -492,10 +529,13 @@ export default defineConfig({
 ```
 
 ## Roadmap
+
 Please visit the [following page](https://github.com/basement-chat/basement-chat/projects) to view the Basement Chat roadmap.
 
 ## Contributing
+
 You can check detailed information about the contributing guide on the [following page](./CONTRIBUTING.md).
 
 ## License
+
 The Basement Chat package is licensed under the [MIT license](./LICENSE.md).

@@ -12,7 +12,7 @@ factory:
 
 migration:
   path: database/migrations
-  prefix: ''
+  prefix: ""
 
 console:
   namespace: BasementChat\Basement\Console

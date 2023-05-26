@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
   push:
     branches:
-      - '*.x'
+      - "*.x"
       - main
       - next
       - next-major
@@ -35,7 +35,7 @@ jobs:
       - name: Commit changes
         uses: stefanzweifel/git-auto-commit-action@v4
         with:
-          commit_message: 'build(npm): bundle frontend assets [skip ci]'
+          commit_message: "build(npm): bundle frontend assets [skip ci]"
 
       - name: Release
         run: npx semantic-release --dry-run
