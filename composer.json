@@ -59,7 +59,7 @@
     ],
     "dumper:serve": [
       "Composer\\Config::disableProcessTimeout",
-      "@php -S localhost:8000 dump.html"
+      "@php -S localhost:8080 dump.html"
     ],
     "format": "vendor/bin/pint",
     "insights": "vendor/bin/phpinsights analyse config database routes src",
