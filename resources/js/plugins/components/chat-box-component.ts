@@ -72,7 +72,7 @@ export default (): AlpineComponent<ChatBoxComponent> => ({
     delegate(this.$el, {
       animation: 'fade',
       arrow: true,
-      target: '[data-title]',
+      target: '.basement [data-title]',
       onShow(instance: Instance): void {
         const title: string | null = instance.reference.getAttribute('data-title')
 
