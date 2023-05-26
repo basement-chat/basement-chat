@@ -20,3 +20,27 @@ services:
     working_dir: /workspaces/basement-chat
     container_name: devcontainer
     command: sleep infinity
+
+  test:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        VARIANT: 8.2
+        NODE_VERSION: lts/*
+    volumes:
+      - ..:/workspaces/basement-chat:cached
+    working_dir: /workspaces/basement-chat
+    container_name: test
+    entrypoint:
+      - /usr/bin/zsh
+      - -c
+      - |
+        composer install &&
+        npm install &&
+        ./vendor/orchestra/testbench-core/create-sqlite-db &&
+        ./vendor/orchestra/testbench-dusk/create-sqlite-db &&
+        ./vendor/bin/dusk-updater detect --auto-update &&
+        npx soketi start &
+        npx wait-on tcp:127.0.0.1:6001 &&
+        composer run-script test
