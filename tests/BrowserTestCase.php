@@ -31,6 +31,7 @@ class BrowserTestCase extends OrchestraDuskTestCase
         BasementTestCaseEnvironment::setFactories();
         Options::withoutUI();
         Options::addArgument('--no-sandbox');
+        Options::addArgument('--disable-gpu');
     }
 
     /**
