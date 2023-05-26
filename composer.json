@@ -66,6 +66,18 @@
     "test": [
       "Composer\\Config::disableProcessTimeout",
       "vendor/bin/testbench package:test"
+    ],
+    "test:unit": [
+      "Composer\\Config::disableProcessTimeout",
+      "vendor/bin/testbench package:test --testsuite=Unit"
+    ],
+    "test:feature": [
+      "Composer\\Config::disableProcessTimeout",
+      "vendor/bin/testbench package:test --testsuite=Feature"
+    ],
+    "test:browser": [
+      "Composer\\Config::disableProcessTimeout",
+      "vendor/bin/testbench package:test --testsuite=Feature"
     ]
   },
   "config": {
