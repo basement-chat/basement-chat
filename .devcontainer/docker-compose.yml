@@ -41,6 +41,7 @@ services:
         ./vendor/orchestra/testbench-core/create-sqlite-db &&
         ./vendor/orchestra/testbench-dusk/create-sqlite-db &&
         ./vendor/bin/dusk-updater detect --auto-update &&
+        npm run build &&
         npx soketi start &
         npx wait-on tcp:127.0.0.1:6001 &&
         composer run-script test
