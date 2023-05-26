@@ -4,7 +4,7 @@ module.exports = {
     tailwindcss: {},
     autoprefixer: {},
     'postcss-prefix-selector': {
-      prefix: '.chat-box__container--wrapper',
+      prefix: '.basement',
       transform(prefix, selector, prefixedSelector) {
         if (selector === 'body' || selector === 'html') {
           return prefix

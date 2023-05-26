@@ -6,8 +6,8 @@ import type { PrivateMessageComponent } from '../types/components'
 import type { PrivateMessageMarkedAsReadEvent, PrivateMessageSentEvent, UpdateReceiverEvent } from '../types/events'
 
 export default (): AlpineComponent<PrivateMessageComponent> => {
-  const container: HTMLDivElement = document.querySelector('.private-message__container--main')!
-  const highlighter: Mark = new Mark('.private-message__text--value')
+  const container: HTMLDivElement = document.querySelector('.basement-private-messages')!
+  const highlighter: Mark = new Mark('.basement-private-messages__message-value')
   let lastMessageObserver: IntersectionObserver
   const urlTemplate: string = container.getAttribute('data-url')!
   const urlBatchRequest: string = container.getAttribute('data-batch-request-url')!
@@ -170,7 +170,7 @@ export default (): AlpineComponent<PrivateMessageComponent> => {
       }
 
       void this.$nextTick((): void => {
-        const lastMessageElement: HTMLParagraphElement = document.querySelector(`.private-message__text--value[data-id="${lastMessage.id}"]`)!
+        const lastMessageElement: HTMLParagraphElement = document.querySelector(`.basement-private-messages__message-value[data-id="${lastMessage.id}"]`)!
 
         lastMessageObserver.disconnect()
         lastMessageObserver.observe(lastMessageElement)
@@ -240,7 +240,7 @@ export default (): AlpineComponent<PrivateMessageComponent> => {
       }
 
       void this.$nextTick((): void => {
-        document.querySelector(`.private-message__text--value[data-id="${id}"]`)?.scrollIntoView(options)
+        document.querySelector(`.basement-private-messages__message-value[data-id="${id}"]`)?.scrollIntoView(options)
       })
     },
 

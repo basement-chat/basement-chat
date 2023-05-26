@@ -12,9 +12,9 @@ declare global {
   }
 
   interface HTMLElementTagNameMap {
-    '.chat-box__container--main': HTMLDivElement
-    '.contact__container--main': HTMLDivElement
-    '.private-message__container--main': HTMLDivElement
+    '.basement-chat-box': HTMLDivElement
+    '.basement-contacts': HTMLDivElement
+    '.basement-private-messages': HTMLDivElement
   }
 
   interface Window {

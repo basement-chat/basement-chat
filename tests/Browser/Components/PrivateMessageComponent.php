@@ -15,7 +15,7 @@ class PrivateMessageComponent extends BaseComponent
      */
     public function selector(): string
     {
-        return '.private-message__container--main';
+        return '.basement-private-messages';
     }
 
     /**
@@ -32,7 +32,7 @@ class PrivateMessageComponent extends BaseComponent
     public function assertSeeMessages(Browser $browser, PrivateMessage ...$messages): void
     {
         collect($messages)->each(static function (PrivateMessage $message) use ($browser): void {
-            $selector = ".private-message__text--value[data-id=\"{$message->id}\"]";
+            $selector = ".basement-private-messages__message-value[data-id=\"{$message->id}\"]";
             $browser
                 ->waitUntil(script: <<<JS
                     document.querySelector('{$selector}') !== null
@@ -48,7 +48,7 @@ class PrivateMessageComponent extends BaseComponent
     public function assertSeeLoadMoreMessagesButton(Browser $browser): void
     {
         $browser
-            ->scrollIntoView('.private-message__button--load-more')
+            ->scrollIntoView('.basement-private-messages__load-more-messages-button')
             ->assertSee('Load more messages');
     }
 
@@ -57,7 +57,7 @@ class PrivateMessageComponent extends BaseComponent
      */
     public function clickLoadMoreMessagesButton(Browser $browser): void
     {
-        $browser->click('.private-message__button--load-more');
+        $browser->click('.basement-private-messages__load-more-messages-button');
     }
 
     /**
@@ -66,7 +66,7 @@ class PrivateMessageComponent extends BaseComponent
     public function sendMessage(Browser $browser, string $message): void
     {
         $browser
-            ->type(field: '.private-message__input--message-value', value: $message)
-            ->click('.private-message__button--send');
+            ->type(field: '.basement-private-messages__new-message-input', value: $message)
+            ->click('.basemment-private-messages__send-new-message-button-button');
     }
 }

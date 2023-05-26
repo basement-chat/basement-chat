@@ -471,7 +471,7 @@ It is also possible to customize the view style. For example, you can do the fol
 - Open the `resources/views/vendor/basement/chat-box.blade.php` file, and add text color style:
 
   ```diff
-  <div class="chat-box__container--wrapper">
+  <div class="basement">
     <div ...>
 
       <button
@@ -479,7 +479,7 @@ It is also possible to customize the view style. For example, you can do the fol
         x-on:click="isMinimized = false"
         x-bind:class="isMinimized === true ? '' : 'bm-hidden'"
         x-bind:data-title="totalUnreadMessages === 0 ? 'Open chat box' : `There are ${totalUnreadMessages} unread messages`"
-        class="chat-box__button--open bm-w-full bm-h-full bm-rounded-full bm-text-blue-500 bm-border bm-bg-white bm-transition bm-duration-500 hover:bm-text-white hover:bm-bg-blue-500 bm-shadow-lg">
+        class="basement-chat-box__open-button bm-w-full bm-h-full bm-rounded-full bm-text-blue-500 bm-border bm-bg-white bm-transition bm-duration-500 hover:bm-text-white hover:bm-bg-blue-500 bm-shadow-lg">
         ...
       </button>
 

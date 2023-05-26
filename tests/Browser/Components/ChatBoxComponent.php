@@ -14,7 +14,7 @@ class ChatBoxComponent extends BaseComponent
      */
     public function selector(): string
     {
-        return '.chat-box__container--main';
+        return '.basement-chat-box';
     }
 
     /**
@@ -32,7 +32,7 @@ class ChatBoxComponent extends BaseComponent
     {
         $browser
             ->waitFor(
-                selector: ".chat-box__button--open[data-title=\"There are $count unread messages\"]",
+                selector: ".basement-chat-box__open-button[data-title=\"There are $count unread messages\"]",
                 seconds: 10,
             )
             ->assertSee($count);
@@ -43,6 +43,6 @@ class ChatBoxComponent extends BaseComponent
      */
     public function openChatBox(Browser $browser): void
     {
-        $browser->click('.chat-box__button--open');
+        $browser->click('.basement-chat-box__open-button');
     }
 }

@@ -16,7 +16,7 @@ class ContactComponent extends BaseComponent
      */
     public function selector(): string
     {
-        return '.contact__container--main';
+        return '.basement-contacts';
     }
 
     /**
@@ -45,7 +45,7 @@ class ContactComponent extends BaseComponent
     public function assertContactsIsOffline(Browser $browser, User ...$contacts): void
     {
         collect($contacts)->each(static function (User $contact) use ($browser): void {
-            $selector = ".contact__container--user-box[data-id=\"{$contact->id}\"]";
+            $selector = ".basement-contacts__user-container[data-id=\"{$contact->id}\"]";
 
             $browser
                 ->waitFor(
@@ -54,7 +54,7 @@ class ContactComponent extends BaseComponent
                 )
                 ->with(selector: $selector, callback: static fn (Browser $container) => $container
                     ->assertAttributeContains(
-                        selector: '.contact__container--online-indicator',
+                        selector: '.basement-contacts__user-online-indicator',
                         attribute: 'class',
                         value: 'red',
                     ));
@@ -67,7 +67,7 @@ class ContactComponent extends BaseComponent
     public function assertContactsIsOnline(Browser $browser, User ...$contacts): void
     {
         collect($contacts)->each(static function (User $contact) use ($browser): void {
-            $selector = ".contact__container--user-box[data-id=\"{$contact->id}\"]";
+            $selector = ".basement-contacts__user-container[data-id=\"{$contact->id}\"]";
 
             $browser
                 ->waitFor(
@@ -76,7 +76,7 @@ class ContactComponent extends BaseComponent
                 )
                 ->with(selector: $selector, callback: static fn (Browser $container) => $container
                     ->assertAttributeContains(
-                        selector: '.contact__container--online-indicator',
+                        selector: '.basement-contacts__user-online-indicator',
                         attribute: 'class',
                         value: 'green',
                     ));
@@ -88,9 +88,9 @@ class ContactComponent extends BaseComponent
      */
     public function assertSeeUnreadMessagesCount(Browser $browser, User $contact, int $count): void
     {
-        $selector = ".contact__container--user-box[data-id=\"{$contact->id}\"]";
+        $selector = ".basement-contacts__user-container[data-id=\"{$contact->id}\"]";
 
-        $browser->assertSeeIn(selector: "{$selector} .user-box__container--unread-messages-count", text: $count);
+        $browser->assertSeeIn(selector: "{$selector} .basement-contacts__user-unread-messages-count", text: $count);
     }
 
     /**
@@ -99,8 +99,8 @@ class ContactComponent extends BaseComponent
     public function filterContactsByKeyword(Browser $browser, string $keyword): void
     {
         $browser
-            ->clear('.contact__input--filter')
-            ->type(field: '.contact__input--filter', value: $keyword);
+            ->clear('.basement-contacts__filter-contacts-input')
+            ->type(field: '.basement-contacts__filter-contacts-input', value: $keyword);
     }
 
     /**
@@ -111,7 +111,7 @@ class ContactComponent extends BaseComponent
         $this->filterContactsByKeyword($browser, $contact->name);
 
         $browser
-            ->click(".contact__container--user-box")
+            ->click(".basement-contacts__user-container")
             ->waitUntilMissing(selector: $this->selector(), seconds: 10);
     }
 

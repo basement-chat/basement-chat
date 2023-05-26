@@ -1,5 +1,5 @@
 <div
-    class="contact__container--main bm-relative bm-flex bm-h-full bm-w-full bm-flex-col bm-shadow-lg"
+    class="basement-contacts bm-relative bm-flex bm-h-full bm-w-full bm-flex-col bm-shadow-lg"
     data-url="{{ route('api.contacts.index') }}"
     x-init="mount"
     x-data="basementContact"
@@ -58,7 +58,7 @@
                                 </x-slot>
 
                                 <x-basement::atoms.input
-                                    class="contact__input--filter bm-pl-9"
+                                    class="basement-contacts__filter-contacts-input bm-pl-9"
                                     type="text"
                                     x-model="search"
                                     autocomplete="off"
@@ -71,7 +71,7 @@
                         :key="contact.id"
                     >
                         <div
-                            class="contact__container--user-box bm-grid bm-cursor-pointer bm-grid-cols-12 bm-items-center bm-gap-x-2 bm-border-t bm-border-gray-300 bm-px-2 bm-py-3 bm-transition hover:bm-bg-gray-100"
+                            class="basement-contacts__user-container bm-grid bm-cursor-pointer bm-grid-cols-12 bm-items-center bm-gap-x-2 bm-border-t bm-border-gray-300 bm-px-2 bm-py-3 bm-transition hover:bm-bg-gray-100"
                             x-bind:data-id="contact.id"
                             x-on:click="updateReceiver(contact); isContactOpened = false; isMessageBoxOpened = true;"
                         >
@@ -88,7 +88,7 @@
                                 />
 
                                 <span
-                                    class="contact__container--online-indicator bm-absolute bm-right-0 bm-top-0 bm-h-3 bm-w-3 bm-rounded-full"
+                                    class="basement-contacts__user-online-indicator bm-absolute bm-right-0 bm-top-0 bm-h-3 bm-w-3 bm-rounded-full"
                                     x-bind:class="contact.isOnline === true ? 'bm-bg-green-400' : 'bm-bg-red-400'"
                                 ></span>
                             </div>
@@ -123,7 +123,7 @@
 
                                     <p class="bm-col-span-1 bm-text-right">
                                         <span
-                                            class="user-box__container--unread-messages-count bm-rounded-md bm-bg-blue-400 bm-px-1 bm-text-xs bm-font-bold bm-text-white"
+                                            class="basement-contacts__user-unread-messages-count bm-rounded-md bm-bg-blue-400 bm-px-1 bm-text-xs bm-font-bold bm-text-white"
                                             x-show="contact.unreadMessages > 0"
                                             x-text="contact.unreadMessages"
                                             x-bind:data-title="`There are ${contact.unreadMessages} unread messages`"

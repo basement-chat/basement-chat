@@ -1,5 +1,5 @@
 <div
-    class="private-message__container--main bm-relative bm-flex bm-h-full bm-w-full bm-flex-col bm-shadow-lg"
+    class="basement-private-messages bm-relative bm-flex bm-h-full bm-w-full bm-flex-col bm-shadow-lg"
     data-url="{{ route('api.contacts.private-messages.index', ['contact' => ':contact']) }}"
     data-batch-request-url="{{ route('api.private-messages.updates') }}"
     data-user-id="{{ \Illuminate\Support\Facades\Auth::id() }}"
@@ -118,7 +118,7 @@
                     <div class="bm-flex bm-min-h-min bm-grow bm-flex-col bm-overflow-y-auto bm-px-3">
                         <div class="bm-my-3 bm-flex bm-flex-col bm-gap-y-3">
                             <x-basement::atoms.buttons.primary
-                                class="private-message__button--load-more bm--mx-3 bm--mt-3 bm-border-b bm-border-gray-300 bm-bg-gray-50 bm-py-2"
+                                class="basement-private-messages__load-more-messages-button bm--mx-3 bm--mt-3 bm-border-b bm-border-gray-300 bm-bg-gray-50 bm-py-2"
                                 x-show="urlShowMore !== null"
                                 x-on:click="mountMore"
                             >
@@ -152,7 +152,7 @@
                                             >
                                                 <div class="bm-max-w-[90%]">
                                                     <p
-                                                        class="private-message__text--value bm-break-words bm-rounded-t-lg bm-px-2 bm-py-1"
+                                                        class="basement-private-messages__message-value bm-break-words bm-rounded-t-lg bm-px-2 bm-py-1"
                                                         x-intersect.once="seeMessage(message)"
                                                         x-text="message.value"
                                                         x-bind:class="message.receiverId === receiver.id ?
@@ -268,7 +268,7 @@
                                     </x-slot>
 
                                     <x-basement::atoms.input
-                                        class="private-message__input--message-value"
+                                        class="basement-private-messages__new-message-input"
                                         type="text"
                                         aria-autocomplete="none"
                                         aria-required="true"
@@ -283,7 +283,7 @@
                         </x-basement::molecules.form-group>
 
                         <x-basement::atoms.buttons.primary
-                            class="private-message__button--send bm-col-span-1 bm-h-full bm-w-8"
+                            class="basemment-private-messages__send-new-message-button-button bm-col-span-1 bm-h-full bm-w-8"
                             data-title="Send message"
                             type="submit"
                             x-bind:disabled="isLoadingSentMessage === true"

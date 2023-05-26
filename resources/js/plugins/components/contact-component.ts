@@ -5,7 +5,7 @@ import type { ContactComponent } from '../types/components'
 import type { UpdateLastPrivateMessageEvent } from '../types/events'
 
 export default (): AlpineComponent<ContactComponent> => {
-  const container: HTMLDivElement = document.querySelector('.contact__container--main')!
+  const container: HTMLDivElement = document.querySelector('.basement-contacts')!
   const url: string = container.getAttribute('data-url')!
 
   return {
