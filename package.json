@@ -35,7 +35,7 @@
     "@tailwindcss/forms": "^0.5.3",
     "@types/alpinejs": "^3.7.1",
     "@types/mark.js": "^8.11.8",
-    "@typescript-eslint/eslint-plugin": "^5.40.1",
+    "@typescript-eslint/eslint-plugin": "^5.59.7",
     "@typescript-eslint/parser": "^5.40.1",
     "autoprefixer": "^10.4.12",
     "commitizen": "^4.2.5",
