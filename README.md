@@ -4,7 +4,7 @@
   <p>Add a real-time chat widget to your Laravel application.</p>
 </div>
 
-[basement-chat.webm](https://github.com/basement-chat/basement-chat/assets/52187958/67f6b0e5-05af-4936-b469-038bb6cefd7e)
+[basement-chat.webm](https://github.com/basement-chat/basement-chat/assets/52187958/2f2250ef-5578-412e-b0d7-2bb84c8b3c5a)
 
 <div align="center">
   <p>
