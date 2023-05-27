@@ -6,6 +6,36 @@
 
 [basement-chat.webm](https://github.com/basement-chat/basement-chat/assets/52187958/67f6b0e5-05af-4936-b469-038bb6cefd7e)
 
+<div align="center">
+  <p>
+    <a href="https://github.com/basement-chat/basement-chat/actions/workflows/test.yml?query=branch%3Amain">
+      <img alt="GitHub Workflow Test Status" src="https://img.shields.io/github/actions/workflow/status/basement-chat/basement-chat/test.yml?label=test&logo=github&style=flat&color=3a82f7&logoColor=white">
+    </a>
+    <a href="https://app.codecov.io/gh/basement-chat/basement-chat/">
+      <img alt="Code Coverage" src="https://img.shields.io/codecov/c/github/basement-chat/basement-chat?color=white&logo=codecov&style=flat&logoColor=white">
+    </a>
+    <a href="https://packagist.org/packages/basement-chat/basement-chat">
+      <img alt="Packagist Version" src="https://img.shields.io/packagist/v/basement-chat/basement-chat?color=3a82f7&logo=packagist&style=flat&logoColor=white">
+    </a>
+    <a href="https://github.com/basement-chat/basement-chat/blob/main/LICENSE.md">
+      <img alt="Packagist License" src="https://img.shields.io/packagist/l/basement-chat/basement-chat?color=white&style=flat">
+    </a>
+    <a href="https://www.conventionalcommits.org/">
+      <img alt="Semantic Release" src="https://img.shields.io/badge/semantic--release-angular-e10079?logo=semantic-release&color=3a82f7&style=flat&logoColor=white">
+    </a>
+  </p>
+  <p>
+    <img alt="Built for" src="https://img.shields.io/static/v1?label=built%20for&message=%20&color=white&style=flat&labelColor=white">
+    <a href="https://github.com/basement-chat/basement-chat/blob/main/composer.json">
+      <img alt="Packagist Laravel Version" src="https://img.shields.io/packagist/dependency-v/basement-chat/basement-chat/laravel/framework?logo=laravel&color=3a82f7&style=flat&logoColor=white">
+    </a>
+    <img alt="With" src="https://img.shields.io/static/v1?label=with&message=%20&color=white&style=flat&labelColor=white">
+    <a href="https://github.com/basement-chat/basement-chat/blob/main/composer.json">
+      <img alt="Packagist PHP Version" src="https://img.shields.io/packagist/dependency-v/basement-chat/basement-chat/php?logo=php&color=3a82f7&style=flat&logoColor=white">
+    </a>
+  </p>
+</div>
+
 ## Table of Contents
 
 - [Introduction](#introduction)
