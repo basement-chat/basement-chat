@@ -1,3 +1,10 @@
+## [1.0.4](https://github.com/basement-chat/basement-chat/compare/v1.0.3...v1.0.4) (2023-05-27)
+
+
+### Bug Fixes
+
+* **config:** makes enums cacheable ([8b81475](https://github.com/basement-chat/basement-chat/commit/8b81475f2a42cdd720ccfffd0a4c272c74949fb7))
+
 ## [1.0.3](https://github.com/basement-chat/basement-chat/compare/v1.0.2...v1.0.3) (2023-05-27)
 
 
