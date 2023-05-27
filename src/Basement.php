@@ -154,8 +154,7 @@ class Basement implements BasementContract
      */
     public static function getAvatarStyle(): AvatarStyle
     {
-        /** @var mixed $style */
-        $style = config('basement.avatar.style');
+        $style = AvatarStyle::tryFrom(config('basement.avatar.style'));
 
         if ($style instanceof AvatarStyle === false) {
             throw new \TypeError(
@@ -191,8 +190,7 @@ class Basement implements BasementContract
      */
     public static function getChatBoxWidgetPosition(): ChatBoxPosition
     {
-        /** @var mixed $position */
-        $position = config('basement.chat_box_widget_position');
+        $position = ChatBoxPosition::tryFrom(config('basement.chat_box_widget_position'));
 
         if ($position instanceof ChatBoxPosition === false) {
             throw new \TypeError(
