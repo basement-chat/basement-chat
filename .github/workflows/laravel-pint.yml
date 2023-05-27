@@ -3,6 +3,14 @@ name: Run Laravel Pint
 on:
   workflow_dispatch:
   push:
+    branches:
+      - "*.x"
+      - main
+      - next
+      - next-major
+      - beta
+      - alpha
+      - dev
     paths:
       - "**.php"
       - "!**.blade.php"
