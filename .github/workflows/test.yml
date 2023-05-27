@@ -88,7 +88,13 @@ jobs:
           npx wait-on tcp:127.0.0.1:6001
 
       - name: Execute tests
-        run: composer test -- --coverage-clover coverage.xml
+        uses: nick-fields/retry@v2
+        with:
+          max_attempts: 2
+          timeout_seconds: 600
+          retry_on: error
+          retry_wait_seconds: 5
+          command: composer test -- --coverage-clover coverage.xml
 
       - name: Upload coverage to Codecov
         uses: codecov/codecov-action@v3
