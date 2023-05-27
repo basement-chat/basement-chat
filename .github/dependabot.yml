@@ -8,6 +8,14 @@ updates:
       - dependency-name: "*"
         update-types: [version-update:semver-major]
 
+  - package-ecosystem: npm
+    directory: /
+    schedule:
+      interval: daily
+    ignore:
+      - dependency-name: '*'
+        update-types: [version-update:semver-major]
+
   - package-ecosystem: github-actions
     directory: /
     schedule:
