@@ -72,7 +72,7 @@ return [
     |
     */
 
-    'chat_box_widget_position' => ChatBoxPosition::bottomRight(),
+    'chat_box_widget_position' => (string) ChatBoxPosition::bottomRight(),
 
     /*
     |--------------------------------------------------------------------------
@@ -101,7 +101,7 @@ return [
     */
 
     'avatar' => [
-        'style' => AvatarStyle::micah(),
+        'style' => (string) AvatarStyle::micah(),
         'options' => [
             'b' => '%233584e4',
             'size' => 64,
