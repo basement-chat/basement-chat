@@ -11,7 +11,7 @@
     "lint:ci": "eslint \"./resources/js/**/*.ts\" --format github"
   },
   "dependencies": {
-    "@alpinejs/intersect": "^3.10.4",
+    "@alpinejs/intersect": "^3.12.1",
     "alpinejs": "^3.10.4",
     "axios": "^1.1.3",
     "laravel-echo": "^1.14.0",
