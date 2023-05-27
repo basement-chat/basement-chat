@@ -13,7 +13,7 @@ updates:
     schedule:
       interval: daily
     ignore:
-      - dependency-name: '*'
+      - dependency-name: "*"
         update-types: [version-update:semver-major]
 
   - package-ecosystem: github-actions
