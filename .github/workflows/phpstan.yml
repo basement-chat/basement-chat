@@ -2,7 +2,15 @@ name: Run PHP Stan
 
 on:
   workflow_dispatch:
-  push:
+  pull_request:
+    branches:
+      - "*.x"
+      - main
+      - next
+      - next-major
+      - beta
+      - alpha
+      - dev
     paths:
       - config/**.php
       - database/**.php
