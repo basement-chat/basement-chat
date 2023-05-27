@@ -4903,7 +4903,8 @@ var chatBoxComponent = (function () {
     totalUnreadMessages: 0,
     /**
      * Hook during the initialization phase of the current Alpine component.
-     */init: function init() {
+     */
+    init: function init() {
       var _this = this;
       void window.axios.get('/sanctum/csrf-cookie');
       window.addEventListener('online', function () {
@@ -4918,7 +4919,8 @@ var chatBoxComponent = (function () {
     },
     /**
      * Request push notification permission to the browser.
-     */requestNotificationPermission: function requestNotificationPermission() {
+     */
+    requestNotificationPermission: function requestNotificationPermission() {
       var _this2 = this;
       Push.Permission.request(function () {
         _this2.isNotificationAllowed = true;
@@ -4929,7 +4931,8 @@ var chatBoxComponent = (function () {
     },
     /**
      * Send push notification permission to the browser if allowed.
-     */sendPushNotification: function sendPushNotification(event) {
+     */
+    sendPushNotification: function sendPushNotification(event) {
       if (this.isNotificationAllowed === false) {
         return;
       }
@@ -4945,7 +4948,8 @@ var chatBoxComponent = (function () {
     },
     /**
      * Register tippy.js instance creation for child elements.
-     */registerTippy: function registerTippy() {
+     */
+    registerTippy: function registerTippy() {
       delegate(this.$el, {
         animation: 'fade',
         arrow: true,
@@ -4960,7 +4964,8 @@ var chatBoxComponent = (function () {
     },
     /**
      * Watch when the notification status changes.
-     */watchNotificationStatus: function watchNotificationStatus(newValue) {
+     */
+    watchNotificationStatus: function watchNotificationStatus(newValue) {
       var status = newValue === true ? NotificationStatus$1.Allowed : NotificationStatus$1.Muted;
       window.localStorage.setItem('basement.notification', status);
     }
@@ -10067,7 +10072,7 @@ var newDateUTC = {
 	  var token;
 	  var absoluteOffset; // Empty string
 
-	  if (timezoneString === '') {
+	  if (!timezoneString) {
 	    return 0;
 	  } // Z
 
@@ -11115,7 +11120,7 @@ var tzPattern = {
 	 *
 	 * - Characters are now escaped using single quote symbols (`'`) instead of square brackets.
 	 *
-	 * @param {Date|String|Number} date - the original date
+	 * @param {Date|Number} date - the original date
 	 * @param {String} format - the string of tokens
 	 * @param {OptionsWithTZ} [options] - the object with options. See [Options]{@link https://date-fns.org/docs/Options}
 	 * @param {0|1|2} [options.additionalDigits=2] - passed to `toDate`. See [toDate]{@link
@@ -11823,45 +11828,40 @@ function isYesterday(dirtyDate) {
 }
 
 var DateFormatter = /*#__PURE__*/function () {
-  /**
-   * @example December 31, 2022
-   */
-
-  /**
-   * @example 12/31/22
-   */
-
-  /**
-   * @example 12:15 PM
-   */
-
-  /**
-   * @example December 31, 2022 at 12:15 PM
-   */
-
-  /**
-   * @example Saturday, December 31, 2022 at 12:15 PM
-   */
-
   function DateFormatter(date) {
     _classCallCheck(this, DateFormatter);
     _defineProperty(this, "date", void 0);
+    /**
+     * @example December 31, 2022
+     */
     _defineProperty(this, "dateFormat", {
       day: 'numeric',
       month: 'long',
       year: 'numeric'
     });
+    /**
+     * @example 12/31/22
+     */
     _defineProperty(this, "shortDateFormat", {
       day: 'numeric',
       month: 'numeric',
       year: '2-digit'
     });
+    /**
+     * @example 12:15 PM
+     */
     _defineProperty(this, "timeFormat", {
       hour: 'numeric',
       hour12: true,
       minute: 'numeric'
     });
+    /**
+     * @example December 31, 2022 at 12:15 PM
+     */
     _defineProperty(this, "dateTimeFormat", _objectSpread2(_objectSpread2({}, this.dateFormat), this.timeFormat));
+    /**
+     * @example Saturday, December 31, 2022 at 12:15 PM
+     */
     _defineProperty(this, "dayDateTimeFormat", _objectSpread2(_objectSpread2({
       weekday: 'long'
     }, this.dateFormat), this.timeFormat));
@@ -11977,35 +11977,35 @@ var contactComponent = (function () {
     url: url,
     /**
      * Hook during the initialization phase of the current Alpine component.
-     */init: function init() {
+     */
+    init: function init() {
       this.$watch('contacts', this.watchContacts.bind(this));
       this.$refs.basementChatBox.addEventListener('update-last-private-message', this.updateLastPrivateMessage.bind(this));
     },
     /**
      * Load initial component data.
-     */mount: function mount() {
+     */
+    mount: function mount() {
       var _this = this;
       return _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee() {
         var response;
         return _regeneratorRuntime().wrap(function _callee$(_context) {
-          while (1) {
-            switch (_context.prev = _context.next) {
-              case 0:
-                _context.next = 2;
-                return window.axios.get(_this.url).then(function (_ref) {
-                  var data = _ref.data;
-                  return data;
-                });
-              case 2:
-                response = _context.sent;
-                _this.contacts = response.data.map(function (contact) {
-                  return ContactData.from(contact);
-                });
-                _this.registerEchoEventListeners();
-              case 5:
-              case "end":
-                return _context.stop();
-            }
+          while (1) switch (_context.prev = _context.next) {
+            case 0:
+              _context.next = 2;
+              return window.axios.get(_this.url).then(function (_ref) {
+                var data = _ref.data;
+                return data;
+              });
+            case 2:
+              response = _context.sent;
+              _this.contacts = response.data.map(function (contact) {
+                return ContactData.from(contact);
+              });
+              _this.registerEchoEventListeners();
+            case 5:
+            case "end":
+              return _context.stop();
           }
         }, _callee);
       }))();
@@ -12025,7 +12025,8 @@ var contactComponent = (function () {
     },
     /**
      * Find the same contact with the given id in the current component.
-     */findSameContact: function findSameContact(searchId) {
+     */
+    findSameContact: function findSameContact(searchId) {
       var sameContactIndex = this.contacts.findIndex(function (_ref3) {
         var id = _ref3.id;
         return id === searchId;
@@ -12043,7 +12044,8 @@ var contactComponent = (function () {
     },
     /**
      * Laravel Echo event listener to see other contacts that are on the current channel.
-     */onHere: function onHere(contacts) {
+     */
+    onHere: function onHere(contacts) {
       var _this3 = this;
       contacts.forEach(function (contact) {
         var sameContact = _this3.findSameContact(contact.id).contact;
@@ -12054,7 +12056,8 @@ var contactComponent = (function () {
     },
     /**
      * Laravel Echo event listener when someone joins the channel.
-     */onSomeoneJoining: function onSomeoneJoining(contact) {
+     */
+    onSomeoneJoining: function onSomeoneJoining(contact) {
       var sameContact = this.findSameContact(contact.id).contact;
       if (sameContact !== null) {
         sameContact.isOnline = true;
@@ -12066,7 +12069,8 @@ var contactComponent = (function () {
     },
     /**
      * Laravel Echo event listener when someone leaves the channel.
-     */onSomeoneLeaving: function onSomeoneLeaving(contact) {
+     */
+    onSomeoneLeaving: function onSomeoneLeaving(contact) {
       var sameContact = this.findSameContact(contact.id).contact;
       if (sameContact !== null) {
         sameContact.isOnline = false;
@@ -12074,12 +12078,14 @@ var contactComponent = (function () {
     },
     /**
      * Register Laravel Echo event listeners.
-     */registerEchoEventListeners: function registerEchoEventListeners() {
+     */
+    registerEchoEventListeners: function registerEchoEventListeners() {
       window.Echo.join('basement.contacts').here(this.onHere.bind(this)).joining(this.onSomeoneJoining.bind(this)).leaving(this.onSomeoneLeaving.bind(this));
     },
     /**
      * HTML DOM event listener to update the last private message in the current component.
-     */updateLastPrivateMessage: function updateLastPrivateMessage(event) {
+     */
+    updateLastPrivateMessage: function updateLastPrivateMessage(event) {
       var sameContactIndex = this.findSameContact(event.detail.senderId).index;
       if (sameContactIndex === null) {
         return;
@@ -12093,12 +12099,14 @@ var contactComponent = (function () {
     },
     /**
      * Trigger update receiver event to the chat box component.
-     */updateReceiver: function updateReceiver(contact) {
+     */
+    updateReceiver: function updateReceiver(contact) {
       this.$dispatch('update-receiver', contact);
     },
     /**
      * Watch when the contacts changes.
-     */watchContacts: function watchContacts(newValue) {
+     */
+    watchContacts: function watchContacts(newValue) {
       this.unreadMessages = newValue.reduce(function (total, contact) {
         return total + contact.unreadMessages;
       }, 0);
@@ -15088,7 +15096,8 @@ var privateMessageComponent = (function () {
     urlShowMore: null,
     /**
      * Hook during the initialization phase of the current Alpine component.
-     */init: function init() {
+     */
+    init: function init() {
       this.$refs.basementChatBox.addEventListener('update-receiver', this.updateReceiver.bind(this));
       this.$watch('messages', this.watchMessages.bind(this));
       setInterval(this.markSeenMessagesAsRead.bind(this), 3000);
@@ -15100,88 +15109,86 @@ var privateMessageComponent = (function () {
     },
     /**
      * Load initial component data.
-     */mount: function mount() {
+     */
+    mount: function mount() {
       var _this = this;
       return _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee() {
         var response, _this$unreadMessageCu;
         return _regeneratorRuntime().wrap(function _callee$(_context) {
-          while (1) {
-            switch (_context.prev = _context.next) {
-              case 0:
-                _this.isLoading = true;
-                _context.next = 3;
-                return window.axios.get(_this.url, {
-                  params: {
-                    keyword: _this.searchKeyword.trim()
-                  }
-                }).then(function (_ref) {
-                  var data = _ref.data;
-                  return data;
-                });
-              case 3:
-                response = _context.sent;
-                _this.urlShowMore = response.links.next;
-                _this.messages = response.data.map(function (message) {
-                  return PrivateMessageData.from(message);
-                });
-                _this.isLoading = false;
-                if (_this.messages.length > 0) {
-                  _this.setUnreadMessagesMarker();
-                  _this.scrollTo((_this$unreadMessageCu = _this.unreadMessageCursor) !== null && _this$unreadMessageCu !== void 0 ? _this$unreadMessageCu : _this.messages.at(0).id, {
-                    block: 'center'
-                  });
+          while (1) switch (_context.prev = _context.next) {
+            case 0:
+              _this.isLoading = true;
+              _context.next = 3;
+              return window.axios.get(_this.url, {
+                params: {
+                  keyword: _this.searchKeyword.trim()
                 }
-              case 8:
-              case "end":
-                return _context.stop();
-            }
+              }).then(function (_ref) {
+                var data = _ref.data;
+                return data;
+              });
+            case 3:
+              response = _context.sent;
+              _this.urlShowMore = response.links.next;
+              _this.messages = response.data.map(function (message) {
+                return PrivateMessageData.from(message);
+              });
+              _this.isLoading = false;
+              if (_this.messages.length > 0) {
+                _this.setUnreadMessagesMarker();
+                _this.scrollTo((_this$unreadMessageCu = _this.unreadMessageCursor) !== null && _this$unreadMessageCu !== void 0 ? _this$unreadMessageCu : _this.messages.at(0).id, {
+                  block: 'center'
+                });
+              }
+            case 8:
+            case "end":
+              return _context.stop();
           }
         }, _callee);
       }))();
     },
     /**
      * Load more component data.
-     */mountMore: function mountMore() {
+     */
+    mountMore: function mountMore() {
       var _this2 = this;
       return _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee2() {
         var _this2$messages;
         var response, messages, currentCursor;
         return _regeneratorRuntime().wrap(function _callee2$(_context2) {
-          while (1) {
-            switch (_context2.prev = _context2.next) {
-              case 0:
-                if (!(_this2.urlShowMore === null)) {
-                  _context2.next = 2;
-                  break;
+          while (1) switch (_context2.prev = _context2.next) {
+            case 0:
+              if (!(_this2.urlShowMore === null)) {
+                _context2.next = 2;
+                break;
+              }
+              throw new Error('Next page to load more private messages is not available');
+            case 2:
+              _this2.isLoadingShowMore = true;
+              _context2.next = 5;
+              return window.axios.get(_this2.urlShowMore, {
+                params: {
+                  keyword: _this2.searchKeyword.trim()
                 }
-                throw new Error('Next page to load more private messages is not available');
-              case 2:
-                _this2.isLoadingShowMore = true;
-                _context2.next = 5;
-                return window.axios.get(_this2.urlShowMore, {
-                  params: {
-                    keyword: _this2.searchKeyword.trim()
-                  }
-                }).then(function (_ref2) {
-                  var data = _ref2.data;
-                  return data;
-                });
-              case 5:
-                response = _context2.sent;
-                messages = response.data.map(function (message) {
-                  return PrivateMessageData.from(message);
-                });
-                currentCursor = _this2.messages.at(-1);
-                (_this2$messages = _this2.messages).push.apply(_this2$messages, _toConsumableArray(messages));
-                _this2.urlShowMore = response.links.next;
-                _this2.isLoadingShowMore = false;
-                if (currentCursor !== undefined) {
-                  _this2.scrollTo(currentCursor.id);
-                }
-              case 12:
-              case "end":
-                return _context2.stop();
-            }
+              }).then(function (_ref2) {
+                var data = _ref2.data;
+                return data;
+              });
+            case 5:
+              response = _context2.sent;
+              messages = response.data.map(function (message) {
+                return PrivateMessageData.from(message);
+              });
+              currentCursor = _this2.messages.at(-1);
+              (_this2$messages = _this2.messages).push.apply(_this2$messages, _toConsumableArray(messages));
+              _this2.urlShowMore = response.links.next;
+              _this2.isLoadingShowMore = false;
+              if (currentCursor !== undefined) {
+                _this2.scrollTo(currentCursor.id);
+              }
+            case 12:
+            case "end":
+              return _context2.stop();
           }
         }, _callee2);
       }))();
@@ -15202,7 +15209,8 @@ var privateMessageComponent = (function () {
     },
     /**
      * Action when the last message is hidden or shown.
-     */lastMessageObserver: function lastMessageObserver(entries) {
+     */
+    lastMessageObserver: function lastMessageObserver(entries) {
       var _entries$at = entries.at(0),
         intersectionRatio = _entries$at.intersectionRatio;
       if (intersectionRatio > 0.5) {
@@ -15213,7 +15221,8 @@ var privateMessageComponent = (function () {
     },
     /**
      * Update messages that have been seen to the database.
-     */markSeenMessagesAsRead: function markSeenMessagesAsRead() {
+     */
+    markSeenMessagesAsRead: function markSeenMessagesAsRead() {
       if (this.seenMessages.length === 0) {
         return;
       }
@@ -15232,7 +15241,8 @@ var privateMessageComponent = (function () {
     },
     /**
      * Assign observer for the last message.
-     */observeLastMessage: function observeLastMessage() {
+     */
+    observeLastMessage: function observeLastMessage() {
       var lastMessage = this.messages.at(0);
       if (lastMessage === undefined) {
         return;
@@ -15245,7 +15255,8 @@ var privateMessageComponent = (function () {
     },
     /**
      * Laravel Echo event listener when a message is received.
-     */onMessageReceived: function onMessageReceived(event) {
+     */
+    onMessageReceived: function onMessageReceived(event) {
       var _this$receiver;
       var receivedMessage = PrivateMessageData.from(event.detail);
       if (event.detail.sender_id === ((_this$receiver = this.receiver) === null || _this$receiver === void 0 ? void 0 : _this$receiver.id) && event.detail.value.includes(this.searchKeyword.trim())) {
@@ -15265,7 +15276,8 @@ var privateMessageComponent = (function () {
     },
     /**
      * Laravel Echo event listener when a message is marked as read.
-     */onMessageMarkedAsRead: function onMessageMarkedAsRead(event) {
+     */
+    onMessageMarkedAsRead: function onMessageMarkedAsRead(event) {
       var _this$receiver2,
         _this3 = this;
       if (((_this$receiver2 = this.receiver) === null || _this$receiver2 === void 0 ? void 0 : _this$receiver2.id) === event.detail.receiver.id) {
@@ -15282,12 +15294,14 @@ var privateMessageComponent = (function () {
     },
     /**
      * Register Laravel Echo event listeners.
-     */registerEchoEventListeners: function registerEchoEventListeners() {
+     */
+    registerEchoEventListeners: function registerEchoEventListeners() {
       window.Echo.join("basement.contacts.".concat(userId)).listen('.basement.message.sent', this.onMessageReceived.bind(this)).listen('.basement.message.marked-as-read', this.onMessageMarkedAsRead.bind(this));
     },
     /**
      * Scroll component view to given message id.
-     */scrollTo: function scrollTo(id) {
+     */
+    scrollTo: function scrollTo(id) {
       var options = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
       if (id === null) {
         return;
@@ -15299,7 +15313,8 @@ var privateMessageComponent = (function () {
     },
     /**
      * Scroll component view to the last message.
-     */scrollToLastMessage: function scrollToLastMessage() {
+     */
+    scrollToLastMessage: function scrollToLastMessage() {
       var _lastMessage$id;
       var lastMessage = this.messages.at(0);
       this.scrollTo((_lastMessage$id = lastMessage === null || lastMessage === void 0 ? void 0 : lastMessage.id) !== null && _lastMessage$id !== void 0 ? _lastMessage$id : null, {
@@ -15308,7 +15323,8 @@ var privateMessageComponent = (function () {
     },
     /**
      * Action when a given message is visible.
-     */seeMessage: function seeMessage(message) {
+     */
+    seeMessage: function seeMessage(message) {
       if (this.receiver === null || message.receiverId === this.receiver.id || message.readAt.date !== null) {
         return;
       }
@@ -15317,49 +15333,49 @@ var privateMessageComponent = (function () {
     },
     /**
      * Send a new message.
-     */sendNewMessage: function sendNewMessage() {
+     */
+    sendNewMessage: function sendNewMessage() {
       var _this4 = this;
       return _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee3() {
         var response, message;
         return _regeneratorRuntime().wrap(function _callee3$(_context3) {
-          while (1) {
-            switch (_context3.prev = _context3.next) {
-              case 0:
-                if (!(_this4.receiver === null)) {
-                  _context3.next = 2;
-                  break;
-                }
-                throw new Error('Receiver cannot be empty');
-              case 2:
-                _this4.isLoadingSentMessage = true;
-                _context3.next = 5;
-                return window.axios.post(_this4.url, {
-                  value: _this4.newMessageValue
-                }).then(function (_ref4) {
-                  var data = _ref4.data;
-                  return data;
-                });
-              case 5:
-                response = _context3.sent;
-                message = PrivateMessageData.from(response.data);
-                if (_this4.receiver.id !== userId) {
-                  _this4.messages.unshift(message);
-                  _this4.scrollToLastMessage();
-                }
-                _this4.receiver.lastPrivateMessage = message;
-                _this4.newMessageValue = '';
-                _this4.isLoadingSentMessage = false;
-              case 11:
-              case "end":
-                return _context3.stop();
-            }
+          while (1) switch (_context3.prev = _context3.next) {
+            case 0:
+              if (!(_this4.receiver === null)) {
+                _context3.next = 2;
+                break;
+              }
+              throw new Error('Receiver cannot be empty');
+            case 2:
+              _this4.isLoadingSentMessage = true;
+              _context3.next = 5;
+              return window.axios.post(_this4.url, {
+                value: _this4.newMessageValue
+              }).then(function (_ref4) {
+                var data = _ref4.data;
+                return data;
+              });
+            case 5:
+              response = _context3.sent;
+              message = PrivateMessageData.from(response.data);
+              if (_this4.receiver.id !== userId) {
+                _this4.messages.unshift(message);
+                _this4.scrollToLastMessage();
+              }
+              _this4.receiver.lastPrivateMessage = message;
+              _this4.newMessageValue = '';
+              _this4.isLoadingSentMessage = false;
+            case 11:
+            case "end":
+              return _context3.stop();
           }
         }, _callee3);
       }))();
     },
     /**
      * Add unread messages marker to the component.
-     */setUnreadMessagesMarker: function setUnreadMessagesMarker() {
+     */
+    setUnreadMessagesMarker: function setUnreadMessagesMarker() {
       var _this5 = this;
       this.messages.some(function (message) {
         var _this5$receiver;
@@ -15374,7 +15390,8 @@ var privateMessageComponent = (function () {
     },
     /**
      * HTML DOM event listener to update the current receiver.
-     */updateReceiver: function updateReceiver(event) {
+     */
+    updateReceiver: function updateReceiver(event) {
       this.unreadMessageCursor = null;
       this.searchKeyword = '';
       this.receiver = event.detail;
@@ -15383,7 +15400,8 @@ var privateMessageComponent = (function () {
     },
     /**
      * Watch when the messages changes.
-     */watchMessages: function watchMessages() {
+     */
+    watchMessages: function watchMessages() {
       if (this.searchKeyword.trim() === '') {
         highlighter.unmark();
       } else {
