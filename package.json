@@ -37,7 +37,7 @@
     "@types/mark.js": "^8.11.8",
     "@typescript-eslint/eslint-plugin": "^5.59.7",
     "@typescript-eslint/parser": "^5.40.1",
-    "autoprefixer": "^10.4.12",
+    "autoprefixer": "^10.4.14",
     "commitizen": "^4.2.5",
     "core-js": "^3.30.2",
     "cz-conventional-changelog": "^3.3.0",
