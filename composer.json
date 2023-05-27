@@ -1,6 +1,7 @@
 {
   "name": "basement-chat/basement-chat",
-  "description": "Real time chat widget package with flexible broadcast driver support. Built for Laravel using Alpine.js, TypeScript, and Tailwind CSS.",
+  "type": "library",
+  "description": "Add a real-time chat widget to your Laravel application.",
   "keywords": [
     "laravel",
     "php",
