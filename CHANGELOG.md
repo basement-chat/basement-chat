@@ -1,3 +1,28 @@
+## [1.0.3](https://github.com/basement-chat/basement-chat/compare/v1.0.2...v1.0.3) (2023-05-27)
+
+
+### Bug Fixes
+
+* **api:** add basement prefix to api endpoints ([3ba83bf](https://github.com/basement-chat/basement-chat/commit/3ba83bfc611b9279b09dc990f08d7429519ae45a))
+* **components:** add message sent time from user ([97a640e](https://github.com/basement-chat/basement-chat/commit/97a640e6d8c615a1a5b75ccbad533efacc206900))
+* **components:** auto scroll to last message when new message received ([687be9a](https://github.com/basement-chat/basement-chat/commit/687be9a4ae4daa337974bd2cd4747cdd54563ca3))
+* **components:** only apply tippy.js to data-title inside basement selector ([ecf8746](https://github.com/basement-chat/basement-chat/commit/ecf8746bc0df270c7d71633ca1dc92f64a3a542e))
+* **components:** show go to last message only when messages not empty ([3d19513](https://github.com/basement-chat/basement-chat/commit/3d195136d8379c8b3b1cd11cd3254cb2d3f76857))
+* **console:** fix return type error detected by phpstan ([27ecace](https://github.com/basement-chat/basement-chat/commit/27ecace967c400f16f5d9ad6f21fcddf8f977a82))
+* **console:** install soketi with pusher ([90eaffa](https://github.com/basement-chat/basement-chat/commit/90eaffa5ba7d460ad8d8e87cf34df0daff6cf5ac))
+* **console:** run migration after installing driver ([071dc94](https://github.com/basement-chat/basement-chat/commit/071dc9475993c098bade8b642a9b8ad06571a343))
+* **css:** use sans font family for tippy ([9dc05c5](https://github.com/basement-chat/basement-chat/commit/9dc05c5316fe91244276d367e18e8ac4a0fc7227))
+* **plugins:** better null safe handling when echo option is null ([2bf4de9](https://github.com/basement-chat/basement-chat/commit/2bf4de90a8012734fde37300c8d1e4aae88e8ef7))
+* **tailwind:** add prefix selector to prevent style conflicts ([e85c804](https://github.com/basement-chat/basement-chat/commit/e85c8044b91b5b7c02a5fbe9a380d90155120ec3))
+* **tailwind:** use tailwindcss form classes instead of global selector ([70b5e45](https://github.com/basement-chat/basement-chat/commit/70b5e45690129bf35bea62ca9a297e2570214482))
+* use better block element selector naming ([abd4686](https://github.com/basement-chat/basement-chat/commit/abd46863c6eded17cba543eb5b9a2fbe0b9e9a23))
+* **utils:** fix date format ([bfe64e6](https://github.com/basement-chat/basement-chat/commit/bfe64e61e0de1d5e2acecd24dc64c8c2fe5d449f))
+
+
+### Performance Improvements
+
+* **data:** cache resolved model to variable ([e9596ef](https://github.com/basement-chat/basement-chat/commit/e9596eff63e48819f49c206fbbd39c77210b4502))
+
 ## [1.0.2](https://github.com/basement-chat/basement-chat/compare/v1.0.1...v1.0.2) (2023-05-13)
 
 
