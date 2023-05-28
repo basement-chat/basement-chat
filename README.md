@@ -44,7 +44,7 @@
 - [Installation](#installation)
 - [Configurations](#configurations)
 - [Advanced Customizations](#advanced-customizations)
-- [Extra Notes](#extra-notes)
+- [Extra Notes and Troubleshooting](#extra-notes-and-troubleshooting)
 - [Roadmap](#roadmap)
 - [Contributing](#contributing)
 - [License](#license)
@@ -71,11 +71,11 @@ The Basement name was inspired by Aech's private chat room from [Ready Player On
 - Lazy loading with infinite scroll messages
 - Intuitive and attractive design using TailwindCSS and Alpine.js
 - Can be used with various CSS frontend frameworks such as Bootstrap and TailwindCSS without worrying about style conflicts
-- Flexible broadcast driver support
+- Flexible broadcast driver support, [Pusher](https://pusher.com/), [Ably](https://ably.com/), [Soketi](https://docs.soketi.app/), [Laravel Websockets](https://beyondco.de/docs/laravel-websockets/), or any other Laravel supported broadcast driver, it's up to you to decide.
 
 ## Demo
 
-Here is a demo with scaffolding using Laravel Breeze. You should register first before trying it (no email verification required).
+[Here is a demo](https://github.com/basement-chat/demo) with scaffolding using Laravel Breeze.
 
 ## Installation
 
@@ -193,6 +193,16 @@ Here is a demo with scaffolding using Laravel Breeze. You should register first 
     ```
 
     </details>
+
+- Configure your Sanctum Stateful Domains
+
+  Since this package uses [Laravel Sanctum](https://laravel.com/docs/10.x/sanctum) as the primary authentication system, you will need to configure your `.env` to use the equivalent `SANCTUM_STATEFUL_DOMAINS` with the domain you are currently using:
+
+  ```
+  SANCTUM_STATEFUL_DOMAINS=<your-app-domain>
+  ```
+
+  > Example: `basement.up.railway.app`, `127.0.0.1:8080`
 
 - Implements Basement Chat functionality to your user model
 
@@ -320,7 +330,7 @@ Here is a demo with scaffolding using Laravel Breeze. You should register first 
 
 This package publishes a `config/basement.php` configuration file and offers options to configure `broadcaster`, `chat_box_widget_position`, `user_model`, `avatar`, and `middleware`. See this [file](./config/basement.php) for more detailed information on what you can configure.
 
-## Advanced customizations
+## Advanced Customizations
 
 Other than configuring through the `config/basement.php` file, you can customize further by changing the class implementation or overriding the default method. Let's explore some of the use cases you can do with this feature:
 
@@ -518,7 +528,7 @@ It is also possible to customize the view style. For example, you can do the fol
   </div>
   ```
 
-## Extra notes
+## Extra Notes and Troubleshooting
 
 ### Updating package
 
@@ -557,6 +567,10 @@ export default defineConfig({
 +  },
 });
 ```
+
+### Broadcasting auth error when using route cache
+
+Basement Chat package may fail to start and you may get a 403 Forbidden - HTTP Error when accessing the `broadcasting/auth` endpoint in the browser console when you use the `php artisan route:cache` command. The solution to this problem is still under further investigation, we recommend that you do not use route caching feature at this time.
 
 ## Roadmap
 
