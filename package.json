@@ -47,7 +47,7 @@
     "eslint-config-airbnb-base": "^15.0.0",
     "eslint-config-airbnb-typescript": "^17.0.0",
     "eslint-formatter-github": "^1.1.4",
-    "eslint-plugin-import": "^2.26.0",
+    "eslint-plugin-import": "^2.27.5",
     "laravel-vite-plugin": "^0.7.8",
     "mark.js": "^8.11.1",
     "postcss-import": "^15.0.0",
