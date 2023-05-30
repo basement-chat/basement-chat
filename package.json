@@ -23,7 +23,7 @@
     }
   },
   "devDependencies": {
-    "@babel/preset-env": "^7.22.2",
+    "@babel/preset-env": "^7.22.4",
     "@rollup/plugin-babel": "^6.0.0",
     "@rollup/plugin-commonjs": "^23.0.7",
     "@rollup/plugin-json": "^5.0.0",
