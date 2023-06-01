@@ -18,13 +18,15 @@ class ContactData implements Arrayable
         public int $id,
         public string $name,
         public string $avatar,
-        public ?PrivateMessageData $last_private_message,
+        public ?PrivateMessageData $last_private_message = null,
         public int $unread_messages = 0,
     ) {
     }
 
     /**
      * Get the instance as an array.
+     *
+     * @return array<string,mixed>
      */
     public function toArray(): array
     {

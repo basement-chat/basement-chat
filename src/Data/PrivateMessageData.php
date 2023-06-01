@@ -41,7 +41,7 @@ class PrivateMessageData implements Arrayable
         Authenticatable|null $receiver = null,
         Authenticatable|null $sender = null,
     ) {
-        $this->receiverResolver = function () use ($receiver) {
+        $this->receiverResolver = function () use (&$receiver) {
             if ($receiver !== null) {
                 return $receiver;
             }
@@ -51,7 +51,7 @@ class PrivateMessageData implements Arrayable
             return $receiver;
         };
 
-        $this->senderResolver = function () use ($sender) {
+        $this->senderResolver = function () use (&$sender) {
             if ($sender !== null) {
                 return $sender;
             }
@@ -103,8 +103,10 @@ class PrivateMessageData implements Arrayable
 
     /**
      * Get the instance as an array.
+     *
+     * @return array<string,mixed>
      */
-    public function toArray()
+    public function toArray(): array
     {
         return [
             'receiver_id' => $this->receiver_id,

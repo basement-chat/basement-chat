@@ -9,6 +9,7 @@ class ContactData {
     public unreadMessages: number,
     public lastPrivateMessage: PrivateMessageData | null,
     public isOnline: boolean = false,
+    public typing: boolean = false,
   ) {
   }
 

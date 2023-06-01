@@ -2,13 +2,19 @@ import type { Alpine } from 'alpinejs'
 import type axios from 'axios'
 import type Echo from 'laravel-echo'
 import type Pusher from 'pusher-js'
-import type { PushNotificationEvent, UpdateLastPrivateMessageEvent, UpdateReceiverEvent } from '../plugins/types/events'
+import type {
+  PushNotificationEvent,
+  UpdateCurrentlyTypingContactEvent,
+  UpdateLastPrivateMessageEvent,
+  UpdateReceiverEvent,
+} from '../plugins/types/events'
 
 declare global {
   interface HTMLElementEventMap {
     'send-push-notification': CustomEvent<PushNotificationEvent>
     'update-last-private-message': CustomEvent<UpdateLastPrivateMessageEvent>
     'update-receiver': CustomEvent<UpdateReceiverEvent>
+    'update-currently-typing-contact': CustomEvent<UpdateCurrentlyTypingContactEvent>
   }
 
   interface HTMLElementTagNameMap {
