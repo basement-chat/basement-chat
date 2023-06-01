@@ -64,6 +64,7 @@ The Basement name was inspired by Aech's private chat room from [Ready Player On
 
 - Real-time messages
 - User's online status
+- User's typing indicator
 - Messages have been read status
 - Configurable push notifications from the client side
 - Searchable contacts and messages
@@ -268,13 +269,12 @@ The Basement name was inspired by Aech's private chat room from [Ready Player On
         ...
 
     +    <link rel="stylesheet" href="{{ asset('vendor/basement/basement.bundle.min.css') }}">
-    +    <script src="{{ asset('vendor/basement/basement.bundle.min.js') }}"></script>
-
     </head>
     <body>
         ...
 
        <x-basement::chat-box />
+    +  <script src="{{ asset('vendor/basement/basement.bundle.min.js') }}"></script>
     </body>
     </html>
     ```
@@ -485,7 +485,7 @@ class AppServiceProvider extends ServiceProvider
 
     <!-- The chat box component button will only be available if the current user is an administrator -->
     @role('administrator')
-    <x-basement::chat-box />
+      <x-basement::chat-box />
     @endrole
   </body>
 </html>
