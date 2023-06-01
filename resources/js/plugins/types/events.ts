@@ -13,14 +13,14 @@ export type UpdateLastPrivateMessageEvent = PrivateMessageData
 export type UpdateReceiverEvent = ContactData
 
 export interface PrivateMessageSentEvent extends PrivateMessage {
-  sender: {
-    id: number
-    name: string
-    avatar: string
-  }
+  sender: Pick<ContactData, 'id' | 'name' | 'avatar'>
 }
 
 export interface PrivateMessageMarkedAsReadEvent {
   receiver: { id: number }
   messages: { id: number, read_at: string }[]
+}
+
+export interface UpdateCurrentlyTypingContactEvent {
+  contact: Pick<ContactData, 'id' | 'typing'>
 }

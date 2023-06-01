@@ -2,7 +2,7 @@ import type { AlpineComponent } from 'alpinejs'
 import ContactData from '../data/contact-data'
 import type { Response, Contact } from '../types/api'
 import type { ContactComponent } from '../types/components'
-import type { UpdateLastPrivateMessageEvent } from '../types/events'
+import type { UpdateCurrentlyTypingContactEvent, UpdateLastPrivateMessageEvent } from '../types/events'
 
 export default (): AlpineComponent<ContactComponent> => {
   const container: HTMLDivElement = document.querySelector('.basement-contacts')!
@@ -20,6 +20,7 @@ export default (): AlpineComponent<ContactComponent> => {
     init(): void {
       this.$watch('contacts', this.watchContacts.bind(this))
       this.$refs.basementChatBox.addEventListener('update-last-private-message', this.updateLastPrivateMessage.bind(this))
+      this.$refs.basementChatBox.addEventListener('update-currently-typing-contact', this.updateCurrentlyTypingContact.bind(this))
     },
 
     /**
@@ -145,6 +146,19 @@ export default (): AlpineComponent<ContactComponent> => {
      */
     updateReceiver(contact: ContactData): void {
       this.$dispatch('update-receiver', contact)
+    },
+
+    /**
+     * HTML DOM event listener to update the is typing status of the given contact.
+     */
+    updateCurrentlyTypingContact(event: CustomEvent<UpdateCurrentlyTypingContactEvent>): void {
+      const sameContact: ContactData | null = this.findSameContact(event.detail.contact.id).contact
+
+      if (sameContact === null) {
+        return
+      }
+
+      sameContact.typing = event.detail.contact.typing
     },
 
     /**

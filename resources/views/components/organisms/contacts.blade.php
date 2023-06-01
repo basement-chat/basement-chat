@@ -111,14 +111,33 @@
 
                     <div class="bm-grid bm-grid-cols-4">
                         <p class="bm-col-span-3 bm-truncate bm-text-sm">
-                            <x-basement::atoms.icons.fas-reply
-                                class="bm-inline bm-w-3"
-                                x-show="contact.lastPrivateMessage?.receiverId === contact.id"
-                            />
-                            <span
-                                x-text="contact.lastPrivateMessage?.value"
-                                x-bind:data-title="contact.lastPrivateMessage?.value"
-                            ></span>
+                            <template x-if="contact.typing === false">
+                                <span>
+                                    <x-basement::atoms.icons.fas-reply
+                                        class="bm-inline bm-w-3"
+                                        x-show="contact.lastPrivateMessage?.receiverId === contact.id"
+                                    />
+                                    <span
+                                        x-text="contact.lastPrivateMessage?.value"
+                                        x-bind:data-title="contact.lastPrivateMessage?.value"
+                                    ></span>
+                                </span>
+                            </template>
+                            <template x-if="contact.typing === true">
+                                <span x-bind:data-title="`${contact.name} is typing ...`">
+                                    <span
+                                        class="bm-inline-block bm-h-1 bm-w-1 bm-animate-bounce bm-rounded-full bm-bg-gray-900"
+                                    ></span>
+                                    <span
+                                        class="bm-inline-block bm-h-1 bm-w-1 bm-animate-bounce bm-rounded-full bm-bg-gray-900"
+                                        style="animation-delay: 0.2s"
+                                    ></span>
+                                    <span
+                                        class="bm-inline-block bm-h-1 bm-w-1 bm-animate-bounce bm-rounded-full bm-bg-gray-900"
+                                        style="animation-delay: 0.4s"
+                                    ></span>
+                                </span>
+                            </template>
                         </p>
 
                         <p class="bm-col-span-1 bm-text-right">

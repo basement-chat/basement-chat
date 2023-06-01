@@ -2,6 +2,7 @@
     class="basement-private-messages bm-relative bm-flex bm-h-full bm-w-full bm-flex-col bm-shadow-lg"
     data-url="{{ route('api.basement.contacts.private-messages.index', ['contact' => ':contact']) }}"
     data-batch-request-url="{{ route('api.basement.private-messages.updates') }}"
+    data-currently-typing-url="{{ route('api.basement.contacts.currently-typing', ['contact' => ':contact']) }}"
     data-user-id="{{ \Illuminate\Support\Facades\Auth::id() }}"
     x-data="basementPrivateChat"
     x-show="isMessageBoxOpened"
@@ -218,6 +219,28 @@
                         </template>
                     </div>
                 </template>
+                <template x-if="receiver?.typing === true">
+                    <div class="bm-flex bm-flex-col">
+                        <div class="bm-group bm-relative bm-flex bm-flex-row">
+                            <p
+                                class="bm-rounded-r-lg bm-rounded-t-lg bm-bg-gray-100 bm-px-2 bm-py-1"
+                                x-bind:data-title="`${receiver?.name} is typing ...`"
+                            >
+                                <span
+                                    class="bm-inline-block bm-h-1 bm-w-1 bm-animate-bounce bm-rounded-full bm-bg-gray-900"
+                                ></span>
+                                <span
+                                    class="bm-inline-block bm-h-1 bm-w-1 bm-animate-bounce bm-rounded-full bm-bg-gray-900"
+                                    style="animation-delay: 0.2s"
+                                ></span>
+                                <span
+                                    class="bm-inline-block bm-h-1 bm-w-1 bm-animate-bounce bm-rounded-full bm-bg-gray-900"
+                                    style="animation-delay: 0.4s"
+                                ></span>
+                            </p>
+                        </div>
+                    </div>
+                </template>
             </div>
         </div>
 
@@ -268,7 +291,8 @@
                     aria-required="true"
                     x-bind:disabled="isLoadingSentMessage === true"
                     x-bind:class="isLoadingSentMessage === true ? 'bm-pl-9' : ''"
-                    x-model.lazy="newMessageValue"
+                    x-model="newMessageValue"
+                    x-on:keydown.throttle.1000ms="currentlyTyping"
                     autocomplete="off"
                     required=""
                     placeholder="Message"

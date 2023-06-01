@@ -3,7 +3,12 @@ import Mark from 'mark.js'
 import PrivateMessageData from '../data/private-message-data'
 import type { Response, PaginatedResponse, PrivateMessage } from '../types/api'
 import type { PrivateMessageComponent } from '../types/components'
-import type { PrivateMessageMarkedAsReadEvent, PrivateMessageSentEvent, UpdateReceiverEvent } from '../types/events'
+import type {
+  PrivateMessageMarkedAsReadEvent,
+  PrivateMessageSentEvent,
+  UpdateCurrentlyTypingContactEvent,
+  UpdateReceiverEvent,
+} from '../types/events'
 
 export default (): AlpineComponent<PrivateMessageComponent> => {
   const container: HTMLDivElement = document.querySelector('.basement-private-messages')!
@@ -11,7 +16,9 @@ export default (): AlpineComponent<PrivateMessageComponent> => {
   let lastMessageObserver: IntersectionObserver
   const urlTemplate: string = container.getAttribute('data-url')!
   const urlBatchRequest: string = container.getAttribute('data-batch-request-url')!
+  const urlCurrentlyTypingTemplate: string = container.getAttribute('data-currently-typing-url')!
   const userId = Number(container.getAttribute('data-user-id')!)
+  const typingsTimeout = new Map<number, NodeJS.Timeout>()
 
   return {
     isInfoBoxOpened: false,
@@ -31,6 +38,8 @@ export default (): AlpineComponent<PrivateMessageComponent> => {
     url: '',
     urlTemplate,
     urlBatchRequest,
+    urlCurrentlyTyping: '',
+    urlCurrentlyTypingTemplate,
     urlShowMore: null,
 
     /**
@@ -125,6 +134,15 @@ export default (): AlpineComponent<PrivateMessageComponent> => {
     },
 
     /**
+     * Send a HTTP request to the currently typing API endpoint.
+     */
+    async currentlyTyping(): Promise<void> {
+      if (this.receiver !== null && this.receiver.id !== userId && this.newMessageValue !== '') {
+        await window.axios.get(this.urlCurrentlyTyping)
+      }
+    },
+
+    /**
      * Action when the last message is hidden or shown.
      */
     lastMessageObserver(entries: IntersectionObserverEntry[]): void {
@@ -181,6 +199,8 @@ export default (): AlpineComponent<PrivateMessageComponent> => {
      * Laravel Echo event listener when a message is received.
      */
     onMessageReceived(event: CustomEvent<PrivateMessageSentEvent>): void {
+      this.setStatusToNotTyping(event.detail.sender_id)
+
       const receivedMessage: PrivateMessageData = PrivateMessageData.from(event.detail)
 
       if (
@@ -223,12 +243,72 @@ export default (): AlpineComponent<PrivateMessageComponent> => {
     },
 
     /**
+     * Laravel Echo event listener when someone in the contact list types a message.
+     */
+    onContactCurrentlyTyping(event: CustomEvent<UpdateCurrentlyTypingContactEvent>): void {
+      if (event.detail.contact.id === userId) {
+        return
+      }
+
+      this.setStatusToTyping(event.detail.contact.id, 1500)
+
+      if (this.isLastMessageShown === true) {
+        this.scrollToLastMessage()
+      }
+    },
+
+    /**
      * Register Laravel Echo event listeners.
      */
     registerEchoEventListeners(): void {
       window.Echo.join(`basement.contacts.${userId}`)
         .listen('.basement.message.sent', this.onMessageReceived.bind(this))
         .listen('.basement.message.marked-as-read', this.onMessageMarkedAsRead.bind(this))
+        .listen('.basement.contact.currently-typing', this.onContactCurrentlyTyping.bind(this))
+    },
+
+    /**
+     * Set the status of the given contact to typing for till specified time in ms
+     */
+    setStatusToTyping(contactId: number, ms: number): void {
+      if (typingsTimeout.has(contactId)) {
+        clearTimeout(typingsTimeout.get(contactId))
+      } else {
+        this.$dispatch('update-currently-typing-contact', {
+          contact: {
+            id: contactId,
+            typing: true,
+          },
+        })
+      }
+
+      typingsTimeout.set(contactId, setTimeout(() => {
+        this.$dispatch('update-currently-typing-contact', {
+          contact: {
+            id: contactId,
+            typing: false,
+          },
+        })
+
+        typingsTimeout.delete(contactId)
+      }, ms))
+    },
+
+    /**
+     * Set the status of the given contact to not typing.
+     */
+    setStatusToNotTyping(contactId: number): void {
+      if (typingsTimeout.has(contactId)) {
+        clearTimeout(typingsTimeout.get(contactId))
+        typingsTimeout.delete(contactId)
+      }
+
+      this.$dispatch('update-currently-typing-contact', {
+        contact: {
+          id: contactId,
+          typing: false,
+        },
+      })
     },
 
     /**
@@ -321,6 +401,7 @@ export default (): AlpineComponent<PrivateMessageComponent> => {
       this.searchKeyword = ''
       this.receiver = event.detail
       this.url = this.urlTemplate.replace(':contact', String(event.detail.id))
+      this.urlCurrentlyTyping = this.urlCurrentlyTypingTemplate.replace(':contact', String(event.detail.id))
       void this.mount()
     },
 

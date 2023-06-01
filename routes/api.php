@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 use BasementChat\Basement\Http\Controllers\Api\ContactController;
+use BasementChat\Basement\Http\Controllers\Api\CurrentlyTypingController;
 use BasementChat\Basement\Http\Controllers\Api\PrivateMessageController;
 use Illuminate\Support\Facades\Route;
 
@@ -21,6 +22,9 @@ Route::middleware($middleware)->name('api.basement.')->prefix('api/basement')->g
     Route::apiResource(name: 'contacts.private-messages', controller: PrivateMessageController::class)
         ->shallow()
         ->only(['index', 'store']);
+
+    Route::get(uri: 'contacts/{contact}/currently-typing', action: CurrentlyTypingController::class)
+        ->name('contacts.currently-typing');
 
     Route::patch(uri: 'private-messages', action: [PrivateMessageController::class, 'updates'])
         ->name('private-messages.updates');

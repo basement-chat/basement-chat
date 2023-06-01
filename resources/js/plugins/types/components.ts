@@ -5,6 +5,7 @@ import type {
   PrivateMessageMarkedAsReadEvent,
   PrivateMessageSentEvent,
   PushNotificationEvent,
+  UpdateCurrentlyTypingContactEvent,
   UpdateLastPrivateMessageEvent,
   UpdateReceiverEvent,
 } from './events'
@@ -39,6 +40,7 @@ export interface ContactComponent {
   onSomeoneLeaving(contact: Contact): void
   registerEchoEventListeners(): void
   updateLastPrivateMessage(event: CustomEvent<UpdateLastPrivateMessageEvent>): void
+  updateCurrentlyTypingContact(event: CustomEvent<UpdateCurrentlyTypingContactEvent>): void
   watchContacts(newValue: ContactData[], oldValue: ContactData[]): void
 }
 
@@ -60,18 +62,24 @@ export interface PrivateMessageComponent {
   url: string
   urlTemplate: string
   urlBatchRequest: string
+  urlCurrentlyTyping: string
+  urlCurrentlyTypingTemplate: string
   urlShowMore: string | null
   init(): void
   mount(): Promise<void>
   mountMore(): Promise<void>
   get groupedMessages(): PrivateMessageData[][]
+  currentlyTyping(): Promise<void>
   sendNewMessage(): Promise<void>
   lastMessageObserver(entries: IntersectionObserverEntry[]): void
   markSeenMessagesAsRead(): void
   observeLastMessage(): void
   onMessageReceived(event: CustomEvent<PrivateMessageSentEvent>): void
   onMessageMarkedAsRead(event: CustomEvent<PrivateMessageMarkedAsReadEvent>): void
+  onContactCurrentlyTyping(event: CustomEvent<UpdateCurrentlyTypingContactEvent>): void
   registerEchoEventListeners(): void
+  setStatusToTyping(contactId: number, ms: number): void
+  setStatusToNotTyping(contactId: number): void
   scrollTo(id: number | null, options?: ScrollIntoViewOptions): void
   scrollToLastMessage(): void
   seeMessage(message: PrivateMessageData): void
