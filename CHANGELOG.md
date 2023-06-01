@@ -1,3 +1,10 @@
+# [1.1.0](https://github.com/basement-chat/basement-chat/compare/v1.0.4...v1.1.0) (2023-06-01)
+
+
+### Features
+
+* add typing indicator ([df501c0](https://github.com/basement-chat/basement-chat/commit/df501c0f6ff61a3e191007ba02e088d7df04b8b4))
+
 ## [1.0.4](https://github.com/basement-chat/basement-chat/compare/v1.0.3...v1.0.4) (2023-05-27)
 
 
