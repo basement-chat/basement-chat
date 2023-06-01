@@ -9,22 +9,6 @@ import postcss from 'rollup-plugin-postcss'
 import { terser } from 'rollup-plugin-terser'
 import typescript from 'rollup-plugin-typescript2'
 
-const babelPlugin = babel({
-  babelHelpers: 'bundled',
-  exclude: 'node_modules/**',
-  extensions: ['.ts'],
-  include: ['./resources/js/**/*.ts'],
-  presets: [
-    [
-      '@babel/preset-env',
-      {
-        useBuiltIns: 'usage',
-        corejs: '3.25',
-      },
-    ],
-  ],
-})
-
 export default defineConfig([
   {
     input: './resources/js/app.ts',
@@ -47,7 +31,21 @@ export default defineConfig([
       }),
       terser(),
       typescript(),
-      babelPlugin,
+      babel({
+        babelHelpers: 'bundled',
+        exclude: 'node_modules/**',
+        extensions: ['.ts'],
+        include: ['./resources/js/**/*.ts'],
+        presets: [
+          [
+            '@babel/preset-env',
+            {
+              useBuiltIns: 'usage',
+              corejs: '3.30',
+            },
+          ],
+        ],
+      }),
       filesize(),
     ],
   },
@@ -69,13 +67,7 @@ export default defineConfig([
     plugins: [
       resolve(),
       commonjs(),
-      typescript({
-        exclude: [
-          './resources/js/*.ts',
-          './resources/js/@types/*.ts',
-        ],
-      }),
-      babelPlugin,
+      typescript(),
       filesize(),
     ],
   },
@@ -96,7 +88,6 @@ export default defineConfig([
     ],
     plugins: [
       typescript(),
-      babelPlugin,
       filesize(),
     ],
   },
