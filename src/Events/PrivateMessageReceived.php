@@ -8,7 +8,7 @@ use BasementChat\Basement\Data\PrivateMessageData;
 use Illuminate\Broadcasting\PresenceChannel;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcastNow;
 
-class PrivateMessageSent implements ShouldBroadcastNow
+class PrivateMessageReceived implements ShouldBroadcastNow
 {
     /**
      * The value of the private message sent.
@@ -18,16 +18,16 @@ class PrivateMessageSent implements ShouldBroadcastNow
     public array $detail;
 
     /**
-     * The message sender id.
+     * The message receiver id.
      */
-    protected int $senderId;
+    protected int $receiverId;
 
     /**
      * Create a new notification instance.
      */
     public function __construct(PrivateMessageData $message)
     {
-        $this->senderId = $message->sender_id;
+        $this->receiverId = $message->receiver_id;
         $this->detail = $message->toArray();
 
         /** @var \Illuminate\Foundation\Auth\User&\BasementChat\Basement\Contracts\User $sender */
@@ -41,7 +41,7 @@ class PrivateMessageSent implements ShouldBroadcastNow
      */
     public function broadcastAs(): string
     {
-        return 'basement.message.sent';
+        return 'basement.message.received';
     }
 
     /**
@@ -49,6 +49,6 @@ class PrivateMessageSent implements ShouldBroadcastNow
      */
     public function broadcastOn(): PresenceChannel|array
     {
-        return new PresenceChannel('basement.contacts.' . $this->senderId);
+        return new PresenceChannel('basement.contacts.' . $this->receiverId);
     }
 }

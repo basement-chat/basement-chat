@@ -12,7 +12,8 @@ import type {
 declare global {
   interface HTMLElementEventMap {
     'send-push-notification': CustomEvent<PushNotificationEvent>
-    'update-last-private-message': CustomEvent<UpdateLastPrivateMessageEvent>
+    'update-last-private-message-sent': CustomEvent<UpdateLastPrivateMessageEvent>
+    'update-last-private-message-received': CustomEvent<UpdateLastPrivateMessageEvent>
     'update-receiver': CustomEvent<UpdateReceiverEvent>
     'update-currently-typing-contact': CustomEvent<UpdateCurrentlyTypingContactEvent>
   }

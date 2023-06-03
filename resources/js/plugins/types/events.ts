@@ -16,6 +16,8 @@ export interface PrivateMessageSentEvent extends PrivateMessage {
   sender: Pick<ContactData, 'id' | 'name' | 'avatar'>
 }
 
+export type PrivateMessageReceived = PrivateMessageSentEvent
+
 export interface PrivateMessageMarkedAsReadEvent {
   receiver: { id: number }
   messages: { id: number, read_at: string }[]

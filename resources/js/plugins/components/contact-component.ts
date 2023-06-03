@@ -19,7 +19,8 @@ export default (): AlpineComponent<ContactComponent> => {
      */
     init(): void {
       this.$watch('contacts', this.watchContacts.bind(this))
-      this.$refs.basementChatBox.addEventListener('update-last-private-message', this.updateLastPrivateMessage.bind(this))
+      this.$refs.basementChatBox.addEventListener('update-last-private-message-received', this.updateLastPrivateMessageReceived.bind(this))
+      this.$refs.basementChatBox.addEventListener('update-last-private-message-sent', this.updateLastPrivateMessageSent.bind(this))
       this.$refs.basementChatBox.addEventListener('update-currently-typing-contact', this.updateCurrentlyTypingContact.bind(this))
     },
 
@@ -121,9 +122,10 @@ export default (): AlpineComponent<ContactComponent> => {
     },
 
     /**
-     * HTML DOM event listener to update the last private message in the current component.
+     * HTML DOM event listener to update the last private message in the current component when
+     * the message has been received.
      */
-    updateLastPrivateMessage(event: CustomEvent<UpdateLastPrivateMessageEvent>): void {
+    updateLastPrivateMessageReceived(event: CustomEvent<UpdateLastPrivateMessageEvent>): void {
       const sameContactIndex: number | null = this.findSameContact(event.detail.senderId).index
 
       if (sameContactIndex === null) {
@@ -138,6 +140,23 @@ export default (): AlpineComponent<ContactComponent> => {
         sameContact.unreadMessages += 1
       }
 
+      this.contacts.unshift(sameContact)
+    },
+
+    /**
+     * HTML DOM event listener to update the last private message in the current component when
+     * the message has been sent.
+     */
+    updateLastPrivateMessageSent(event: CustomEvent<UpdateLastPrivateMessageEvent>): void {
+      const sameContactIndex: number | null = this.findSameContact(event.detail.receiverId).index
+
+      if (sameContactIndex === null) {
+        return
+      }
+
+      const sameContact: ContactData = this.contacts.splice(sameContactIndex, 1).at(0)!
+
+      sameContact.lastPrivateMessage = event.detail
       this.contacts.unshift(sameContact)
     },
 
