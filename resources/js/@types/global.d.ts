@@ -3,6 +3,7 @@ import type axios from 'axios'
 import type Echo from 'laravel-echo'
 import type Pusher from 'pusher-js'
 import type {
+  PrivateMessagesReceivedMarkedAsReadEvent,
   PushNotificationEvent,
   UpdateCurrentlyTypingContactEvent,
   UpdateLastPrivateMessageEvent,
@@ -16,6 +17,7 @@ declare global {
     'update-last-private-message-received': CustomEvent<UpdateLastPrivateMessageEvent>
     'update-receiver': CustomEvent<UpdateReceiverEvent>
     'update-currently-typing-contact': CustomEvent<UpdateCurrentlyTypingContactEvent>
+    'update-unread-messages': CustomEvent<PrivateMessagesReceivedMarkedAsReadEvent>
   }
 
   interface HTMLElementTagNameMap {

@@ -6,7 +6,8 @@ namespace BasementChat\Basement\Tests\Feature\Actions;
 
 use BasementChat\Basement\Contracts\MarkPrivatesMessagesAsRead;
 use BasementChat\Basement\Data\PrivateMessageData;
-use BasementChat\Basement\Events\PrivateMessageRead;
+use BasementChat\Basement\Events\PrivateMessagesReceivedMarkedAsRead;
+use BasementChat\Basement\Events\PrivateMessagesSentMarkedAsRead;
 use BasementChat\Basement\Tests\Fixtures\Models\User;
 use BasementChat\Basement\Tests\TestCase;
 use BasementChat\Basement\Tests\WithPrivateMessages;
@@ -48,7 +49,10 @@ class MarkPrivateMessagesAsReadTest extends TestCase
     {
         $this->addPrivateMessages(receiver: $this->receiver, sender: $this->sender, count: 10);
 
-        Event::fake(PrivateMessageRead::class);
+        Event::fake([
+            PrivateMessagesReceivedMarkedAsRead::class,
+            PrivateMessagesSentMarkedAsRead::class,
+        ]);
 
         $this->freezeTime(function (Carbon $time): void {
             /** @var \BasementChat\Basement\Contracts\MarkPrivatesMessagesAsRead $markAsRead */
@@ -67,6 +71,7 @@ class MarkPrivateMessagesAsReadTest extends TestCase
             );
         });
 
-        Event::assertDispatchedTimes(event: PrivateMessageRead::class, times: 1);
+        Event::assertDispatchedTimes(event: PrivateMessagesReceivedMarkedAsRead::class, times: 1);
+        Event::assertDispatchedTimes(event: PrivateMessagesSentMarkedAsRead::class, times: 1);
     }
 }

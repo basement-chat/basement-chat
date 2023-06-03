@@ -6,7 +6,8 @@ namespace BasementChat\Basement\Actions;
 
 use BasementChat\Basement\Contracts\MarkPrivatesMessagesAsRead as MarkPrivatesMessagesAsReadContract;
 use BasementChat\Basement\Data\PrivateMessageData;
-use BasementChat\Basement\Events\PrivateMessageRead;
+use BasementChat\Basement\Events\PrivateMessagesReceivedMarkedAsRead;
+use BasementChat\Basement\Events\PrivateMessagesSentMarkedAsRead;
 use BasementChat\Basement\Facades\Basement;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Support\Collection;
@@ -36,22 +37,29 @@ class MarkPrivatesMessagesAsRead implements MarkPrivatesMessagesAsReadContract
             $data->read_at = $time;
         });
 
-        $this->notifySenders(receiver: $readBy, privateMessages: $privateMessages);
+        $this->notify(receiver: $readBy, privateMessages: $privateMessages);
 
         return $privateMessages;
     }
 
     /**
-     * Notify the sender that the receiver has read private messages.
+     * Notify the sender that the receiver has read private messages. This method also notifies
+     * the receiver, so multiple tabs opened by the receiver will synchronize unread messages.
      *
      * @param \Illuminate\Foundation\Auth\User&\BasementChat\Basement\Contracts\User $receiver
      * @param \Illuminate\Support\Collection<int,\BasementChat\Basement\Data\PrivateMessageData> $privateMessages
      */
-    protected function notifySenders(Authenticatable $receiver, Collection $privateMessages): void
+    protected function notify(Authenticatable $receiver, Collection $privateMessages): void
     {
         $privateMessages
             ->groupBy('sender_id')
-            ->each(static fn (Collection $messages, int $senderId) => broadcast(new PrivateMessageRead(
+            ->tap(function (Collection $groupedMessages) use ($receiver): void {
+                broadcast(new PrivateMessagesReceivedMarkedAsRead(
+                    receiverId: (int) $receiver->id,
+                    messages: $groupedMessages,
+                ));
+            })
+            ->each(static fn (Collection $messages, int $senderId) => broadcast(new PrivateMessagesSentMarkedAsRead(
                 receiverId: (int) $receiver->id,
                 senderId: (int) $senderId,
                 messages: $messages,

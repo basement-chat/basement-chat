@@ -2,9 +2,10 @@ import type ContactData from '../data/contact-data'
 import type PrivateMessageData from '../data/private-message-data'
 import type { Contact } from './api'
 import type {
-  PrivateMessageMarkedAsReadEvent,
   PrivateMessageReceived,
   PrivateMessageSentEvent,
+  PrivateMessagesReceivedMarkedAsReadEvent,
+  PrivateMessagesSentMarkedAsReadEvent,
   PushNotificationEvent,
   UpdateCurrentlyTypingContactEvent,
   UpdateLastPrivateMessageEvent,
@@ -43,6 +44,7 @@ export interface ContactComponent {
   updateLastPrivateMessageReceived(event: CustomEvent<UpdateLastPrivateMessageEvent>): void
   updateLastPrivateMessageSent(event: CustomEvent<UpdateLastPrivateMessageEvent>): void
   updateCurrentlyTypingContact(event: CustomEvent<UpdateCurrentlyTypingContactEvent>): void
+  updateUnreadMessages(event: CustomEvent<PrivateMessagesReceivedMarkedAsReadEvent>): void
   watchContacts(newValue: ContactData[], oldValue: ContactData[]): void
 }
 
@@ -78,7 +80,8 @@ export interface PrivateMessageComponent {
   observeLastMessage(): void
   onMessageReceived(event: CustomEvent<PrivateMessageReceived>): void
   onMessageSent(event: CustomEvent<PrivateMessageSentEvent>): void
-  onMessageMarkedAsRead(event: CustomEvent<PrivateMessageMarkedAsReadEvent>): void
+  onSentMessagesMarkedAsRead(event: CustomEvent<PrivateMessagesSentMarkedAsReadEvent>): void
+  onReceivedMessagesMarkedAsRead(event: CustomEvent<PrivateMessagesReceivedMarkedAsReadEvent>): void
   onContactCurrentlyTyping(event: CustomEvent<UpdateCurrentlyTypingContactEvent>): void
   registerEchoEventListeners(): void
   setStatusToTyping(contactId: number, ms: number): void

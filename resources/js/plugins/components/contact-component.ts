@@ -2,7 +2,7 @@ import type { AlpineComponent } from 'alpinejs'
 import ContactData from '../data/contact-data'
 import type { Response, Contact } from '../types/api'
 import type { ContactComponent } from '../types/components'
-import type { UpdateCurrentlyTypingContactEvent, UpdateLastPrivateMessageEvent } from '../types/events'
+import type { PrivateMessagesReceivedMarkedAsReadEvent, UpdateCurrentlyTypingContactEvent, UpdateLastPrivateMessageEvent } from '../types/events'
 
 export default (): AlpineComponent<ContactComponent> => {
   const container: HTMLDivElement = document.querySelector('.basement-contacts')!
@@ -22,6 +22,7 @@ export default (): AlpineComponent<ContactComponent> => {
       this.$refs.basementChatBox.addEventListener('update-last-private-message-received', this.updateLastPrivateMessageReceived.bind(this))
       this.$refs.basementChatBox.addEventListener('update-last-private-message-sent', this.updateLastPrivateMessageSent.bind(this))
       this.$refs.basementChatBox.addEventListener('update-currently-typing-contact', this.updateCurrentlyTypingContact.bind(this))
+      this.$refs.basementChatBox.addEventListener('update-unread-messages', this.updateUnreadMessages.bind(this))
     },
 
     /**
@@ -168,7 +169,7 @@ export default (): AlpineComponent<ContactComponent> => {
     },
 
     /**
-     * HTML DOM event listener to update the is typing status of the given contact.
+     * HTML DOM event listener to update the typing status of the given contact.
      */
     updateCurrentlyTypingContact(event: CustomEvent<UpdateCurrentlyTypingContactEvent>): void {
       const sameContact: ContactData | null = this.findSameContact(event.detail.contact.id).contact
@@ -178,6 +179,21 @@ export default (): AlpineComponent<ContactComponent> => {
       }
 
       sameContact.typing = event.detail.contact.typing
+    },
+
+    /**
+     * HTML DOM event listener to update the unread messages count.
+     */
+    updateUnreadMessages(event: CustomEvent<PrivateMessagesReceivedMarkedAsReadEvent>): void {
+      event.detail.messages.forEach(({ sender_id, total }) => {
+        const sameContact: ContactData | null = this.findSameContact(Number(sender_id)).contact
+
+        if (sameContact === null) {
+          return
+        }
+
+        sameContact.unreadMessages -= total
+      })
     },
 
     /**
