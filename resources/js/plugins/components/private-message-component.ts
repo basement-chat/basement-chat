@@ -5,6 +5,7 @@ import type { Response, PaginatedResponse, PrivateMessage } from '../types/api'
 import type { PrivateMessageComponent } from '../types/components'
 import type {
   PrivateMessageMarkedAsReadEvent,
+  PrivateMessageReceived,
   PrivateMessageSentEvent,
   UpdateCurrentlyTypingContactEvent,
   UpdateReceiverEvent,
@@ -198,7 +199,7 @@ export default (): AlpineComponent<PrivateMessageComponent> => {
     /**
      * Laravel Echo event listener when a message is received.
      */
-    onMessageReceived(event: CustomEvent<PrivateMessageSentEvent>): void {
+    onMessageReceived(event: CustomEvent<PrivateMessageReceived>): void {
       this.setStatusToNotTyping(event.detail.sender_id)
 
       const receivedMessage: PrivateMessageData = PrivateMessageData.from(event.detail)
@@ -210,7 +211,7 @@ export default (): AlpineComponent<PrivateMessageComponent> => {
         this.messages.unshift(receivedMessage)
       }
 
-      this.$dispatch('update-last-private-message', receivedMessage)
+      this.$dispatch('update-last-private-message-received', receivedMessage)
 
       if (userId !== event.detail.sender_id) {
         this.$dispatch('send-push-notification', {
@@ -219,6 +220,26 @@ export default (): AlpineComponent<PrivateMessageComponent> => {
           icon: event.detail.sender.avatar,
         })
       }
+
+      if (this.isLastMessageShown === true) {
+        this.scrollToLastMessage()
+      }
+    },
+
+    /**
+     * Laravel Echo event listener when a message is sent.
+     */
+    onMessageSent(event: CustomEvent<PrivateMessageSentEvent>): void {
+      const sentMessage: PrivateMessageData = PrivateMessageData.from(event.detail)
+
+      if (
+        event.detail.receiver_id === this.receiver?.id
+        && event.detail.value.includes(this.searchKeyword.trim())
+      ) {
+        this.messages.unshift(sentMessage)
+      }
+
+      this.$dispatch('update-last-private-message-sent', sentMessage)
 
       if (this.isLastMessageShown === true) {
         this.scrollToLastMessage()
@@ -262,7 +283,8 @@ export default (): AlpineComponent<PrivateMessageComponent> => {
      */
     registerEchoEventListeners(): void {
       window.Echo.join(`basement.contacts.${userId}`)
-        .listen('.basement.message.sent', this.onMessageReceived.bind(this))
+        .listen('.basement.message.received', this.onMessageReceived.bind(this))
+        .listen('.basement.message.sent', this.onMessageSent.bind(this))
         .listen('.basement.message.marked-as-read', this.onMessageMarkedAsRead.bind(this))
         .listen('.basement.contact.currently-typing', this.onContactCurrentlyTyping.bind(this))
     },
@@ -361,17 +383,10 @@ export default (): AlpineComponent<PrivateMessageComponent> => {
 
       this.isLoadingSentMessage = true
 
-      const response = await window.axios
+      await window.axios
         .post<Response<PrivateMessage>>(this.url, { value: this.newMessageValue })
         .then(({ data }) => data)
-      const message: PrivateMessageData = PrivateMessageData.from(response.data)
 
-      if (this.receiver.id !== userId) {
-        this.messages.unshift(message)
-        this.scrollToLastMessage()
-      }
-
-      this.receiver.lastPrivateMessage = message
       this.newMessageValue = ''
       this.isLoadingSentMessage = false
     },

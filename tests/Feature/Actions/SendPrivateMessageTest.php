@@ -6,6 +6,7 @@ namespace BasementChat\Basement\Tests\Feature\Actions;
 
 use BasementChat\Basement\Contracts\SendPrivateMessage;
 use BasementChat\Basement\Data\PrivateMessageData;
+use BasementChat\Basement\Events\PrivateMessageReceived;
 use BasementChat\Basement\Events\PrivateMessageSent;
 use BasementChat\Basement\Models\PrivateMessage;
 use BasementChat\Basement\Tests\Fixtures\Models\User;
@@ -46,10 +47,15 @@ class SendPrivateMessageTest extends TestCase
      */
     public function itShouldBeAbleToSendAPrivateMessage(): void
     {
-        Event::fake(PrivateMessageSent::class);
+        Event::fake([PrivateMessageSent::class, PrivateMessageReceived::class]);
 
         /** @var \BasementChat\Basement\Models\PrivateMessage $message */
-        $message = PrivateMessage::factory()->make();
+        $message = PrivateMessage::factory()
+            ->betweenTwoUsers(
+                receiver: $this->receiver,
+                sender: $this->sender,
+            )
+            ->make();
 
         $this->freezeTime(function (Carbon $time) use ($message): void {
             /** @var \BasementChat\Basement\Contracts\SendPrivateMessage $sendPrivateMessageAction */
@@ -83,6 +89,7 @@ class SendPrivateMessageTest extends TestCase
         ]);
 
         Event::assertDispatchedTimes(event: PrivateMessageSent::class, times: 1);
+        Event::assertDispatchedTimes(event: PrivateMessageReceived::class, times: 1);
     }
 
     /**
@@ -90,7 +97,7 @@ class SendPrivateMessageTest extends TestCase
      */
     public function itShouldBeMarkedAsReadIfSendingAMessageToSelf(): void
     {
-        Event::fake(PrivateMessageSent::class);
+        Event::fake([PrivateMessageSent::class, PrivateMessageReceived::class]);
 
         $this->addPrivateMessages(receiver: $this->receiver, sender: $this->receiver);
 

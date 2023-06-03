@@ -3,6 +3,7 @@ import type PrivateMessageData from '../data/private-message-data'
 import type { Contact } from './api'
 import type {
   PrivateMessageMarkedAsReadEvent,
+  PrivateMessageReceived,
   PrivateMessageSentEvent,
   PushNotificationEvent,
   UpdateCurrentlyTypingContactEvent,
@@ -39,7 +40,8 @@ export interface ContactComponent {
   onSomeoneJoining(contact: Contact): void
   onSomeoneLeaving(contact: Contact): void
   registerEchoEventListeners(): void
-  updateLastPrivateMessage(event: CustomEvent<UpdateLastPrivateMessageEvent>): void
+  updateLastPrivateMessageReceived(event: CustomEvent<UpdateLastPrivateMessageEvent>): void
+  updateLastPrivateMessageSent(event: CustomEvent<UpdateLastPrivateMessageEvent>): void
   updateCurrentlyTypingContact(event: CustomEvent<UpdateCurrentlyTypingContactEvent>): void
   watchContacts(newValue: ContactData[], oldValue: ContactData[]): void
 }
@@ -74,7 +76,8 @@ export interface PrivateMessageComponent {
   lastMessageObserver(entries: IntersectionObserverEntry[]): void
   markSeenMessagesAsRead(): void
   observeLastMessage(): void
-  onMessageReceived(event: CustomEvent<PrivateMessageSentEvent>): void
+  onMessageReceived(event: CustomEvent<PrivateMessageReceived>): void
+  onMessageSent(event: CustomEvent<PrivateMessageSentEvent>): void
   onMessageMarkedAsRead(event: CustomEvent<PrivateMessageMarkedAsReadEvent>): void
   onContactCurrentlyTyping(event: CustomEvent<UpdateCurrentlyTypingContactEvent>): void
   registerEchoEventListeners(): void

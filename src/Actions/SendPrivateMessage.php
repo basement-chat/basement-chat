@@ -6,6 +6,7 @@ namespace BasementChat\Basement\Actions;
 
 use BasementChat\Basement\Contracts\SendPrivateMessage as SendPrivateMessageContract;
 use BasementChat\Basement\Data\PrivateMessageData;
+use BasementChat\Basement\Events\PrivateMessageReceived;
 use BasementChat\Basement\Events\PrivateMessageSent;
 use BasementChat\Basement\Facades\Basement;
 
@@ -28,6 +29,10 @@ class SendPrivateMessage implements SendPrivateMessageContract
         $privateMessage->read_at = $createdMessage->read_at;
 
         broadcast(new PrivateMessageSent($privateMessage));
+
+        if ($privateMessage->receiver_id !== $privateMessage->sender_id) {
+            broadcast(new PrivateMessageReceived($privateMessage));
+        }
 
         return $privateMessage;
     }
