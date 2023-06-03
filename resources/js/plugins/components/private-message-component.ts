@@ -4,9 +4,10 @@ import PrivateMessageData from '../data/private-message-data'
 import type { Response, PaginatedResponse, PrivateMessage } from '../types/api'
 import type { PrivateMessageComponent } from '../types/components'
 import type {
-  PrivateMessageMarkedAsReadEvent,
   PrivateMessageReceived,
   PrivateMessageSentEvent,
+  PrivateMessagesReceivedMarkedAsReadEvent,
+  PrivateMessagesSentMarkedAsReadEvent,
   UpdateCurrentlyTypingContactEvent,
   UpdateReceiverEvent,
 } from '../types/events'
@@ -247,9 +248,9 @@ export default (): AlpineComponent<PrivateMessageComponent> => {
     },
 
     /**
-     * Laravel Echo event listener when a message is marked as read.
+     * Laravel Echo event listener when sent messages is marked as read.
      */
-    onMessageMarkedAsRead(event: CustomEvent<PrivateMessageMarkedAsReadEvent>): void {
+    onSentMessagesMarkedAsRead(event: CustomEvent<PrivateMessagesSentMarkedAsReadEvent>): void {
       if (this.receiver?.id === event.detail.receiver.id) {
         event.detail.messages.forEach((value: { id: number, read_at: string }): void => {
           const sameMessage: PrivateMessageData | undefined = this
@@ -261,6 +262,15 @@ export default (): AlpineComponent<PrivateMessageComponent> => {
           }
         })
       }
+    },
+
+    /**
+     * Laravel Echo event listener when received messages is marked as read.
+     */
+    onReceivedMessagesMarkedAsRead(
+      event: CustomEvent<PrivateMessagesReceivedMarkedAsReadEvent>,
+    ): void {
+      this.$dispatch('update-unread-messages', event.detail)
     },
 
     /**
@@ -285,7 +295,8 @@ export default (): AlpineComponent<PrivateMessageComponent> => {
       window.Echo.join(`basement.contacts.${userId}`)
         .listen('.basement.message.received', this.onMessageReceived.bind(this))
         .listen('.basement.message.sent', this.onMessageSent.bind(this))
-        .listen('.basement.message.marked-as-read', this.onMessageMarkedAsRead.bind(this))
+        .listen('.basement.message.sent-messages-marked-as-read', this.onSentMessagesMarkedAsRead.bind(this))
+        .listen('.basement.message.received-messages-marked-as-read', this.onReceivedMessagesMarkedAsRead.bind(this))
         .listen('.basement.contact.currently-typing', this.onContactCurrentlyTyping.bind(this))
     },
 
@@ -370,7 +381,6 @@ export default (): AlpineComponent<PrivateMessageComponent> => {
       }
 
       this.seenMessages.push(message.id)
-      this.receiver.unreadMessages -= 1
     },
 
     /**

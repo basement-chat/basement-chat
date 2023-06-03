@@ -9,7 +9,7 @@ use Illuminate\Broadcasting\PresenceChannel;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcastNow;
 use Illuminate\Support\Collection;
 
-class PrivateMessageRead implements ShouldBroadcastNow
+class PrivateMessagesSentMarkedAsRead implements ShouldBroadcastNow
 {
     /**
      * The value of the private message sent.
@@ -19,21 +19,15 @@ class PrivateMessageRead implements ShouldBroadcastNow
     public array $detail;
 
     /**
-     * The message sender id.
-     */
-    protected int $senderId;
-
-    /**
      * Create a new notification instance.
      *
      * @param \Illuminate\Support\Collection<int,\BasementChat\Basement\Data\PrivateMessageData> $messages
      */
     public function __construct(
-        int $receiverId,
-        int $senderId,
+        protected int $receiverId,
+        protected int $senderId,
         Collection $messages,
     ) {
-        $this->senderId = $senderId;
         $this->detail = [
             'receiver' => [
                 'id' => $receiverId,
@@ -50,7 +44,7 @@ class PrivateMessageRead implements ShouldBroadcastNow
      */
     public function broadcastAs(): string
     {
-        return 'basement.message.marked-as-read';
+        return 'basement.message.sent-messages-marked-as-read';
     }
 
     /**

@@ -18,9 +18,13 @@ export interface PrivateMessageSentEvent extends PrivateMessage {
 
 export type PrivateMessageReceived = PrivateMessageSentEvent
 
-export interface PrivateMessageMarkedAsReadEvent {
+export interface PrivateMessagesSentMarkedAsReadEvent {
   receiver: { id: number }
   messages: { id: number, read_at: string }[]
+}
+
+export interface PrivateMessagesReceivedMarkedAsReadEvent {
+  messages: { sender_id: number, total: number }[]
 }
 
 export interface UpdateCurrentlyTypingContactEvent {
