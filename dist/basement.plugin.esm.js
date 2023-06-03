@@ -8638,8 +8638,10 @@ var contactComponent = () => {
          */
         init() {
             this.$watch('contacts', this.watchContacts.bind(this));
-            this.$refs.basementChatBox.addEventListener('update-last-private-message', this.updateLastPrivateMessage.bind(this));
+            this.$refs.basementChatBox.addEventListener('update-last-private-message-received', this.updateLastPrivateMessageReceived.bind(this));
+            this.$refs.basementChatBox.addEventListener('update-last-private-message-sent', this.updateLastPrivateMessageSent.bind(this));
             this.$refs.basementChatBox.addEventListener('update-currently-typing-contact', this.updateCurrentlyTypingContact.bind(this));
+            this.$refs.basementChatBox.addEventListener('update-unread-messages', this.updateUnreadMessages.bind(this));
         },
         /**
          * Load initial component data.
@@ -8722,9 +8724,10 @@ var contactComponent = () => {
                 .leaving(this.onSomeoneLeaving.bind(this));
         },
         /**
-         * HTML DOM event listener to update the last private message in the current component.
+         * HTML DOM event listener to update the last private message in the current component when
+         * the message has been received.
          */
-        updateLastPrivateMessage(event) {
+        updateLastPrivateMessageReceived(event) {
             const sameContactIndex = this.findSameContact(event.detail.senderId).index;
             if (sameContactIndex === null) {
                 return;
@@ -8737,13 +8740,26 @@ var contactComponent = () => {
             this.contacts.unshift(sameContact);
         },
         /**
+         * HTML DOM event listener to update the last private message in the current component when
+         * the message has been sent.
+         */
+        updateLastPrivateMessageSent(event) {
+            const sameContactIndex = this.findSameContact(event.detail.receiverId).index;
+            if (sameContactIndex === null) {
+                return;
+            }
+            const sameContact = this.contacts.splice(sameContactIndex, 1).at(0);
+            sameContact.lastPrivateMessage = event.detail;
+            this.contacts.unshift(sameContact);
+        },
+        /**
          * Trigger update receiver event to the chat box component.
          */
         updateReceiver(contact) {
             this.$dispatch('update-receiver', contact);
         },
         /**
-         * HTML DOM event listener to update the is typing status of the given contact.
+         * HTML DOM event listener to update the typing status of the given contact.
          */
         updateCurrentlyTypingContact(event) {
             const sameContact = this.findSameContact(event.detail.contact.id).contact;
@@ -8751,6 +8767,18 @@ var contactComponent = () => {
                 return;
             }
             sameContact.typing = event.detail.contact.typing;
+        },
+        /**
+         * HTML DOM event listener to update the unread messages count.
+         */
+        updateUnreadMessages(event) {
+            event.detail.messages.forEach(({ sender_id, total }) => {
+                const sameContact = this.findSameContact(Number(sender_id)).contact;
+                if (sameContact === null) {
+                    return;
+                }
+                sameContact.unreadMessages -= total;
+            });
         },
         /**
          * Watch when the contacts changes.
@@ -9994,7 +10022,7 @@ var privateMessageComponent = () => {
                 && event.detail.value.includes(this.searchKeyword.trim())) {
                 this.messages.unshift(receivedMessage);
             }
-            this.$dispatch('update-last-private-message', receivedMessage);
+            this.$dispatch('update-last-private-message-received', receivedMessage);
             if (userId !== event.detail.sender_id) {
                 this.$dispatch('send-push-notification', {
                     title: event.detail.sender.name,
@@ -10007,9 +10035,23 @@ var privateMessageComponent = () => {
             }
         },
         /**
-         * Laravel Echo event listener when a message is marked as read.
+         * Laravel Echo event listener when a message is sent.
          */
-        onMessageMarkedAsRead(event) {
+        onMessageSent(event) {
+            const sentMessage = PrivateMessageData.from(event.detail);
+            if (event.detail.receiver_id === this.receiver?.id
+                && event.detail.value.includes(this.searchKeyword.trim())) {
+                this.messages.unshift(sentMessage);
+            }
+            this.$dispatch('update-last-private-message-sent', sentMessage);
+            if (this.isLastMessageShown === true) {
+                this.scrollToLastMessage();
+            }
+        },
+        /**
+         * Laravel Echo event listener when sent messages is marked as read.
+         */
+        onSentMessagesMarkedAsRead(event) {
             if (this.receiver?.id === event.detail.receiver.id) {
                 event.detail.messages.forEach((value) => {
                     const sameMessage = this
@@ -10020,6 +10062,12 @@ var privateMessageComponent = () => {
                     }
                 });
             }
+        },
+        /**
+         * Laravel Echo event listener when received messages is marked as read.
+         */
+        onReceivedMessagesMarkedAsRead(event) {
+            this.$dispatch('update-unread-messages', event.detail);
         },
         /**
          * Laravel Echo event listener when someone in the contact list types a message.
@@ -10038,8 +10086,10 @@ var privateMessageComponent = () => {
          */
         registerEchoEventListeners() {
             window.Echo.join(`basement.contacts.${userId}`)
-                .listen('.basement.message.sent', this.onMessageReceived.bind(this))
-                .listen('.basement.message.marked-as-read', this.onMessageMarkedAsRead.bind(this))
+                .listen('.basement.message.received', this.onMessageReceived.bind(this))
+                .listen('.basement.message.sent', this.onMessageSent.bind(this))
+                .listen('.basement.message.sent-messages-marked-as-read', this.onSentMessagesMarkedAsRead.bind(this))
+                .listen('.basement.message.received-messages-marked-as-read', this.onReceivedMessagesMarkedAsRead.bind(this))
                 .listen('.basement.contact.currently-typing', this.onContactCurrentlyTyping.bind(this));
         },
         /**
@@ -10112,7 +10162,6 @@ var privateMessageComponent = () => {
                 return;
             }
             this.seenMessages.push(message.id);
-            this.receiver.unreadMessages -= 1;
         },
         /**
          * Send a new message.
@@ -10122,15 +10171,9 @@ var privateMessageComponent = () => {
                 throw new Error('Receiver cannot be empty');
             }
             this.isLoadingSentMessage = true;
-            const response = await window.axios
+            await window.axios
                 .post(this.url, { value: this.newMessageValue })
                 .then(({ data }) => data);
-            const message = PrivateMessageData.from(response.data);
-            if (this.receiver.id !== userId) {
-                this.messages.unshift(message);
-                this.scrollToLastMessage();
-            }
-            this.receiver.lastPrivateMessage = message;
             this.newMessageValue = '';
             this.isLoadingSentMessage = false;
         },
