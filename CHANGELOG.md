@@ -1,3 +1,11 @@
+## [1.1.1](https://github.com/basement-chat/basement-chat/compare/v1.1.0...v1.1.1) (2023-06-03)
+
+
+### Bug Fixes
+
+* **private messages:** sync messages sent in multiple tabs ([f33aa58](https://github.com/basement-chat/basement-chat/commit/f33aa580bf53262259767bbda11c92ac8818d1cd))
+* **private messages:** sync unread messages count in multiple tabs ([2c2e5ea](https://github.com/basement-chat/basement-chat/commit/2c2e5eaa4cbc6b52fb9309eef8441158ce4a8b97))
+
 # [1.1.0](https://github.com/basement-chat/basement-chat/compare/v1.0.4...v1.1.0) (2023-06-01)
 
 
