@@ -30,7 +30,7 @@
     "@rollup/plugin-node-resolve": "^15.1.0",
     "@semantic-release/changelog": "^6.0.3",
     "@semantic-release/git": "^10.0.1",
-    "@shufo/prettier-plugin-blade": "^1.8.13",
+    "@shufo/prettier-plugin-blade": "^1.9.1",
     "@soketi/soketi": "^1.5.0",
     "@tailwindcss/forms": "^0.5.3",
     "@types/alpinejs": "^3.7.2",
