@@ -14,7 +14,7 @@
     "@alpinejs/intersect": "^3.12.3",
     "alpinejs": "^3.12.3",
     "axios": "^1.4.0",
-    "laravel-echo": "^1.15.1",
+    "laravel-echo": "^1.15.2",
     "pusher-js": "^7.6.0"
   },
   "config": {
