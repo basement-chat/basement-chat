@@ -45,7 +45,7 @@
     "date-fns-tz": "^1.3.8",
     "eslint": "^8.44.0",
     "eslint-config-airbnb-base": "^15.0.0",
-    "eslint-config-airbnb-typescript": "^17.0.0",
+    "eslint-config-airbnb-typescript": "^17.1.0",
     "eslint-formatter-github": "^1.1.4",
     "eslint-plugin-import": "^2.27.5",
     "laravel-vite-plugin": "^0.7.8",
