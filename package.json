@@ -52,7 +52,7 @@
     "mark.js": "^8.11.1",
     "postcss-import": "^15.0.0",
     "postcss-prefix-selector": "^1.16.0",
-    "prettier": "^3.0.0",
+    "prettier": "^3.0.3",
     "push.js": "^1.0.12",
     "rollup": "^2.79.1",
     "rollup-plugin-filesize": "^9.1.2",
