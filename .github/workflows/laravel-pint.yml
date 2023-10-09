@@ -40,6 +40,6 @@ jobs:
         run: composer format
 
       - name: Commit changes
-        uses: stefanzweifel/git-auto-commit-action@v4
+        uses: stefanzweifel/git-auto-commit-action@v5
         with:
           commit_message: "style: fix styles using pint with psr-12 rules [skip ci]"
